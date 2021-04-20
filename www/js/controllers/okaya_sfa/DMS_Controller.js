@@ -1,21 +1,21 @@
 
 app.controller('dms_controller', function ($scope, $rootScope, searchSelect, $ionicModal, $state, myRequestDBService, myAllSharedService, $ionicLoading, $cordovaSQLite, $ionicPopup, $timeout, $ionicActionSheet, $cordovaImagePicker, Camera, $cordovaFileTransfer, $cordovaGeolocation, $cordovaToast, $location, $window, $ionicPlatform, $ionicHistory, $ionicModal, $stateParams, $ionicScrollDelegate, $ionicPopover) {
-
+  
   console.log("********* IN DMS CONTROLLER *************");
-
+  
   $scope.loginData = myAllSharedService.loginData;
   console.log($scope.loginData);
-
+  
   $scope.goToBackPageHandler = function()
   {
     $ionicHistory.goBack();
   }
-
+  
   $scope.currentPage = 1;
   $scope.isSearchBarOpen = false;
   $scope.isRequestInProcess;
   $scope.noMoreListingAvailable = false;
-
+  
   $scope.onSeachActionHandler = function(type) {
     if(type == 'open') {
       $scope.isSearchBarOpen = true;
@@ -30,7 +30,7 @@ app.controller('dms_controller', function ($scope, $rootScope, searchSelect, $io
       $scope.getSFA_primary_order('onLoad');
     }
   }
-
+  
   $scope.onSetCurrentPageHandler = function()
   {
     $scope.currentPage = 1;
@@ -41,15 +41,15 @@ app.controller('dms_controller', function ($scope, $rootScope, searchSelect, $io
   $scope.onPageScrollTopHandler = function() {
     $ionicScrollDelegate.scrollTop();
   }
-
+  
   $scope.data = {};
   $scope.search = {};
-
+  
   /////////////////// SFA PENDING ORDER START/////////////////
   $scope.getPendingOrderList=[];
   $scope.tmpOrderList = [];
   $scope.noMoreItemsAvailable = false;
-
+  
   $scope.getSFA_primary_order=function(targetSRC)
   {
     // console.log("*******GET SFA PRIMARY ORDER LIST FUNCTION ********");
@@ -88,7 +88,7 @@ app.controller('dms_controller', function ($scope, $rootScope, searchSelect, $io
       $scope.currentPage += 1;
       // $scope.$broadcast('scroll.infiniteScrollComplete');
       // $ionicLoading.hide();
-
+      
     });
   }
   if ($location.path() == '/tab/sfa-primary-order-list')
@@ -108,43 +108,43 @@ app.controller('dms_controller', function ($scope, $rootScope, searchSelect, $io
     console.log(searchArray);
   }
   /////////////////// SFA PENDING ORDER END/////////////////
-
+  
   ////////  SFA PENDING ORDER DETAIL PAGE /////////////
   $scope.getPendingOrderDetailData = function () {
-
+    
     $ionicLoading.show({
       template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>'
-  });
-
-  console.log( $scope.data.orderId);
-  myRequestDBService.orpPostServiceRequest('/invoice/getPendingOrderDetail',$scope.data.orderId).then(function(response) {
-
+    });
+    
+    console.log( $scope.data.orderId);
+    myRequestDBService.orpPostServiceRequest('/invoice/getPendingOrderDetail',$scope.data.orderId).then(function(response) {
+      
       console.log(response.data);
-
+      
       $scope.orderDetail = response.data;
-
+      
       $ionicLoading.hide();
-
-  }, function (err) {
-
+      
+    }, function (err) {
+      
       $ionicLoading.hide();
       console.error(err);
-  });
-}
-
-if ($location.path() == '/tab/sfa-pending-order-detail') {
-
+    });
+  }
+  
+  if ($location.path() == '/tab/sfa-pending-order-detail') {
+    
     $scope.data.orderId = myAllSharedService.drTypeFilterData.orderId;
     $scope.getPendingOrderDetailData();
-
+    
     $ionicPopover.fromTemplateUrl('add-status', {
-        scope: $scope,
+      scope: $scope,
     }).then(function (popovers) {
-        $scope.data.statusModel = popovers;
+      $scope.data.statusModel = popovers;
     });
-}
-
-$scope.onGoToOrderDetailPage = function (orderId) {
+  }
+  
+  $scope.onGoToOrderDetailPage = function (orderId) {
     myAllSharedService.drTypeFilterData.orderId = orderId;
     $state.go('tab.sfa-pending-order-detail');
 }
@@ -160,14 +160,14 @@ $scope.filter = function (value) {
     $scope.leadListFilter = value;
     console.log($scope.data.orderCreatedBy);
     console.log($scope.data);
-
+    
     if ($scope.data.orderCreatedBy == 'me') {
       $scope.sec_order.type = 'dr_status';
     } else if ($scope.data.orderCreatedBy == 'myTeam') {
       $scope.sec_order.type = 'dr_name';
     }
   }
-
+  
   ///////////////  SFA BILLING LIST //////////////////////
   $scope.onGoToBillingDetailPage = function(orderId)
   {
@@ -176,25 +176,25 @@ $scope.filter = function (value) {
   }
   $scope.billinglist=[];
   $scope.billingdetail=[];
-
+  
   $scope.filterBillingList = function(search)
   {
     search = search.toLowerCase();
     $scope.tmpbillingList=$scope.billinglist;
     console.log($scope.billinglist);
-
+    
     console.log(search);
     $scope.billinglist = [];
     console.log($scope.billinglist);
     console.log($scope.tmpbillingList);
-
+    
     $scope.billinglist = $scope.tmpbillingList.filter(row=>row.customer_code.includes(search) || row.customr_name.toLowerCase().includes(search) || row.sale_order_no.includes(search) || row.bill_doc.includes(search));
-
+    
     console.log($scope.billinglist);
-
-
+    
+    
     console.log(searchArray);
-
+    
   }
   $scope.billinglistdata = function () {
     fetchingRecords = true;
@@ -205,12 +205,12 @@ $scope.filter = function (value) {
     .then(function (result)
     {
       console.log(result);
-
+      
       $scope.billinglist = result.data;
       $ionicLoading.hide();
-
+      
       fetchingRecords = false;
-
+      
     }, function (errorMessage) {
       console.log(errorMessage);
       window.console.warn(errorMessage);
@@ -218,7 +218,7 @@ $scope.filter = function (value) {
       fetchingRecords = false;
     });
   }
-
+  
   if($location.path() == '/tab/sfa-billing-list')
   {
     console.log("hello");
@@ -254,29 +254,26 @@ $scope.filter = function (value) {
     });
   }
   ////////////  SFA BILLING LIST END ////////////////////////
-
+  
   /////////////  SFA STOCK START ///////////////////////
   $scope.productStock = [];
   $scope.getStockData = function(branch)
   {
-    // console.log(branch);
+    console.log(branch);
     $scope.suggestiveList = [];
-    // $scope.branch='OKAYA POWER PVT LTD. (NAGPUR)';
-    $scope.branch=branch;
-
+    $scope.data.branch=branch;
+    
     $ionicLoading.show({
       template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>',
       duration: 100
     });
-
-    // $scope.userlist=myAllSharedService.loginData['user_branch'];
-    // console.log($scope.userlist);
-    myRequestDBService.sfaPostServiceRequest('/App_SharedData/getProductStockData',{'branch':$scope.branch})
+    
+    myRequestDBService.sfaPostServiceRequest('/App_SharedData/getProductStockData',{'branch':$scope.data.branch})
     .then(function(response)
     {
       console.log(response);
       $scope.productStock = response.data;
-
+      
       $ionicLoading.hide();
     }, function (err)
     {
@@ -284,18 +281,18 @@ $scope.filter = function (value) {
       console.error(err);
     });
   }
-
+  
   $scope.suggestiveList = [];
   $scope.getSuggestiveData = function()
   {
     $scope.suggestiveList = [];
-
+    
     if($scope.search.master_search.length)
     {
       myRequestDBService.sfaPostServiceRequest("/App_SharedData/getSuggestiveData",{search : $scope.search.master_search}).then(function(response)
       {
         console.log(response);
-
+        
         if(response.status=='Success')
         {
           $scope.suggestiveList = response.data;
@@ -316,19 +313,19 @@ $scope.filter = function (value) {
       $scope.productPriceList = [];
       $scope.getStockData();
     }
-
+    
   }
-
+  
   $scope.getAllBranch=function()
   {
     console.log('***** GET ALL BRANXHES *********');
     myRequestDBService.orpPostServiceRequest('/Invoice/getAssignBranch').then(function(response) {
       console.log(response);
-    $scope.userlist=response.data;
-
+      $scope.userlist=response.data;
+      
     });
   }
-
+  
   $scope.user_branchh=[];
   if($location.path() == '/tab/stock')
   {
@@ -341,10 +338,10 @@ $scope.filter = function (value) {
     $scope.getAllBranch();
   }
   /////////////  SFA STOCK START END ///////////////////////
-
+  
   ////////  SFA STOCK START ///////////
   $scope.isSearchBarOpen = false;
-
+  
   $scope.onSeachActionHandler = function(type, target) {
     if(type == 'open') {
       $scope.isSearchBarOpen = true;
@@ -365,16 +362,16 @@ $scope.filter = function (value) {
       // }
     }
   }
-
+  
   $scope.stock_popover='';
-
+  
   $ionicModal.fromTemplateUrl('stock-model', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {
     $scope.stock_popover = modal;
   });
-
+  
   $scope.stockModel = function() {
     console.log("Open stock Popever");
     $scope.stock_popover.show();
@@ -383,8 +380,8 @@ $scope.filter = function (value) {
     $scope.stock_popover.hide();
   };
   ///////  SFA STOCK END /////////////
-
-
+  
+  
 })
 
 
