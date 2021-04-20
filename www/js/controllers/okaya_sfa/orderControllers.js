@@ -547,21 +547,21 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
 
     }
 
-    // $scope.filterOrderListList = function(search)
-    // {
-    //     search = search.toLowerCase();
+    $scope.filterOrderListList = function(search)
+    {
+        search = search.toLowerCase();
 
-    //     console.log(search);
+        console.log(search);
 
-    //     console.log($scope.tmpOrderList);
+        console.log($scope.tmpOrderList);
 
-    //     $scope.orderList = $scope.tmpOrderList.filter(row=>row.created_by_name.toLowerCase().includes(search) || row.dr_name.toLowerCase().includes(search) || row.order_status.toLowerCase().includes(search) || row.payment_type.toLowerCase().includes(search) || row.state_name.toLowerCase().includes(search) || row.city.toLowerCase().includes(search) || row.district_name.toLowerCase().includes(search));
+        $scope.orderList = $scope.tmpOrderList.filter(row=>row.created_by_name.toLowerCase().includes(search) || row.dr_name.toLowerCase().includes(search) || row.order_status.toLowerCase().includes(search) || row.payment_type.toLowerCase().includes(search) || row.state_name.toLowerCase().includes(search) || row.city.toLowerCase().includes(search) || row.district_name.toLowerCase().includes(search));
 
-    //     // || row.dr_name.includes(search) || row.order_status.includes(search) || row.payment_type.includes(search) || row.state_name.includes(search) || row.city.includes(search) || row.district_name.includes(search)
+        // || row.dr_name.includes(search) || row.order_status.includes(search) || row.payment_type.includes(search) || row.state_name.includes(search) || row.city.includes(search) || row.district_name.includes(search)
 
-    //     console.log(searchArray);
+        console.log(searchArray);
 
-    // }
+    }
 
 
     $scope.filter_date = [];
@@ -1653,6 +1653,59 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
 
 
     }, 5000);
+
+    $scope.billinglist=[];
+    $scope.billingdetail=[];
+
+    $scope.filterBillingList = function(search)
+    {
+        search = search.toLowerCase();
+        $scope.tmpbillingList=$scope.billinglist;
+        console.log($scope.billinglist);
+
+        console.log(search);
+        $scope.billinglist = [];
+        console.log($scope.billinglist);
+        console.log($scope.tmpbillingList);
+
+        $scope.billinglist = $scope.tmpbillingList.filter(row=>row.customer_code.includes(search) || row.customr_name.toLowerCase().includes(search) || row.sale_order_no.includes(search) || row.bill_doc.includes(search));
+
+        console.log($scope.billinglist);
+
+
+        console.log(searchArray);
+
+    }
+    $scope.billinglistdata = function () {
+      fetchingRecords = true;
+      $ionicLoading.show({
+          template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>'
+      });
+      myRequestDBService.orpPostServiceRequest('/invoice/getInvoiceList','')
+      .then(function (result)
+      {
+          console.log(result);
+
+          $scope.billinglist = result.data;
+          $ionicLoading.hide();
+
+          fetchingRecords = false;
+
+      }, function (errorMessage) {
+          console.log(errorMessage);
+          window.console.warn(errorMessage);
+          $ionicLoading.hide();
+          fetchingRecords = false;
+      });
+  }
+
+      if($location.path() == '/tab/sfa-billing-list') {
+
+          console.log("hello");
+          $scope.billinglistdata();
+      }
+
+
 
 
 })
