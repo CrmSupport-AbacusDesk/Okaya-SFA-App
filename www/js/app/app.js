@@ -537,7 +537,17 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
             controller: 'dms_controller'
         }
     }
-})
+  })
+  .state('tab.billing-detail', {
+    url: '/billing-detail',
+    cache:false,
+    views: {
+        'tab-menu': {
+            templateUrl: 'templates/okaya_sfa/billing-detail.html',
+            controller: 'dms_controller'
+        }
+    }
+  })
   ////////////////////
 
   //////////// Bhanu///////////
