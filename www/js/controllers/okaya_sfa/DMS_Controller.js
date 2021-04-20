@@ -148,15 +148,15 @@ $scope.onGoToOrderDetailPage = function (orderId) {
     myAllSharedService.drTypeFilterData.orderId = orderId;
     $state.go('tab.sfa-pending-order-detail');
 }
-  ////////  SFA PENDING ORDER DETAIL PAGE END /////////////
+////////  SFA PENDING ORDER DETAIL PAGE END /////////////
 
 
-  $scope.leadListFilter = false;
-  $scope.sec_order = {};
-  $scope.dr_status = {};
+$scope.leadListFilter = false;
+$scope.sec_order = {};
+$scope.dr_status = {};
 
-  $scope.filter = function (value) {
-    console.log($scope.leadListFilter);
+$scope.filter = function (value) {
+  console.log($scope.leadListFilter);
     $scope.leadListFilter = value;
     console.log($scope.data.orderCreatedBy);
     console.log($scope.data);
@@ -169,6 +169,11 @@ $scope.onGoToOrderDetailPage = function (orderId) {
   }
 
   ///////////////  SFA BILLING LIST //////////////////////
+  $scope.onGoToBillingDetailPage = function(orderId)
+  {
+      myAllSharedService.billingdetail = orderId;
+      $state.go('tab.billing-detail');
+  }
   $scope.billinglist=[];
   $scope.billingdetail=[];
 
@@ -218,6 +223,35 @@ $scope.onGoToOrderDetailPage = function (orderId) {
   {
     console.log("hello");
     $scope.billinglistdata();
+  }
+
+  if($location.path() == '/tab/billing-detail') {
+
+    console.log("hello");
+    console.log(myAllSharedService.billingdetail);
+    $scope.data = myAllSharedService.billingdetail;
+    console.log($scope.data);
+    $ionicLoading.show({
+        template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>'
+    });
+    fetchingRecords = true;
+
+    myRequestDBService.orpPostServiceRequest('/invoice/getInvoiceDetail',$scope.data)
+    .then(function (result)
+    {
+        console.log(result);
+        $ionicLoading.hide();
+
+        $scope.billingdetail = result.data;
+        console.log($scope.billingdetail);
+        fetchingRecords = false;
+
+    }, function (errorMessage) {
+        console.log(errorMessage);
+        window.console.warn(errorMessage);
+        $ionicLoading.hide();
+        fetchingRecords = false;
+    });
   }
   ////////////  SFA BILLING LIST END ////////////////////////
 
