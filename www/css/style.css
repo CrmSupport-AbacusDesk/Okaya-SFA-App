@@ -379,6 +379,8 @@ ion-header-bar .title {
   height: 50px !important;
   font-weight: 500 !important;
   margin: 0px !important;
+  left: 45px !important;
+  right: 55px !important;
 }
 
 ion-header-bar .buttons {
