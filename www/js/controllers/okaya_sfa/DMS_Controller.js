@@ -394,12 +394,12 @@ app.controller('dms_controller', function ($scope, $rootScope, searchSelect, $io
     console.log(obj[0]);
     let obj2=Object.assign({},obj[0]);
     console.log(obj2['branch_code']);
-    let bCode=obj2['branch_code'];
+    $scope.bCode=obj2['branch_code'];
     $scope.data.branch=obj2['branch'];
     console.log($scope.branch);
-    console.log(bCode);
+    console.log($scope.bCode);
 
-    $scope.getStockData(bCode);
+    $scope.getStockData($scope.bCode);
     $scope.getAllBranch();
   }
   /////////////  SFA STOCK START END ///////////////////////

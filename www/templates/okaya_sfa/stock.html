@@ -13,7 +13,7 @@
         <div ng-class="isSearchBarOpen ? 'active' : ''" class="search-filter">
             <input name="master_search" ng-model="search.master_search" type="text" id="searchData" placeholder="Search..." ng-change ="filterstock(search.master_search)">
             
-            <a ng-click = "onSeachActionHandler('close');search.product_code='';suggestiveList=[];getStockData(data.branch);" placeholder = "Search" class="close-filter"><i class="material-icons">keyboard_backspace</i></a>
+            <a ng-click = "onSeachActionHandler('close');search.product_code='';suggestiveList=[];getStockData(bCode);" placeholder = "Search" class="close-filter"><i class="material-icons">keyboard_backspace</i></a>
         </div>
     </ion-nav-buttons>
     
