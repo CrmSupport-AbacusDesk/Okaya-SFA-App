@@ -116,7 +116,7 @@ app.controller('dms_controller', function ($scope, $rootScope, searchSelect, $io
       template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>'
     });
     
-    console.log( $scope.data.orderId);
+    console.log($scope.data.orderId);
     myRequestDBService.orpPostServiceRequest('/invoice/getPendingOrderDetail',$scope.data.orderId).then(function(response) {
       
       console.log(response.data);
@@ -147,16 +147,16 @@ app.controller('dms_controller', function ($scope, $rootScope, searchSelect, $io
   $scope.onGoToOrderDetailPage = function (orderId) {
     myAllSharedService.drTypeFilterData.orderId = orderId;
     $state.go('tab.sfa-pending-order-detail');
-}
-////////  SFA PENDING ORDER DETAIL PAGE END /////////////
-
-
-$scope.leadListFilter = false;
-$scope.sec_order = {};
-$scope.dr_status = {};
-
-$scope.filter = function (value) {
-  console.log($scope.leadListFilter);
+  }
+  ////////  SFA PENDING ORDER DETAIL PAGE END /////////////
+  
+  
+  $scope.leadListFilter = false;
+  $scope.sec_order = {};
+  $scope.dr_status = {};
+  
+  $scope.filter = function (value) {
+    console.log($scope.leadListFilter);
     $scope.leadListFilter = value;
     console.log($scope.data.orderCreatedBy);
     console.log($scope.data);
@@ -171,8 +171,8 @@ $scope.filter = function (value) {
   ///////////////  SFA BILLING LIST //////////////////////
   $scope.onGoToBillingDetailPage = function(orderId)
   {
-      myAllSharedService.billingdetail = orderId;
-      $state.go('tab.billing-detail');
+    myAllSharedService.billingdetail = orderId;
+    $state.go('tab.billing-detail');
   }
   $scope.billinglist=[];
   $scope.billingdetail=[];
@@ -180,7 +180,7 @@ $scope.filter = function (value) {
   $scope.filterBillingList = function(search)
   {
     search = search.toLowerCase();
-    $scope.tmpbillingList=$scope.billinglist;
+    // $scope.tmpbillingList=$scope.billinglist;
     console.log($scope.billinglist);
     
     console.log(search);
@@ -207,6 +207,7 @@ $scope.filter = function (value) {
       console.log(result);
       
       $scope.billinglist = result.data;
+      $scope.tmpbillingList=$scope.billinglist;
       $ionicLoading.hide();
       
       fetchingRecords = false;
@@ -224,56 +225,56 @@ $scope.filter = function (value) {
     console.log("hello");
     $scope.billinglistdata();
   }
-
+  
   if($location.path() == '/tab/billing-detail') {
-
+    
     console.log("hello");
     console.log(myAllSharedService.billingdetail);
     $scope.data = myAllSharedService.billingdetail;
     console.log($scope.data);
     $ionicLoading.show({
-        template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>'
+      template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>'
     });
     fetchingRecords = true;
-
+    
     myRequestDBService.orpPostServiceRequest('/invoice/getInvoiceDetail',$scope.data)
     .then(function (result)
     {
-        console.log(result);
-        $ionicLoading.hide();
-
-        $scope.billingdetail = result.data;
-        console.log($scope.billingdetail);
-        fetchingRecords = false;
-
+      console.log(result);
+      $ionicLoading.hide();
+      
+      $scope.billingdetail = result.data;
+      console.log($scope.billingdetail);
+      fetchingRecords = false;
+      
     }, function (errorMessage) {
-        console.log(errorMessage);
-        window.console.warn(errorMessage);
-        $ionicLoading.hide();
-        fetchingRecords = false;
+      console.log(errorMessage);
+      window.console.warn(errorMessage);
+      $ionicLoading.hide();
+      fetchingRecords = false;
     });
   }
   ////////////  SFA BILLING LIST END ////////////////////////
   
   /////////////  SFA STOCK START ///////////////////////
   $scope.productStock = [];
-  $scope.getStockData = function(branch)
+  $scope.getStockData = function(branchCode)
   {
-    console.log(branch);
+    console.log(branchCode);
     $scope.suggestiveList = [];
-    $scope.data.branch=branch;
+    $scope.branchCode=branchCode;
     
     $ionicLoading.show({
       template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>',
       duration: 100
     });
     
-    myRequestDBService.sfaPostServiceRequest('/App_SharedData/getProductStockData',{'branch':$scope.data.branch})
+    myRequestDBService.sfaPostServiceRequest('/App_SharedData/getProductStockData',{'branch':$scope.branchCode})
     .then(function(response)
     {
       console.log(response);
       $scope.productStock = response.data;
-      
+      $scope.tmpstockList=$scope.productStock;
       $ionicLoading.hide();
     }, function (err)
     {
@@ -316,25 +317,89 @@ $scope.filter = function (value) {
     
   }
   
+  $scope.user_branchh=[];
+  // $scope.userlist=[];
   $scope.getAllBranch=function()
   {
     console.log('***** GET ALL BRANXHES *********');
-    myRequestDBService.orpPostServiceRequest('/Invoice/getAssignBranch').then(function(response) {
-      console.log(response);
-      $scope.userlist=response.data;
-      
-    });
+    // console.log(myAllSharedService.loginData.user_branch);
+    // console.log(typeof myAllSharedService.loginData['user_branch']);
+    // console.log($scope.loginData['user_branch']);
+    // $scope.user_branchh.push($scope.loginData['user_branch']);
+    $scope.userlist=$scope.loginData['user_branch'];
+    // // console.log($scope.userlist.length);
+    // console.log(typeof $scope.userlist);
+    // console.log($scope.userlist);
+    // console.log($scope.user_branchh);
+    // console.log($scope.user_branchh[0]);
+    // var bname=$scope.user_branchh[0];
+    // console.log(bname);
+    // console.log(bname[0]['branch_name']);
+    // console.log(JSON.stringify(myAllSharedService.loginData['user_branch']));
+    // $scope.user_branch=myAllSharedService.loginData['user_branch'];
+    // console.log($scope.user_branch);
+    // var entries=Object.entries($scope.user_branch);
+    // console.log(typeof entries);
+    // console.log(entries);
+    // myRequestDBService.orpPostServiceRequest('/Invoice/getAssignBranch').then(function(response) {
+    //   console.log(response);
+    //   $scope.userlist=response.data;
+    // });
+    // for (let i = 0; i < $scope.user_branchh.length; i++) 
+    // {
+    //   console.log('in loop');
+    //   console.log($scope.user_branchh[0]);
+    //   // $scope.userlist.push(userlist[i]);
+    // }
+    // console.log($scope.userlist);
+    // $scope.user_branch.forEach(e => {
+    //   console.log(e);
+    // });
+    // console.log($scope.user_branch);
+  }
+
+  $scope.array=[];
+  // $scope.branchName='';
+  $scope.showBname=false;
+  $scope.showBranchName=function(e)
+  {
+    console.log(e);
+    // $scope.obj=Object.assign({},$scope.user_branch);
+    // console.log($scope.obj);
+    console.log($scope.userlist);
+    // $scope.array.push(Object.entries($scope.userlist));
+    // console.log($scope.array);
+    for (let  i= 0;  i< $scope.userlist.length; i++) {
+      // console.log("inside loop");
+      if($scope.userlist[i]['branch_code'] == e)
+      {
+        console.log("find Code");
+        $scope.branchName=$scope.userlist[i]['branch_name']
+        $scope.showBname=true;
+        console.log("after Filter branch Name is "+$scope.branchName);
+      }
+    }
+    
   }
   
-  $scope.user_branchh=[];
   if($location.path() == '/tab/stock')
   {
     // $scope.getStockData();
     console.log(myAllSharedService.loginData['user_branch']);
-    // $scope.branch=myAllSharedService.loginData['user_branch'][0];
-    // $scope.user_branchh=myAllSharedService.loginData['user_branch'][0];
-    // $scope.getStockData(myAllSharedService.loginData['user_branch'][0]);
-    $scope.getStockData("OKAYA POWER PVT LTD. (NAGPUR)");
+    // 
+    $scope.user_branch=myAllSharedService.loginData['user_branch'];
+    console.log($scope.user_branch);
+    console.log(Object.assign({},$scope.user_branch));
+    let obj=Object.assign({},$scope.user_branch);
+    console.log(obj[0]);
+    let obj2=Object.assign({},obj[0]);
+    console.log(obj2['branch_code']);
+    let bCode=obj2['branch_code'];
+    $scope.data.branch=obj2['branch'];
+    console.log($scope.branch);
+    console.log(bCode);
+
+    $scope.getStockData(bCode);
     $scope.getAllBranch();
   }
   /////////////  SFA STOCK START END ///////////////////////
@@ -361,6 +426,27 @@ $scope.filter = function (value) {
       //     $scope.getCheckInListData('onLoad')
       // }
     }
+  }
+  
+  $scope.tmpstockList=[];
+  $scope.filterstock = function(search)
+  {
+    search = search.toLowerCase();
+    // $scope.tmpstockList=$scope.productStock;
+    console.log($scope.productStock);
+    
+    console.log(search);
+    $scope.productStock = [];
+    console.log($scope.productStock);
+    console.log($scope.tmpstockList);
+    
+    $scope.productStock = $scope.tmpstockList.filter(row=>row.product_description.includes(search) || row.product_code.toLowerCase().includes(search));
+    
+    console.log($scope.productStock);
+    
+    
+    // console.log(searchArray);
+    
   }
   
   $scope.stock_popover='';

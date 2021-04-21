@@ -9,8 +9,8 @@
             <a menu-toggle="left"><i class="material-icons">search</i></a>
         </div>
         <div ng-class="isSearchBarOpen ? 'active' : ''" class="search-filter">
-            <input ng-model = "data.search" type="text" id = "searchData" ng-change = "filterBillingList(data.search)">
-            <a ng-click = "onSeachActionHandler('close')" placeholder = "Search" class="close-filter"><i class="material-icons">keyboard_backspace</i></a>
+            <input ng-model = "data.search" type="text" id = "searchData" placeholder="Search..." ng-change="filterBillingList(data.search)">
+            <a ng-click = "onSeachActionHandler('close');billinglistdata();" placeholder = "Search" class="close-filter"><i class="material-icons">keyboard_backspace</i></a>
         </div>
     </ion-nav-buttons>
     
@@ -65,7 +65,7 @@
             </div>
         </div>
         
-        <div class="data-not-found" ng-if="!isRequestInProcess && billinglist.length == 0" >
+        <div class="data-not-found sfa-billing-list" ng-if="!isRequestInProcess && billinglist.length == 0" >
             <div class="outer">
                 <div class="innear">
                     <img src="img/data-not-found.svg" alt="">
