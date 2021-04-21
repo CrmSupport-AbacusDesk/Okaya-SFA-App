@@ -10,21 +10,16 @@
         </div>
         <div ng-class="isSearchBarOpen ? 'active' : ''" class="search-filter">
             <input ng-model = "data.search" type="text" id = "searchData" placeholder="Search..." ng-change = "filterOrderListList(data.search)">
-            <a ng-click = "onSeachActionHandler('close');getSFA_primary_order('');" placeholder = "Search" class="close-filter"><i class="material-icons">keyboard_backspace</i></a>
+
+            <a ng-click = "onSeachActionHandler('close');getSFA_primary_order('')" placeholder = "Search" class="close-filter"><i class="material-icons">keyboard_backspace</i></a>
         </div>
     </ion-nav-buttons>
 
     <ion-content>
         <ion-refresher on-refresh="data.search = ''; onSetCurrentPageHandler();getSFA_primary_order('onRefresh')">
-            <ion-refresher-content
-            pullingIcon="arrow-dropdown"
-            pullingText="Pull to refresh"
-            refreshingSpinner="circles"
-            refreshingText="Refreshing...">
-        </ion-refresher-content>
-    </ion-refresher>
-
-
+            <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing..."> </ion-refresher-content>
+        </ion-refresher>
+  
     <div ng-click = "onGoToOrderDetailPage(row.order_no)" ng-repeat= "row in getPendingOrderList" class="coman-list">
         <div class="top-head">
             <ul>
@@ -56,23 +51,18 @@
             <div class="top-head border0">
                 <ul>
                     <li>
-                        <p>{{row.item_count}}</p>
-                        <span>Total Item</span>
+                        <p>{{row.order_no}}</p>
+                        <span>Order No</span>
                     </li>
                     <li>
-                        <p>{{row.order_qty}}</p>
-                        <span>Order Qty</span>
+                        <p>{{row.order_date | date: 'dd MMM yyyy'}}</p>
+                        <span>Order Date</span>
                     </li>
                     <li>
-                        <p>{{row.delivery_qty}}</p>
-                        <span>Delivered Qty</span>
-                    </li>
-                    <li>
-                        <p>{{row.remaining_qty}}</p>
-                        <span>Remaining Qty</span>
+                        <p>&#8377; {{row.net_total}}</p>
+                        <span>Order Value</span>
                     </li>
                 </ul>
-
             </div>
         </div>
     </div>
