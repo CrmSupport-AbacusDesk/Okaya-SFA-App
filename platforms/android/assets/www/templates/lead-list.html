@@ -5,7 +5,7 @@
     </ion-nav-buttons>
 
     <div class="round-tab top50 wp100 position-inherit">
-        <ul ng-if="loginData.loginTeamExist == 'Yes'" >
+        <ul class="mb10" ng-if="loginData.loginTeamExist == 'Yes'" >
             <li ng-click="getleadlist('My','',lead_filter.status,'All')"
                 ng-class="lead_filter.leadFor == 'My' ? 'active' : ''">
                 <a>My Leads<span>{{lead_filter.myCount}}</span></a>
@@ -17,14 +17,14 @@
             </li>
         </ul>
 
-        <ul class="mt10" ng-if = "leadStatusList && leadStatusList.length > 0">
+        <ul ng-if = "leadStatusList && leadStatusList.length > 0">
             <li ng-click = "getleadlist(lead_filter.leadFor,'',row.status_name,'All')" ng-repeat = "row in leadStatusList" ng-class = "lead_filter.status == row.status_name ? 'active' : ''">
                 <a>{{row.status_name}}</a>
             </li>
         </ul>
     </div>
 
-    <ion-content class="mt98">
+    <ion-content ng-class = "loginData.loginTeamExist == 'Yes' ? 'mt98' : 'mt55'">
         <!-- <ion-refresher on-refresh="onSeachActionHandler('close', 'onRefresh')">
             <ion-refresher-content
             pullingIcon="arrow-dropdown"

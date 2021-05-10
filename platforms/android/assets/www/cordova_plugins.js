@@ -270,12 +270,18 @@ module.exports = [
     ]
   },
   {
-    "id": "cordova-plugin-image-picker.ImagePicker",
-    "file": "plugins/cordova-plugin-image-picker/www/imagepicker.js",
-    "pluginId": "cordova-plugin-image-picker",
+    "id": "cordova-plugin-geolocation.geolocation",
+    "file": "plugins/cordova-plugin-geolocation/www/android/geolocation.js",
+    "pluginId": "cordova-plugin-geolocation",
     "clobbers": [
-      "plugins.imagePicker"
+      "navigator.geolocation"
     ]
+  },
+  {
+    "id": "cordova-plugin-geolocation.PositionError",
+    "file": "plugins/cordova-plugin-geolocation/www/PositionError.js",
+    "pluginId": "cordova-plugin-geolocation",
+    "runs": true
   },
   {
     "id": "cordova-plugin-ionic-keyboard.keyboard",
@@ -283,6 +289,14 @@ module.exports = [
     "pluginId": "cordova-plugin-ionic-keyboard",
     "clobbers": [
       "window.Keyboard"
+    ]
+  },
+  {
+    "id": "cordova-plugin-ionic-webview.IonicWebView",
+    "file": "plugins/cordova-plugin-ionic-webview/src/www/util.js",
+    "pluginId": "cordova-plugin-ionic-webview",
+    "clobbers": [
+      "Ionic.WebView"
     ]
   },
   {
@@ -340,20 +354,6 @@ module.exports = [
     "clobbers": [
       "PushNotification"
     ]
-  },
-  {
-    "id": "cordova-plugin-geolocation.geolocation",
-    "file": "plugins/cordova-plugin-geolocation/www/android/geolocation.js",
-    "pluginId": "cordova-plugin-geolocation",
-    "clobbers": [
-      "navigator.geolocation"
-    ]
-  },
-  {
-    "id": "cordova-plugin-geolocation.PositionError",
-    "file": "plugins/cordova-plugin-geolocation/www/PositionError.js",
-    "pluginId": "cordova-plugin-geolocation",
-    "runs": true
   }
 ];
 module.exports.metadata = 
@@ -368,9 +368,9 @@ module.exports.metadata =
   "cordova-plugin-dialogs": "2.0.2",
   "cordova-plugin-file": "6.0.2",
   "cordova-plugin-file-transfer": "1.7.1",
-  "cordova-plugin-image-picker": "1.1.1",
+  "cordova-plugin-geolocation": "4.1.0",
   "cordova-plugin-ionic-keyboard": "2.1.3",
-  "cordova-plugin-ionic-webview": "1.2.1",
+  "cordova-plugin-ionic-webview": "5.0.0",
   "cordova-plugin-request-location-accuracy": "2.3.0",
   "cordova-plugin-splashscreen": "5.0.2",
   "cordova-plugin-statusbar": "2.4.2",
@@ -378,8 +378,7 @@ module.exports.metadata =
   "cordova-plugin-x-toast": "2.7.2",
   "cordova-sqlite-storage": "3.3.0",
   "cordova.plugins.diagnostic": "3.9.2",
-  "phonegap-plugin-push": "2.1.3",
-  "cordova-plugin-geolocation": "4.1.0"
+  "phonegap-plugin-push": "2.1.3"
 };
 // BOTTOM OF METADATA
 });

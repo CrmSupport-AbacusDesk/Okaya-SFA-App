@@ -120,7 +120,7 @@ var Diagnostic = (function(){
         "POWERED_ON": "powered_on",
         "POWERING_OFF": "powering_off"
     };
-
+    
     Diagnostic.cpuArchitecture = {
         UNKNOWN: "unknown",
         ARMv6: "ARMv6",
