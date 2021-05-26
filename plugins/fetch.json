@@ -111,16 +111,6 @@
     "is_top_level": true,
     "variables": {}
   },
-  "cordova-android-support-gradle-release": {
-    "source": {
-      "type": "registry",
-      "id": "cordova-android-support-gradle-release@^2.1.0"
-    },
-    "is_top_level": true,
-    "variables": {
-      "ANDROID_SUPPORT_VERSION": "27.+"
-    }
-  },
   "cordova-plugin-camera": {
     "source": {
       "type": "registry",
@@ -166,5 +156,13 @@
     "variables": {
       "GPS_REQUIRED": "true"
     }
+  },
+  "cordova-android-support-gradle-release": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-android-support-gradle-release"
+    },
+    "is_top_level": true,
+    "variables": {}
   }
 }

@@ -192,10 +192,6 @@
     }
   },
   "installed_plugins": {
-    "cordova-android-support-gradle-release": {
-      "ANDROID_SUPPORT_VERSION": "27.+",
-      "PACKAGE_NAME": "com.abacus.okaya"
-    },
     "cordova-plugin-actionsheet": {
       "PACKAGE_NAME": "com.abacus.okaya"
     },
@@ -254,6 +250,10 @@
     },
     "phonegap-plugin-push": {
       "FCM_VERSION": "11.6.2",
+      "PACKAGE_NAME": "com.abacus.okaya"
+    },
+    "cordova-android-support-gradle-release": {
+      "ANDROID_SUPPORT_VERSION": "27.+",
       "PACKAGE_NAME": "com.abacus.okaya"
     }
   },
@@ -616,7 +616,6 @@
     }
   ],
   "plugin_metadata": {
-    "cordova-android-support-gradle-release": "2.1.0",
     "cordova-plugin-actionsheet": "2.3.3",
     "cordova-plugin-app-version": "0.1.9",
     "cordova-plugin-appversion": "1.0.0",
@@ -635,6 +634,7 @@
     "cordova-plugin-x-toast": "2.7.2",
     "cordova-sqlite-storage": "3.3.0",
     "cordova.plugins.diagnostic": "3.9.2",
-    "phonegap-plugin-push": "2.1.3"
+    "phonegap-plugin-push": "2.1.3",
+    "cordova-android-support-gradle-release": "3.0.1"
   }
 }
