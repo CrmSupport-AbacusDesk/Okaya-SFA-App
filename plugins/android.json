@@ -7,10 +7,6 @@
     "files": {}
   },
   "installed_plugins": {
-    "cordova-android-support-gradle-release": {
-      "ANDROID_SUPPORT_VERSION": "27.+",
-      "PACKAGE_NAME": "com.abacus.okaya"
-    },
     "cordova-plugin-actionsheet": {
       "PACKAGE_NAME": "com.abacus.okaya"
     },
@@ -30,6 +26,10 @@
       "PACKAGE_NAME": "com.abacus.okaya"
     },
     "cordova-plugin-file-transfer": {
+      "PACKAGE_NAME": "com.abacus.okaya"
+    },
+    "cordova-plugin-geolocation": {
+      "GPS_REQUIRED": "true",
       "PACKAGE_NAME": "com.abacus.okaya"
     },
     "cordova-plugin-ionic-keyboard": {
@@ -64,16 +64,13 @@
       "FCM_VERSION": "11.6.2",
       "PACKAGE_NAME": "com.abacus.okaya"
     },
-    "cordova-plugin-geolocation": {
-      "GPS_REQUIRED": "true",
+    "cordova-android-support-gradle-release": {
+      "ANDROID_SUPPORT_VERSION": "27.+",
       "PACKAGE_NAME": "com.abacus.okaya"
     }
   },
   "dependent_plugins": {
     "cordova-plugin-file": {
-      "PACKAGE_NAME": "com.abacus.okaya"
-    },
-    "cordova-plugin-image-picker": {
       "PACKAGE_NAME": "com.abacus.okaya"
     }
   }
