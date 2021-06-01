@@ -87,7 +87,7 @@
                   </label>
               </div>
 
-              <div ng-if="data.activityType !='Meeting' && (data.status == 'Lost' || data.status == 'Disqualified' || data.status == 'Close' || data.status == 'Validate' || data.status == 'Qualified')" class="form-space">
+              <div ng-if="data.activityType !='Meeting' && (data.status == 'Lost' || data.status == 'Disqualified' || data.status == 'Qualified Close' || data.status == 'Validate' || data.status == 'Qualified')" class="form-space">
                 <label class="item-input item-select cs-select csm-input mb0" ng-class="{'has-error': AddForm.reason.$invalid && AddForm.$submitted}">
                     <div class="input-label">
                         {{(data.status == 'Qualified' || data.status == 'Validate') ? 'No Closer Reason' : 'Status Reason'}}
