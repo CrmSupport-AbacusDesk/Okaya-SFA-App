@@ -21,6 +21,10 @@
               "count": 1
             },
             {
+              "xml": "<feature name=\"Geolocation\"><param name=\"android-package\" value=\"org.apache.cordova.geolocation.Geolocation\" /></feature>",
+              "count": 1
+            },
+            {
               "xml": "<feature name=\"AppVersion\"><param name=\"android-package\" value=\"uk.co.whiteoctober.cordova.AppVersion\" /></feature>",
               "count": 1
             },
@@ -61,11 +65,11 @@
               "count": 1
             },
             {
-              "xml": "<feature name=\"PushNotification\"><param name=\"android-package\" value=\"com.adobe.phonegap.push.PushPlugin\" /></feature>",
+              "xml": "<feature name=\"SitewaertsDocumentViewer\"><param name=\"android-package\" value=\"de.sitewaerts.cordova.documentviewer.DocumentViewerPlugin\" /></feature>",
               "count": 1
             },
             {
-              "xml": "<feature name=\"Geolocation\"><param name=\"android-package\" value=\"org.apache.cordova.geolocation.Geolocation\" /></feature>",
+              "xml": "<feature name=\"DocumentHandler\"><param name=\"android-package\" value=\"ch.ti8m.phonegap.plugins.DocumentHandler\" /></feature>",
               "count": 1
             }
           ]
@@ -117,10 +121,6 @@
         "parents": {
           "/*": [
             {
-              "xml": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />",
-              "count": 3
-            },
-            {
               "xml": "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\" />",
               "count": 1
             },
@@ -129,8 +129,12 @@
               "count": 1
             },
             {
-              "xml": "<uses-feature android:name=\"android.hardware.location.gps\" android:required=\"true\" />",
+              "xml": "<uses-feature android:name=\"android.hardware.location.gps\" />",
               "count": 1
+            },
+            {
+              "xml": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />",
+              "count": 4
             }
           ],
           "application": [
@@ -149,41 +153,17 @@
               "count": 1
             },
             {
-              "xml": "<activity android:exported=\"true\" android:name=\"com.adobe.phonegap.push.PushHandlerActivity\" android:permission=\"${applicationId}.permission.PushHandlerActivity\" />",
+              "xml": "<provider android:authorities=\"com.abacus.okaya.DocumentViewerPlugin.fileprovider\" android:exported=\"false\" android:grantUriPermissions=\"true\" android:name=\"de.sitewaerts.cordova.documentviewer.FileProvider\"><meta-data android:name=\"android.support.FILE_PROVIDER_PATHS\" android:resource=\"@xml/documentviewer_file_paths\" /></provider>",
               "count": 1
             },
             {
-              "xml": "<receiver android:name=\"com.adobe.phonegap.push.BackgroundActionButtonHandler\" />",
-              "count": 1
-            },
-            {
-              "xml": "<receiver android:name=\"com.adobe.phonegap.push.PushDismissedHandler\" />",
-              "count": 1
-            },
-            {
-              "xml": "<service android:name=\"com.adobe.phonegap.push.FCMService\"><intent-filter><action android:name=\"com.google.firebase.MESSAGING_EVENT\" /></intent-filter></service>",
-              "count": 1
-            },
-            {
-              "xml": "<service android:name=\"com.adobe.phonegap.push.PushInstanceIDListenerService\"><intent-filter><action android:name=\"com.google.firebase.INSTANCE_ID_EVENT\" /></intent-filter></service>",
+              "xml": "<provider android:authorities=\"com.abacus.okaya.fileprovider\" android:exported=\"false\" android:grantUriPermissions=\"true\" android:name=\"ch.ti8m.phonegap.plugins.FileProvider\"><meta-data android:name=\"android.support.FILE_PROVIDER_PATHS\" android:resource=\"@xml/document_handler_provider_paths\" /></provider>",
               "count": 1
             }
           ],
           "/manifest": [
             {
-              "xml": "<uses-permission android:name=\"android.permission.INTERNET\" />",
-              "count": 1
-            },
-            {
-              "xml": "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />",
-              "count": 1
-            },
-            {
-              "xml": "<uses-permission android:name=\"android.permission.WAKE_LOCK\" />",
-              "count": 1
-            },
-            {
-              "xml": "<uses-permission android:name=\"android.permission.VIBRATE\" />",
+              "xml": "<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\" />",
               "count": 1
             }
           ]
@@ -202,6 +182,9 @@
       "PACKAGE_NAME": "com.abacus.okaya"
     },
     "cordova-plugin-ionic-keyboard": {
+      "PACKAGE_NAME": "com.abacus.okaya"
+    },
+    "cordova-plugin-geolocation": {
       "PACKAGE_NAME": "com.abacus.okaya"
     },
     "cordova-plugin-app-version": {
@@ -234,6 +217,10 @@
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "com.abacus.okaya"
     },
+    "cordova-android-support-gradle-release": {
+      "ANDROID_SUPPORT_VERSION": "27.+",
+      "PACKAGE_NAME": "com.abacus.okaya"
+    },
     "cordova-plugin-camera": {
       "PACKAGE_NAME": "com.abacus.okaya"
     },
@@ -244,16 +231,10 @@
     "cordova.plugins.diagnostic": {
       "PACKAGE_NAME": "com.abacus.okaya"
     },
-    "phonegap-plugin-push": {
-      "FCM_VERSION": "11.6.2",
+    "cordova-plugin-document-viewer": {
       "PACKAGE_NAME": "com.abacus.okaya"
     },
-    "cordova-plugin-geolocation": {
-      "GPS_REQUIRED": "true",
-      "PACKAGE_NAME": "com.abacus.okaya"
-    },
-    "cordova-android-support-gradle-release": {
-      "ANDROID_SUPPORT_VERSION": "27.+",
+    "polarcape-cordova-plugin-document-handler": {
       "PACKAGE_NAME": "com.abacus.okaya"
     }
   },
@@ -290,6 +271,20 @@
       "clobbers": [
         "window.Keyboard"
       ]
+    },
+    {
+      "id": "cordova-plugin-geolocation.geolocation",
+      "file": "plugins/cordova-plugin-geolocation/www/android/geolocation.js",
+      "pluginId": "cordova-plugin-geolocation",
+      "clobbers": [
+        "navigator.geolocation"
+      ]
+    },
+    {
+      "id": "cordova-plugin-geolocation.PositionError",
+      "file": "plugins/cordova-plugin-geolocation/www/PositionError.js",
+      "pluginId": "cordova-plugin-geolocation",
+      "runs": true
     },
     {
       "id": "cordova-plugin-app-version.AppVersionPlugin",
@@ -593,26 +588,21 @@
       ]
     },
     {
-      "id": "phonegap-plugin-push.PushNotification",
-      "file": "plugins/phonegap-plugin-push/www/push.js",
-      "pluginId": "phonegap-plugin-push",
+      "id": "cordova-plugin-document-viewer.SitewaertsDocumentViewer",
+      "file": "plugins/cordova-plugin-document-viewer/www/sitewaertsdocumentviewer.js",
+      "pluginId": "cordova-plugin-document-viewer",
       "clobbers": [
-        "PushNotification"
+        "cordova.plugins.SitewaertsDocumentViewer",
+        "SitewaertsDocumentViewer"
       ]
     },
     {
-      "id": "cordova-plugin-geolocation.geolocation",
-      "file": "plugins/cordova-plugin-geolocation/www/android/geolocation.js",
-      "pluginId": "cordova-plugin-geolocation",
+      "id": "polarcape-cordova-plugin-document-handler.DocumentHandler",
+      "file": "plugins/polarcape-cordova-plugin-document-handler/www/DocumentHandler.js",
+      "pluginId": "polarcape-cordova-plugin-document-handler",
       "clobbers": [
-        "navigator.geolocation"
+        "DocumentHandler"
       ]
-    },
-    {
-      "id": "cordova-plugin-geolocation.PositionError",
-      "file": "plugins/cordova-plugin-geolocation/www/PositionError.js",
-      "pluginId": "cordova-plugin-geolocation",
-      "runs": true
     }
   ],
   "plugin_metadata": {
@@ -620,6 +610,7 @@
     "cordova-plugin-device": "2.0.2",
     "cordova-plugin-splashscreen": "5.0.2",
     "cordova-plugin-ionic-keyboard": "2.1.3",
+    "cordova-plugin-geolocation": "4.0.2",
     "cordova-plugin-app-version": "0.1.9",
     "cordova-sqlite-storage": "3.3.0",
     "cordova-plugin-actionsheet": "2.3.3",
@@ -630,11 +621,11 @@
     "cordova-plugin-file-transfer": "1.7.1",
     "cordova-plugin-appversion": "1.0.0",
     "cordova-plugin-whitelist": "1.3.4",
+    "cordova-android-support-gradle-release": "2.1.0",
     "cordova-plugin-camera": "3.0.0",
     "cordova-plugin-request-location-accuracy": "2.3.0",
     "cordova.plugins.diagnostic": "3.9.2",
-    "phonegap-plugin-push": "2.1.3",
-    "cordova-plugin-geolocation": "4.1.0",
-    "cordova-android-support-gradle-release": "3.0.1"
+    "cordova-plugin-document-viewer": "0.9.13",
+    "polarcape-cordova-plugin-document-handler": "1.1.1"
   }
 }

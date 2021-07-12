@@ -1,0 +1,34 @@
+{
+  "name": "polarcape-cordova-plugin-document-handler",
+  "version": "1.1.1",
+  "description": "A phonegap plugin to handle documents (f.e. PDFs) loaded from a URL.",
+  "main": "www/DocumentHandler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "cordova": {
+    "id": "polarcape-cordova-plugin-document-handler",
+    "platforms": [
+    "android",
+    "ios"
+  ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PolarCape/polarcape-cordova-plugin-document-handler.git"
+  },
+  "keywords": [
+    "polarcape",
+    "cordova",
+    "pdf"
+  ],
+  "peerDependencies": {
+    "cordova-plugin-file": ">=4.0.0"
+  },
+  "author": "Polar Cape <info@polarcape.com> (http://polarcape.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PolarCape/polarcape-cordova-plugin-document-handler/issues"
+  },
+  "homepage": "https://github.com/PolarCape/polarcape-cordova-plugin-document-handler"
+}

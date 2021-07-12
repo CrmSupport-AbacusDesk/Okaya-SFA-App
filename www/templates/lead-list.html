@@ -6,13 +6,11 @@
 
     <div class="round-tab top50 wp100 position-inherit">
         <ul class="mb10" ng-if="loginData.loginTeamExist == 'Yes'" >
-            <li ng-click="getleadlist('My','',lead_filter.status,'All')"
-                ng-class="lead_filter.leadFor == 'My' ? 'active' : ''">
+            <li ng-click="getleadlist('My','',lead_filter.status,'All')" ng-class="lead_filter.leadFor == 'My' ? 'active' : ''">
                 <a>My Leads<span>{{lead_filter.myCount}}</span></a>
             </li>
 
-            <li ng-click="getleadlist('Team','',lead_filter.status,'All')"
-                ng-class="lead_filter.leadFor == 'Team' ? 'active' : ''">
+            <li ng-click="getleadlist('Team','',lead_filter.status,'All')" ng-class="lead_filter.leadFor == 'Team' ? 'active' : ''">
                 <a>Team Leads <span>{{lead_filter.teamCount}}</span></a>
             </li>
         </ul>
@@ -107,6 +105,12 @@
             <li ng-click="getleadlist(lead_filter.leadFor,'',lead_filter.status,lead_filter.activeTab);lead_filter.activeTab = 'Today'" ng-class="lead_filter.activeTab == 'Today' ? 'active' : ''">
                 <a>Today Assign</a>
             </li>
+            <!-- <li ng-click="getleadlist(lead_filter.leadFor,'',lead_filter.status,lead_filter.activeTab);lead_filter.activeTab = 'Done'" ng-class="lead_filter.activeTab == 'Done' ? 'active' : ''">
+                <a>Act. Done</a>
+            </li>
+            <li ng-click="getleadlist(lead_filter.leadFor,'',lead_filter.status,lead_filter.activeTab);lead_filter.activeTab = 'Not_done'" ng-class="lead_filter.activeTab == 'Not_done' ? 'active' : ''">
+                <a>Act. Not Done</a>
+            </li> -->
             <li ng-click="getleadlist(lead_filter.leadFor,'',lead_filter.status,lead_filter.activeTab);lead_filter.activeTab = 'All'" ng-class="lead_filter.activeTab == 'All' ? 'active' : ''">
                 <a>All</a>
             </li>
