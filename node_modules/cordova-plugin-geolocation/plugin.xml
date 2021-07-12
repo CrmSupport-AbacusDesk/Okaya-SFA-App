@@ -22,7 +22,7 @@
 xmlns:rim="http://www.blackberry.com/ns/widgets"
 xmlns:android="http://schemas.android.com/apk/res/android"
            id="cordova-plugin-geolocation"
-      version="4.1.0">
+      version="4.0.2">
 
     <name>Geolocation</name>
     <description>Cordova Geolocation Plugin</description>
@@ -34,7 +34,6 @@ xmlns:android="http://schemas.android.com/apk/res/android"
     <engines>
         <engine name="cordova-android" version=">=6.3.0" />
     </engines>
-    <preference name="GPS_REQUIRED" default="true"/>
 
     <!-- android -->
     <platform name="android">
@@ -42,7 +41,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
         <config-file target="AndroidManifest.xml" parent="/*">
             <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
             <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-            <uses-feature android:name="android.hardware.location.gps" android:required="$GPS_REQUIRED" />
+            <uses-feature android:name="android.hardware.location.gps" />
         </config-file>
 
         <config-file target="res/xml/config.xml" parent="/*">

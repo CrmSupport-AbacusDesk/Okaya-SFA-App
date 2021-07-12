@@ -196,7 +196,7 @@
                                     <div ng-class="{'has-error': Addform.followUpType.$invalid && Addform.$submitted}" class="field-input">
                                         <select ng-model="data.followUpType" name="followUpType" class="browser-default" required>
                                             <option value="" disabled selected>FollowUp Type</option>
-                                            <option ng-show="row.name!='Call-Connected' && row.name!='Call-Not Connected'" ng-repeat="row in activityTypeList" value="{{row.name}}">{{row.name}}</option>
+                                            <option ng-show="row.name!='Call'" ng-repeat="row in activityTypeList" value="{{row.name}}">{{row.name}}</option>
                                         </select>
                                     </div>
                                     

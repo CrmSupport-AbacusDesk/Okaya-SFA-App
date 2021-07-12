@@ -59,9 +59,7 @@
                         <span>Created By</span>
                     </li>
                     <li ng-if="networkTabActive == 2">
-                        <p
-                        ng-class="{'pending-clr':row.dealer_status=='Pending','approved-clr':row.dealer_status=='Approved'}">
-                        {{row.dealer_status}}</p>
+                        <p ng-class="{'pending-clr':row.dealer_status=='Pending','approved-clr':row.dealer_status=='Approved'}">{{row.dealer_status}}</p>
                         <span>Status</span>
                     </li>
                 </ul>

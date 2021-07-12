@@ -1289,7 +1289,7 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
             $scope.onGetAllLeadType();
         }
         
-        $scope.leadStatusList = [{ status_name: "Win" }, { status_name: "Qualified" }, { status_name: "Close" }, { status_name: "Lost" }];
+        $scope.leadStatusList = [{ status_name: "Win" }, { status_name: "Qualified" }, { status_name: "Qualified Close" }, { status_name: "Lost" }];
         $scope.getActivityType();
         // $scope.getProductCategoryList();
     }

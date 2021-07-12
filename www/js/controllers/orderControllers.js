@@ -1065,6 +1065,7 @@ app.controller('orderCtrl', function ($scope, $rootScope, searchSelect, $ionicMo
             orderData.dr_name = $scope.data.dr_data.Key;
             orderData.dr_id = $scope.data.dr_data.Value;
         }
+        orderData.deliveryBy = $scope.data.deliveryBy;
         orderData.dispatch_by_name = $scope.data.dispatch_by_name;
         orderData.dispatch_by_id = $scope.data.dispatch_by_id;
         orderData.orderDetail = $scope.cartSummaryData;

@@ -142,7 +142,6 @@ ext {
 }
 
 // PLUGIN GRADLE EXTENSIONS START
-apply from: "../phonegap-plugin-push/okaya-push.gradle"
 apply from: "../cordova-android-support-gradle-release/okaya-cordova-android-support-gradle-release.gradle"
 // PLUGIN GRADLE EXTENSIONS END
 
@@ -352,9 +351,7 @@ dependencies {
     implementation "com.google.android.gms:play-services-location:16.+"
     implementation "com.android.support:support-v4:26.+"
     implementation "com.android.support:appcompat-v7:26.+"
-    implementation "com.android.support:support-v13:26.+"
-    implementation "me.leolin:ShortcutBadger:1.1.17@aar"
-    implementation "com.google.firebase:firebase-messaging:11.6.2"
+    implementation "com.android.support:support-v4:27+"
     // SUB-PROJECT DEPENDENCIES END
 }
 
