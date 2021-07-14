@@ -1,27 +1,27 @@
 <ion-view view-title="Lead">
-
+    
     <ion-nav-buttons side="left">
         <a ng-click="goToBackPageHandler()" class="cs-backbtn button button-icon icon ion-android-arrow-back font18 fff"></a>
     </ion-nav-buttons>
-
+    
     <div class="round-tab top50 wp100 position-inherit">
         <ul class="mb10" ng-if="loginData.loginTeamExist == 'Yes'" >
             <li ng-click="getleadlist('My','',lead_filter.status,'All')" ng-class="lead_filter.leadFor == 'My' ? 'active' : ''">
                 <a>My Leads<span>{{lead_filter.myCount}}</span></a>
             </li>
-
+            
             <li ng-click="getleadlist('Team','',lead_filter.status,'All')" ng-class="lead_filter.leadFor == 'Team' ? 'active' : ''">
                 <a>Team Leads <span>{{lead_filter.teamCount}}</span></a>
             </li>
         </ul>
-
+        
         <ul ng-if = "leadStatusList && leadStatusList.length > 0">
-            <li ng-click = "getleadlist(lead_filter.leadFor,'',row.status_name,'All')" ng-repeat = "row in leadStatusList" ng-class = "lead_filter.status == row.status_name ? 'active' : ''">
+            <li ng-click = "row.status_name=='Qualified' ? lead_filter.activeTab = 'activity_not_done' : lead_filter.activeTab = 'All';getleadlist(lead_filter.leadFor,'',row.status_name,lead_filter.activeTab)" ng-repeat = "row in leadStatusList" ng-class = "lead_filter.status == row.status_name ? 'active' : ''">
                 <a>{{row.status_name}}</a>
             </li>
         </ul>
     </div>
-
+    
     <ion-content ng-class = "loginData.loginTeamExist == 'Yes' ? 'mt98' : 'mt55'">
         <!-- <ion-refresher on-refresh="onSeachActionHandler('close', 'onRefresh')">
             <ion-refresher-content
@@ -31,7 +31,7 @@
             refreshingText="Refreshing...">
         </ion-refresher-content>
     </ion-refresher> -->
-
+    
     <div class="search_filter">
         <div class="search-input">
             <input type="text" name="search" ng-model="lead_filter.search"  ng-keyup="$event.keyCode == 13 ?getleadlist(lead_filter.leadFor,'',lead_filter.status) : null" placeholder="Search ...">
@@ -41,13 +41,13 @@
             <span ng-if="lead_filter.count > 0" class="filter-count">{{lead_filter.count}}</span>
         </a>
     </div>
-
+    
     <div ng-repeat="row in leadListData" class="coman-list">
         <div class="top-head">
             <ul ng-click = "gotoPage(row.id,row.dr_name,row.contact_mobile_no,'lead-detail')(row.id)" >
                 <li>
-                    <p>{{dateFormat(row.date_created)}}</p>
-                    <span>Date Created</span>
+                    <p>{{dateFormat(row.field_assign_date)}}</p>
+                    <span>Assign Date</span>
                 </li>
                 <!-- <li>
                     <p>{{row.created_by_name ? row.created_by_name : 'N/A'}}</p>
@@ -64,7 +64,7 @@
             </ul>
             <a class="vert-icon" ng-click="onShowPopUpHandler($event,row.id,row.dr_name,row.contact_mobile_no,row.type_name)"><i class="material-icons">more_vert</i></a>
         </div>
-
+        
         <div class="center-item padding10" ng-click = "gotoPage(row.id,row.dr_name,row.contact_mobile_no,'lead-detail')(row.id)">
             <div class="cs-icon"  >{{row.dr_name[0] ? row.dr_name[0] : '--'}}</div>
             <div class="cs-content ellipsis" >
@@ -77,12 +77,12 @@
             <p><span>Status :</span> {{row.status}}</p>
             <p><span>Category :</span>{{row.category}}</p>
         </div>
-
+        
         <div class="bottom-sec" ng-click = "gotoPage(row.id,row.dr_name,row.contact_mobile_no,'lead-detail')(row.id)" >
             <p class="clamp2"><strong>Address</strong>: {{row.street}} {{row.state_name}}{{row.district_name ? ', '+row.district_name : ''}} {{row.city ? ', '+row.city : ''}}{{row.pincode ? '- '+row.pincode : ''}}</p>
         </div>
     </div>
-
+    
     <div class="data-not-found center" ng-if="leadListData.length == 0">
         <div class="outer">
             <div class="innear">
@@ -92,7 +92,7 @@
         </div>
     </div>
     <div class="h40"></div>
-
+    
     <ion-infinite-scroll immediate-check="false" ng-if="noMoreListingAvailable==false" on-infinite="getleadlist(lead_filter.leadFor,'scroll',lead_filter.status,'All')" distance="20%" class="myspinner">
     </ion-infinite-scroll>
 </ion-content>
@@ -101,18 +101,20 @@
 
 <div class="fix-botm-item" ng-if="lead_filter.leadFor == 'My'">
     <div class="round-tab flat green-tab wp100" >
-        <ul>
+        <ul ng-if="lead_filter.status!='Qualified'">
             <li ng-click="getleadlist(lead_filter.leadFor,'',lead_filter.status,lead_filter.activeTab);lead_filter.activeTab = 'Today'" ng-class="lead_filter.activeTab == 'Today' ? 'active' : ''">
                 <a>Today Assign</a>
             </li>
-            <!-- <li ng-click="getleadlist(lead_filter.leadFor,'',lead_filter.status,lead_filter.activeTab);lead_filter.activeTab = 'Done'" ng-class="lead_filter.activeTab == 'Done' ? 'active' : ''">
-                <a>Act. Done</a>
-            </li>
-            <li ng-click="getleadlist(lead_filter.leadFor,'',lead_filter.status,lead_filter.activeTab);lead_filter.activeTab = 'Not_done'" ng-class="lead_filter.activeTab == 'Not_done' ? 'active' : ''">
-                <a>Act. Not Done</a>
-            </li> -->
             <li ng-click="getleadlist(lead_filter.leadFor,'',lead_filter.status,lead_filter.activeTab);lead_filter.activeTab = 'All'" ng-class="lead_filter.activeTab == 'All' ? 'active' : ''">
                 <a>All</a>
+            </li>
+        </ul>
+        <ul ng-if="lead_filter.status=='Qualified'">
+            <li ng-click="getleadlist(lead_filter.leadFor,'',lead_filter.status,lead_filter.activeTab);lead_filter.activeTab = 'activity_done'" ng-class="lead_filter.activeTab == 'activity_done' ? 'active' : ''">
+                <a>Activity Done</a>
+            </li>
+            <li ng-click="getleadlist(lead_filter.leadFor,'',lead_filter.status,lead_filter.activeTab);lead_filter.activeTab = 'activity_not_done'" ng-class="lead_filter.activeTab == 'activity_not_done' ? 'active' : ''">
+                <a>Activity Not Done</a>
             </li>
         </ul>
     </div>
@@ -143,13 +145,13 @@
                     <ion-checkbox name="type_name+$index" color="dark" ng-model="row.check" checked="true">{{row.type_name}}</ion-checkbox>
                 </ion-item>
             </div>
-
+            
             <div ng-if="lead_filter.type=='dr_status'" class="filter-list ds-none">
                 <ion-item class="list-item" ng-repeat="row in leadStatusList">
                     <ion-checkbox name="status+$index" color="dark" ng-model="row.check" checked="true">{{row.status_name}}</ion-checkbox>
                 </ion-item>
             </div>
-
+            
             <button class="footer-btn"  ng-click="getleadlist(lead_filter.leadFor,'',lead_filter.status);leadListFilter=false; ">Apply</button>
         </div>
     </div>

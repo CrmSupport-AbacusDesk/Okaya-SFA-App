@@ -99,7 +99,7 @@
                                 <div class="input-label">
                                     {{(data.status == 'Qualified' || data.status == 'Validate') ? 'No Closer Reason' : 'Status Reason'}}
                                 </div>
-                                <select name="reason" ng-model="data.reason" required>
+                                <select name="reason" ng-model="data.reason" ng-change="CHECK_POSTPONE()" required>
                                     <option value="" disabled selected>Select {{data.status}} Reason <sup>*</sup></option>
                                     <option ng-repeat="row in leadReasonList" value="{{row.name}}">{{row.name}}</option>
                                 </select>
@@ -116,7 +116,7 @@
                         
                         <div ng-if="data.activityType !='Meeting'" ng-class="{'has-error': AddForm.isFollowUp.$invalid && AddForm.$submitted}" class="chekIt no-padding">
                             <label>
-                                <ion-checkbox ng-model="data.isFollowUp" name="isFollowUp"> </ion-checkbox>
+                                <ion-checkbox ng-model="data.isFollowUp" ng-disabled="data.disabled" name="isFollowUp"> </ion-checkbox>
                                 Do you want to create any follow up ?
                             </label>
                         </div>
