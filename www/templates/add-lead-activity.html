@@ -120,14 +120,15 @@
                                 Do you want to create any follow up ?
                             </label>
                         </div>
-                        
-                        <div ng-if="data.isFollowUp && data.activityType !='Meeting'" class="cs-add-form mt20">
-                            <div ng-class="{'has-error': Addform.followUpType.$invalid && Addform.$submitted}" class="field-input">
-                                <select ng-model="data.followUpType" name="followUpType" class="browser-default" required>
-                                    <option value="" disabled selected>FollowUp Type</option>
+
+                        <div ng-if="data.isFollowUp && data.activityType !='Meeting'" class="form-space mt20">
+                            <label ng-class="{'has-error': AddForm.followUpType.$invalid && AddForm.$submitted}" class="item-input item-select cs-select csm-input mb0">
+                                <div class="input-label">FollowUp Type</div>
+                                <select ng-model="data.followUpType" name="followUpType" required>
+                                    <option value="" disabled selected>Slect FollowUp Type <sup>*</sup></option>
                                     <option ng-show="row.name!='Call'" ng-repeat="row in activityTypeList" value="{{row.name}}">{{row.name}}</option>
                                 </select>
-                            </div>
+                            </label>
                             
                             <div ng-class="{'has-error': AddForm.followUpDate.$invalid && AddForm.$submitted}" class="input-field field-input">
                                 <input ng-model="data.followUpDate" name="followUpDate" type="date" min="{{currentDate}}" class="validate" required>

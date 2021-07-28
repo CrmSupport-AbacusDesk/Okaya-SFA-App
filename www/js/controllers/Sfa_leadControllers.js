@@ -190,12 +190,12 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
     if ($location.path() == '/tab/lead-list') {
         $scope.lead_filter.activeTab = 'activity_not_done';
         // $scope.lead_filter.leadFor = 'My';
-        if(myRequestDBService.leadTabActive != 'Team')
-        {
+        // if(myRequestDBService.leadTabActive != 'Team')
+        // {
             myRequestDBService.leadTabActive = "My";
             myRequestDBService.statusTabActive = "Qualified";
-        }
-        $scope.getleadlist(myRequestDBService.leadTabActive, '',myRequestDBService.statusTabActive,'activity_not_done');
+        // }
+        $scope.getleadlist(myRequestDBService.leadTabActive, '',myRequestDBService.statusTabActive,$scope.lead_filter.activeTab);
         $scope.getAssignDrType();
         $scope.getLeadStatus();
     }
