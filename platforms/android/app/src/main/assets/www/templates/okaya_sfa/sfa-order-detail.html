@@ -52,15 +52,23 @@
                     <span>Date & Created By</span>
                     <p>{{orderDetail.dateCreatedInFormat}} - {{orderDetail.created_by_name}}</p>
                 </div>
-                <div class="bdr-field" style="min-width: 90px; width: 90px;">
+                <div class="bdr-field" style="min-width: 65px; width: 65px;">
                     <span>Order Type</span>
                     <p>{{orderDetail.payment_type}}</p>
+                </div>
+                <div class="bdr-field" style="min-width: 75px; width: 75px;">
+                    <span>Order Status</span>
+                    <p ng-class="{'pending-color':orderDetail.order_status=='Pending','approved-color':orderDetail.order_status=='Approve','reject-color':orderDetail.order_status=='Reject'}">{{orderDetail.order_status}}</p>
                 </div>
             </div>
             <div class="cs-flex" ng-if="orderDetail.order_type == 'secondary'">
                 <div class="bdr-field wp100">
                     <span>Distributor Info</span>
                     <p>{{orderDetail.disp_dr_name}}  {{orderDetail.disp_mobile ? '/ +91'+orderDetail.disp_mobile : ''}}</p>
+                </div>
+                <div class="bdr-field" style="min-width: 100px;">
+                    <span>Distributor Status</span>
+                    <p ng-class="{'pending-color':orderDetail.distributor_status=='Pending','approved-color':orderDetail.distributor_status=='Approve','reject-color':orderDetail.distributor_status=='Reject'}">{{orderDetail.distributor_status}}</p>
                 </div>
             </div>
             
@@ -171,10 +179,18 @@
         </div>
         <div class="h70">&nbsp;</div>
     </ion-content>
+
     <div class="footer-bar">
         <button class="edit-btn" ng-repeat="user in orderDetail.approval" ng-if="user.assign_user_id==loginData.loginId && user.status=='Pending'" ng-click="orderData.approvalId = user.approvalId;orderData.status=user.status;changeStatus()">
             <img src="img/edit.svg" ><p>Changes Status <span>Click here to change order status</span></p>
         </button>
+    </div>
+
+    <div class="bar bar-footer bar-balanced" ng-if='orderDetail.order_status=="Pending" && (orderDetail.created_by_type=="Distributor" || orderDetail.created_by_type=="Dealer")'>
+        <div class="ods-btns" style="width: 100%;">
+            <button class="button button-balanced" ng-click="updateStatus('Approve')">APPROVE</button>
+            <button class="button button-assertive" ng-click="updateStatus('Reject')">REJECT</button>
+        </div>
     </div>
     <script id="add-status" type="text/ng-template">
         <ion-modal-view style="background: rgba(0, 0, 0, 0.7);">
@@ -190,7 +206,7 @@
                                 <div class="cs-add-form">
                                     <select class="browser-default" name="status" ng-model="orderData.status" required>
                                         <option value="Pending">Pending</option>
-                                        <option value="Approved">Approved</option>
+                                        <option value="Approve">Approved</option>
                                         <option value="Reject">Reject</option>
                                     </select>
                                 </div>

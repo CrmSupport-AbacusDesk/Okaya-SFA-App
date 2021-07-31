@@ -10,6 +10,25 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
     $scope.followup_filter = {};
     $scope.drDetail = {};
     $scope.noMoreListingAvailable = false;
+    $scope.data.isFollowUp = false;
+    $scope.data.disabled = false;
+
+    $scope.CHECK_POSTPONE = function()
+    {
+        console.log($scope.data.reason);
+
+        if ($scope.data.reason && $scope.data.reason == "Plan Postponed")
+        {
+            $scope.data.isFollowUp = true;
+            $scope.data.disabled = true;
+        }
+        else
+        {
+            $scope.data.isFollowUp = false;
+            $scope.data.disabled = false;
+
+        }
+    }
     
     // $scope.currentDate = moment().format('YYYY-MM-DD');
     $scope.selectedDate = moment().format('YYYY-MM-DD');
@@ -162,21 +181,21 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
         var tmptype = $scope.lead_filter.leadFor;
         $scope.lead_filter = {};
         // $scope.lead_filter.leadFor = tmptype;
-        $scope.lead_filter.activeTab = 'All';
+        $scope.lead_filter.activeTab = 'activity_not_done';
         $scope.getAssignDrType();
         $scope.getLeadStatus();
-        $scope.getleadlist(tmptype, '','Qualified','All');
+        $scope.getleadlist(tmptype, '','Qualified','activity_not_done');
     }
     
     if ($location.path() == '/tab/lead-list') {
-        $scope.lead_filter.activeTab = 'All';
+        $scope.lead_filter.activeTab = 'activity_not_done';
         // $scope.lead_filter.leadFor = 'My';
-        if(myRequestDBService.leadTabActive != 'Team')
-        {
+        // if(myRequestDBService.leadTabActive != 'Team')
+        // {
             myRequestDBService.leadTabActive = "My";
             myRequestDBService.statusTabActive = "Qualified";
-        }
-        $scope.getleadlist(myRequestDBService.leadTabActive, '',myRequestDBService.statusTabActive,'All');
+        // }
+        $scope.getleadlist(myRequestDBService.leadTabActive, '',myRequestDBService.statusTabActive,$scope.lead_filter.activeTab);
         $scope.getAssignDrType();
         $scope.getLeadStatus();
     }

@@ -83,26 +83,6 @@
               "count": 1
             },
             {
-              "xml": "<allow-navigation href=\"http://localhost/*\" />",
-              "count": 1
-            },
-            {
-              "xml": "<allow-navigation href=\"https://localhost/*\" />",
-              "count": 1
-            },
-            {
-              "xml": "<allow-navigation href=\"ionic://*\" />",
-              "count": 1
-            },
-            {
-              "xml": "<preference name=\"webView\" value=\"com.ionicframework.cordova.webview.IonicWebViewEngine\" />",
-              "count": 1
-            },
-            {
-              "xml": "<feature name=\"IonicWebView\"><param name=\"android-package\" value=\"com.ionicframework.cordova.webview.IonicWebView\" /></feature>",
-              "count": 1
-            },
-            {
               "xml": "<feature name=\"RareloopAppVersion\"><param name=\"android-package\" value=\"com.rareloop.cordova.appversion.RareloopAppVersion\" /></feature>",
               "count": 1
             },
@@ -200,9 +180,6 @@
       "PACKAGE_NAME": "com.abacus.okaya"
     },
     "cordova-plugin-x-toast": {
-      "PACKAGE_NAME": "com.abacus.okaya"
-    },
-    "cordova-plugin-ionic-webview": {
       "PACKAGE_NAME": "com.abacus.okaya"
     },
     "cordova-plugin-file": {
@@ -332,14 +309,6 @@
       "pluginId": "cordova-plugin-x-toast",
       "clobbers": [
         "window.plugins.toast"
-      ]
-    },
-    {
-      "id": "cordova-plugin-ionic-webview.IonicWebView",
-      "file": "plugins/cordova-plugin-ionic-webview/src/www/util.js",
-      "pluginId": "cordova-plugin-ionic-webview",
-      "clobbers": [
-        "Ionic.WebView"
       ]
     },
     {
@@ -616,7 +585,6 @@
     "cordova-plugin-actionsheet": "2.3.3",
     "cordova-plugin-dialogs": "2.0.2",
     "cordova-plugin-x-toast": "2.7.2",
-    "cordova-plugin-ionic-webview": "5.0.0",
     "cordova-plugin-file": "6.0.2",
     "cordova-plugin-file-transfer": "1.7.1",
     "cordova-plugin-appversion": "1.0.0",

@@ -95,14 +95,6 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       ]
     },
     {
-      "id": "cordova-plugin-ionic-webview.IonicWebView",
-      "file": "plugins/cordova-plugin-ionic-webview/src/www/util.js",
-      "pluginId": "cordova-plugin-ionic-webview",
-      "clobbers": [
-        "Ionic.WebView"
-      ]
-    },
-    {
       "id": "cordova-plugin-file.DirectoryEntry",
       "file": "plugins/cordova-plugin-file/www/DirectoryEntry.js",
       "pluginId": "cordova-plugin-file",
@@ -376,7 +368,6 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
     "cordova-plugin-actionsheet": "2.3.3",
     "cordova-plugin-dialogs": "2.0.2",
     "cordova-plugin-x-toast": "2.7.2",
-    "cordova-plugin-ionic-webview": "5.0.0",
     "cordova-plugin-file": "6.0.2",
     "cordova-plugin-file-transfer": "1.7.1",
     "cordova-plugin-appversion": "1.0.0",
@@ -386,6 +377,7 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
     "cordova-plugin-request-location-accuracy": "2.3.0",
     "cordova.plugins.diagnostic": "3.9.2",
     "cordova-plugin-document-viewer": "0.9.13",
-    "polarcape-cordova-plugin-document-handler": "1.1.1"
+    "polarcape-cordova-plugin-document-handler": "1.1.1",
+    "cordova-plugin-ionic-webview": "1.2.1"
   };
 });

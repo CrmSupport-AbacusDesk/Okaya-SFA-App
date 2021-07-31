@@ -916,7 +916,7 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
     
     
     $scope.openGallary = function () {
-        
+        console.log('in gallery Open');
         $scope.mediaData = [];
         
         var options = {
@@ -926,20 +926,44 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
             quality: 50  // Higher is better
         };
         
-        $cordovaImagePicker.getPictures(options).then(function (results) {
-            console.log(results);
+        // $cordovaImagePicker.getPictures(options).then(function (results) {
+        //     console.log(results);
             
-            //Loop through acquired images
-            for (var i = 0; i < results.length; i++) {
-                $scope.mediaData.push({
-                    src: results[i]
-                });
-            }
+        //     //Loop through acquired images
+        //     for (var i = 0; i < results.length; i++) {
+        //         $scope.mediaData.push({
+        //             src: results[i]
+        //         });
+        //     }
+        //     console.log($scope.mediaData);
+            
+        // }, function (error) {
+        //     console.log('Error: ' + JSON.stringify(error));    // In case of error
+        // });
+
+        navigator.camera.getPicture(onPhotoURISuccess, onFail,{
+            quality: 50,
+            sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM,
+            destinationType: navigator.camera.DestinationType.FILE_URI
+        });
+        // }
+        function onPhotoURISuccess(imageURI){
+            console.log("onPhotoURISuccess"+imageURI);
+            // var image = document.getElementById('image');
+            // image.style.display = 'block';
+            // image.src = imageURI;
+            $scope.mediaData.push({
+                // src: results[i]
+                // src:imageData,
+                src:imageURI,
+            });
             console.log($scope.mediaData);
             
-        }, function (error) {
-            console.log('Error: ' + JSON.stringify(error));    // In case of error
-        });
+        }
+        function onFail(message) {
+            console.log('onFail: ' + message);
+            alert('Failed beause' + message);
+        }
     }
     
     

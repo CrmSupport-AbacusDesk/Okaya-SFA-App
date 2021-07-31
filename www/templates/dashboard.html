@@ -51,20 +51,21 @@
                     <div class="info">{{dashboardData['todayFollowUpCount'].completedFollowup ? dashboardData['todayFollowUpCount'].completedFollowup : 'No'}} Follow Up  <strong>Completed</strong></div>
                 </a>
                 <!-- commented imp -->
-                <!-- <a>
-                    <p><span>{{dashboardData['todayQuotationCount']}}</span> Quotation</p>
-                    <div class="info">Create Quotation</div>
-                </a> -->
                 <a >
                     <p ng-click="loginData.loginAccessLevel == '3' ? onGoToRootPageHandler('Order-list') : onGoToRootPageHandler('sfaPriOrder-list')" ><span>{{dashboardData['sfaPriOrdCount'].total_ord}}</span>{{loginData.loginAccessLevel == '3' ? 'Order' : 'Primary'}}</p>
                     <div class="info"> {{dashboardData['sfaPriOrdCount'].total_qty ? 'Item Qty : '+dashboardData['sfaPriOrdCount'].total_qty : 'No Orders'}} </div>
                     <h1 ng-click="loginData.loginAccessLevel == '3' ? onGoToRootPageHandler('Order') : onGoToRootPageHandler('sfaPriOrder')" class="addorder-tab">ADD NEW</h1>
                 </a>
-
+                
                 <a ng-if="loginData.loginAccessLevel == '4'">
                     <p ng-click="onGoToRootPageHandler('secondary-order-list')" ><span>{{dashboardData['sfaSecOrdCount'].total_ord}}</span> Secondary</p>
                     <div class="info">{{dashboardData['sfaSecOrdCount'].total_qty ? 'Item Qty : '+dashboardData['sfaSecOrdCount'].total_qty : 'No Orders'}} </div>
                     <h1 ng-click="onGoToRootPageHandler('sfaSecOrder')" class="addorder-tab">ADD NEW</h1>
+                </a>
+
+                <a ng-click="gotoPage(0,0,'','lead-followup-list')">
+                    <p class="icon-invert"><i class="material-icons">phone_forwarded</i></p>
+                    <div class="info">Lead FollowUp</div>
                 </a>
             </div>
         </div>
