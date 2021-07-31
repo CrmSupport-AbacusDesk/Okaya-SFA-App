@@ -355,14 +355,6 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "clobbers": [
         "DocumentHandler"
       ]
-    },
-    {
-      "id": "cordova-plugin-ionic-webview.IonicWebView",
-      "file": "plugins/cordova-plugin-ionic-webview/src/www/util.js",
-      "pluginId": "cordova-plugin-ionic-webview",
-      "clobbers": [
-        "Ionic.WebView"
-      ]
     }
   ];
   module.exports.metadata = {
@@ -386,6 +378,6 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
     "cordova.plugins.diagnostic": "3.9.2",
     "cordova-plugin-document-viewer": "0.9.13",
     "polarcape-cordova-plugin-document-handler": "1.1.1",
-    "cordova-plugin-ionic-webview": "5.0.0"
+    "cordova-plugin-ionic-webview": "1.2.1"
   };
 });

@@ -93,26 +93,6 @@
             {
               "xml": "<feature name=\"Diagnostic\"><param name=\"android-package\" value=\"cordova.plugins.Diagnostic\" /><param name=\"onload\" value=\"true\" /></feature>",
               "count": 1
-            },
-            {
-              "xml": "<allow-navigation href=\"http://localhost/*\" />",
-              "count": 1
-            },
-            {
-              "xml": "<allow-navigation href=\"https://localhost/*\" />",
-              "count": 1
-            },
-            {
-              "xml": "<allow-navigation href=\"ionic://*\" />",
-              "count": 1
-            },
-            {
-              "xml": "<preference name=\"webView\" value=\"com.ionicframework.cordova.webview.IonicWebViewEngine\" />",
-              "count": 1
-            },
-            {
-              "xml": "<feature name=\"IonicWebView\"><param name=\"android-package\" value=\"com.ionicframework.cordova.webview.IonicWebView\" /></feature>",
-              "count": 1
             }
           ]
         }
@@ -232,9 +212,6 @@
       "PACKAGE_NAME": "com.abacus.okaya"
     },
     "polarcape-cordova-plugin-document-handler": {
-      "PACKAGE_NAME": "com.abacus.okaya"
-    },
-    "cordova-plugin-ionic-webview": {
       "PACKAGE_NAME": "com.abacus.okaya"
     }
   },
@@ -595,14 +572,6 @@
       "clobbers": [
         "DocumentHandler"
       ]
-    },
-    {
-      "id": "cordova-plugin-ionic-webview.IonicWebView",
-      "file": "plugins/cordova-plugin-ionic-webview/src/www/util.js",
-      "pluginId": "cordova-plugin-ionic-webview",
-      "clobbers": [
-        "Ionic.WebView"
-      ]
     }
   ],
   "plugin_metadata": {
@@ -625,7 +594,6 @@
     "cordova-plugin-request-location-accuracy": "2.3.0",
     "cordova.plugins.diagnostic": "3.9.2",
     "cordova-plugin-document-viewer": "0.9.13",
-    "polarcape-cordova-plugin-document-handler": "1.1.1",
-    "cordova-plugin-ionic-webview": "5.0.0"
+    "polarcape-cordova-plugin-document-handler": "1.1.1"
   }
 }

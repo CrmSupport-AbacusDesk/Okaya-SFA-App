@@ -1,9 +1,9 @@
 <ion-view view-title="{{order_type}} Order List">
-
+    
     <ion-nav-buttons side="left">
         <a href="#/tab/menu" class="cs-backbtn button button-icon icon ion-android-arrow-back font18 fff"></a>
     </ion-nav-buttons>
-
+    
     <ion-nav-buttons side="right" class="custom-right-btn">
         <div ng-click="onSeachActionHandler('open')" class="right-nav-btn nav-search mr30">
             <a menu-toggle="left">
@@ -18,26 +18,41 @@
         </div>
         <div ng-class="isSearchBarOpen ? 'active' : ''" class="search-filter">
             <input ng-model="data.search" type="text" id="searchData"
-                ng-keyup="$event.keyCode == 13 ?getOrderListData() : null">
+            ng-keyup="$event.keyCode == 13 ?getOrderListData() : null">
             <a ng-click="onSeachActionHandler('close')" placeholder="Search" class="close-filter"><i
-                    class="material-icons">keyboard_backspace</i></a>
+                class="material-icons">keyboard_backspace</i>
+            </a>
         </div>
     </ion-nav-buttons>
 
-    <div class="sticky bg-white top50" ng-if="loginData.loginTeamExist == 'Yes'">
-        <div class="round-tab" ng-if="loginData.designation_id > 1">
-            <ul>
-                <li ng-click="onModifyTypeHandler('me')" ng-class="data.orderCreatedBy == 'me' ? 'active' : ''">
-                    <a>My Order </a>
+    <div class="sticky bg-white top50">
+        <div class="round-tab">
+            <div ng-if="loginData.loginTeamExist == 'Yes'">
+                <ul class="mb10"  ng-if="loginData.designation_id > 1">
+                    <li ng-click="onModifyTypeHandler('me',data.orderTab)" ng-class="data.orderCreatedBy == 'me' ? 'active' : ''">
+                        <a>My Order </a>
+                    </li>
+                    <li ng-click="onModifyTypeHandler('myTeam',data.orderTab)" ng-class="data.orderCreatedBy == 'myTeam' ? 'active' : ''">
+                        <a>Team Order </a>
+                    </li>
+                </ul>
+            </div>
+
+            <ul ng-if="data.orderCreatedBy == 'me'">
+                <li ng-click="onModifyTypeHandler(data.orderCreatedBy,'user_order')" ng-class="data.orderTab == 'user_order' ? 'active' : ''">
+                    <a>User Order</a>
                 </li>
-                <li ng-click="onModifyTypeHandler('myTeam')" ng-class="data.orderCreatedBy == 'myTeam' ? 'active' : ''">
-                    <a>Team Order </a>
+                <li ng-if="order_type == 'primary'" ng-click="onModifyTypeHandler(data.orderCreatedBy,'distributor_order')" ng-class="data.orderTab == 'distributor_order' ? 'active' : ''">
+                    <a>Distributor Order</a>
+                </li>
+                <li ng-if="order_type == 'secondary'" ng-click="onModifyTypeHandler(data.orderCreatedBy,'dealer_order')" ng-class="data.orderTab == 'dealer_order' ? 'active' : ''">
+                    <a>Dealer Order</a>
                 </li>
             </ul>
         </div>
     </div>
-
-    <ion-content ng-class="{'mt55' : loginData.designation_id > 1 }">
+    
+    <ion-content ng-class="{'mt100' : loginData.loginTeamExist == 'Yes','mt55':loginData.loginTeamExist == 'No'}">
         <!-- <ion-refresher on-refresh="data.search = ''; onSetCurrentPageHandler();getOrderListData('onRefresh')">
             <ion-refresher-content
             pullingIcon="arrow-dropdown"
@@ -46,95 +61,91 @@
             refreshingText="Refreshing...">
         </ion-refresher-content>
     </ion-refresher> -->
-
-
-        <div class="coman-list" ng-click="onGoToOrderDetailPage(row.id)" ng-repeat="row in orderList">
-            <div class="top-head">
-                <ul>
-                    <li>
-                        <p>#ORD{{row.id}}</p>
-                        <span>Order ID</span>
-                    </li>
-                    <li>
-                        <p>{{row.item_count}}</p>
-                        <span>Total Item</span>
-                    </li>
-                    <li>
-                        <p>{{row.dateCreatedInFormat}} - {{row.created_by_name}}</p>
-                        <span>Date & Created By</span>
-                    </li>
-                </ul>
-
-                <!-- <ul class="left-auto">
+    
+    
+    <div class="coman-list" ng-click="onGoToOrderDetailPage(row.id)" ng-repeat="row in orderList">
+        <div class="top-head">
+            <ul>
+                <li>
+                    <p>#ORD{{row.id}}</p>
+                    <span>Order ID</span>
+                </li>
+                <li>
+                    <p>{{row.item_count}}</p>
+                    <span>Total Item</span>
+                </li>
+                <li>
+                    <p>{{row.dateCreatedInFormat}} - {{row.created_by_name}}</p>
+                    <span>Date & Created By</span>
+                </li>
+            </ul>
+            
+            <!-- <ul class="left-auto">
                 <li class="text-right">
                     <span>{{row.dateCreatedInFormat}}</span>
                 </li>
             </ul> -->
+        </div>
+        
+        <div class="center-item">
+            <div class="cs-icon">{{row.dr_name[0]}}</div>
+            <div class="cs-content">
+                <p>{{row.dr_name}}</p>
+                <span>{{row.dr_name_name}}</span>
             </div>
-
-            <div class="center-item">
-                <div class="cs-icon">{{row.dr_name[0]}}</div>
-                <div class="cs-content">
-                    <p>{{row.dr_name}}</p>
-                    <span>{{row.dr_name_name}}</span>
+            <a class="dialer"><i class="material-icons">keyboard_arrow_right</i></a>
+        </div>
+        
+        <div class="pdlr">
+            <div class="cs-flex">
+                <div class="bdr-field wp100">
+                    <span>Order Status</span>
+                    <p ng-class="{'pending-color':row.order_status=='Pending','approved-color':row.order_status=='Approve','reject-color':row.order_status=='Reject'}">{{row.order_status}}</p>
                 </div>
-                <a class="dialer"><i class="material-icons">keyboard_arrow_right</i></a>
-            </div>
-
-            <div class="pdlr">
-                <div class="cs-flex">
-                    <!-- <div class="bdr-field wp100">
-                    <span>Amount</span>
-                    <p> &#8377;  {{row.net_total}}</p>
-                </div> -->
-                    <div class="bdr-field wp100" ng-repeat="user in row.approval"
-                        ng-class="{'pending-bg':user.status=='Pending','approved-bg':user.status=='Approved','reject-bg':user.status=='Reject'}">
-                        <span>{{user.designation}} Status</span>
-                        <p>{{user.status}}</p>
-                    </div>
-                </div>
+                <div class="bdr-field wp100" ng-repeat="user in row.approval"
+                ng-class="{'pending-bg':user.status=='Pending','approved-bg':user.status=='Approved','reject-bg':user.status=='Reject'}">
+                <span>{{user.designation}} Status</span>
+                <p>{{user.status}}</p>
             </div>
         </div>
-
-        <div class="data-not-found" ng-if="!isRequestInProcess && orderList.length == 0">
-            <div class="outer">
-                <div class="innear">
-                    <img src="img/data-not-found.svg" alt="">
-                    <h2>Temporarily , No Data Available!</h2>
-                </div>
-            </div>
-        </div>
-
-        <ion-infinite-scroll immediate-check="false" ng-if="noMoreItemsAvailable==false"
-            on-infinite="getOrderListData('','scroll')" loadingSpinner="bubbles" distance="20%" class="myspinner">
-        </ion-infinite-scroll>
-
-        <div class="h50"></div>
-    </ion-content>
-
-    <div class="fix-add">
-        <a ng-click="clear_data();onGoToOrderAddHandler()">
-            <i class="material-icons">add</i>
-        </a>
     </div>
+</div>
 
-    <div class="popover-model" ng-class="{'active':leadListFilter==true}">
-        <div class="filter-modal">
-            <div class="filter-head">
-                <button class="close-modal" ng-click="filter(false)"><i
-                        class="material-icons">keyboard_arrow_down</i></button>
+<div class="data-not-found" ng-if="!isRequestInProcess && orderList.length == 0">
+    <div class="outer">
+        <div class="innear">
+            <img src="img/data-not-found.svg" alt="">
+            <h2>Temporarily , No Data Available!</h2>
+        </div>
+    </div>
+</div>
+
+<ion-infinite-scroll immediate-check="false" ng-if="noMoreItemsAvailable==false"
+on-infinite="getOrderListData('','scroll')" loadingSpinner="bubbles" distance="20%" class="myspinner">
+</ion-infinite-scroll>
+
+<div class="h50"></div>
+</ion-content>
+
+<div class="fix-add">
+    <a ng-click="clear_data();onGoToOrderAddHandler()">
+        <i class="material-icons">add</i>
+    </a>
+</div>
+
+<div class="popover-model" ng-class="{'active':leadListFilter==true}">
+    <div class="filter-modal">
+        <div class="filter-head">
+            <button class="close-modal" ng-click="filter(false)"><i
+                class="material-icons">keyboard_arrow_down</i></button>
                 <h2>Filter</h2>
                 <span ng-click="clearFilter();leadListFilter=false;">Clear Filter</span>
             </div>
             <div class="filter-body">
                 <div class="filtr-btn">
-                    <button ng-class="{'active':sec_order.type=='dr_name'}"
-                        ng-if="loginData.team_List.length != '0' && data.orderCreatedBy == 'myTeam' "
-                        ng-click="sec_order.type = 'dr_name'">User</button>
-                    <button ng-class="{'active':sec_order.type=='dr_status'}"
-                        ng-click="sec_order.type = 'dr_status'">Status</button>
-                    <button ng-class="{'active':sec_order.type=='dr_date'}"
-                        ng-click="sec_order.type = 'dr_date'">Date</button>
+                    <button ng-class="{'active':sec_order.type=='dr_name'}" ng-if="loginData.team_List.length != '0' && data.orderCreatedBy == 'myTeam' " ng-click="sec_order.type = 'dr_name'">User</button>
+                    <button ng-class="{'active':sec_order.type=='dr_status'}" ng-click="sec_order.type = 'dr_status'">Status</button>
+                    <button ng-class="{'active':sec_order.type=='dr_date'}" ng-click="sec_order.type = 'dr_date'">Date</button>
                 </div>
                 <div class="filter-list ds-none" ng-if="sec_order.type=='dr_name'">
                     <ion-item class="list-item" ng-repeat="row in AssignSalesUser">
@@ -142,34 +153,34 @@
                         </ion-checkbox>
                     </ion-item>
                 </div>
-
-
-
+                
+                
+                
                 <div class="padding16" ng-if="sec_order.type=='dr_status'">
                     <div class="cs-radio cs-bodr">
                         <ion-list>
                             <ion-radio name="status" ng-model="filter.status" value="Pending">Pending</ion-radio>
-                            <ion-radio name="status" ng-model="filter.status" value="Approved">Approved</ion-radio>
+                            <ion-radio name="status" ng-model="filter.status" value="Approve">Approved</ion-radio>
                             <ion-radio name="status" ng-model="filter.status" value="Reject">Reject</ion-radio>
                         </ion-list>
                     </div>
                 </div>
-
-
+                
+                
                 <div class="cs-add-form pd-left-right16" ng-if="sec_order.type=='dr_date'">
                     <div class="input-field field-input mt25">
                         <input type="date" ng-model="filter_date.date_from" name="date_from" ng-required="true"
-                            class="validate" required>
+                        class="validate" required>
                         <label class="active" for="last_name">Date From</label>
                     </div>
-
+                    
                     <div class="input-field field-input mt25">
                         <input name="date_to" ng-model="filter_date.date_to" type="date" ng-required="true"
-                            class="validate" required>
+                        class="validate" required>
                         <label class="active" for="last_name">Date To</label>
                     </div>
                 </div>
-
+                
                 <button class="footer-btn" ng-click="getOrderListData();leadListFilter=false; ">Apply</button>
             </div>
         </div>

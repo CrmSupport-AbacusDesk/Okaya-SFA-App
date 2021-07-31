@@ -65,9 +65,6 @@
     },
     "polarcape-cordova-plugin-document-handler": {
       "PACKAGE_NAME": "com.abacus.okaya"
-    },
-    "cordova-plugin-ionic-webview": {
-      "PACKAGE_NAME": "com.abacus.okaya"
     }
   },
   "dependent_plugins": {
