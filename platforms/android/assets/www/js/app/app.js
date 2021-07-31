@@ -287,6 +287,17 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
     }
   })
 
+  .state('tab.lead-close-followup', {
+    url: '/lead-close-followup',
+    cache: false,
+    views: {
+      'tab_lead_list': {
+        templateUrl: 'templates/lead-close-followup.html',
+        controller: 'leadController'
+      }
+    }
+  })
+
 
   .state('tab.lead-requirement-list', {
     url: '/lead-requirement-list',

@@ -7,7 +7,7 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
     
     $scope.leadListFilter = false;
     $scope.lead_filter = {};
-    
+    $scope.followup_filter = {};
     $scope.drDetail = {};
     $scope.noMoreListingAvailable = false;
     
@@ -171,7 +171,12 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
     if ($location.path() == '/tab/lead-list') {
         $scope.lead_filter.activeTab = 'All';
         // $scope.lead_filter.leadFor = 'My';
-        $scope.getleadlist('My', '','Qualified','All');
+        if(myRequestDBService.leadTabActive != 'Team')
+        {
+            myRequestDBService.leadTabActive = "My";
+            myRequestDBService.statusTabActive = "Qualified";
+        }
+        $scope.getleadlist(myRequestDBService.leadTabActive, '',myRequestDBService.statusTabActive,'All');
         $scope.getAssignDrType();
         $scope.getLeadStatus();
     }
@@ -364,8 +369,10 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
     // -------Lead Followup List---------- //
     $scope.dr_id;
     $scope.leadFollowupData = [];
-    $scope.getLeadFollowupList = function (id,actionType) {
+    $scope.getLeadFollowupList = function (id,actionType,activeTab) {
         console.log(actionType);
+        console.log(activeTab);
+        console.log($scope.followup_filter);
         if(actionType == 'previous') {
             $scope.selectedDate = moment($scope.selectedDate).subtract(1, 'days').format('YYYY-MM-DD');
         }
@@ -382,7 +389,7 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
             template: '<ion-spinner icon="android"></ion-spinner><p>Loading...</p>'
         });
         
-        var parameter = { 'function_name': 'getDrFollowupList', 'dr_id': id ,'date': $scope.selectedDate};
+        var parameter = { 'function_name': 'getDrFollowupList', 'dr_id': id ,'date': $scope.selectedDate, 'active_tab' : $scope.followup_filter};
         myRequestDBService.sfaPostServiceRequest("/Okaya_LMS/getPostData", parameter).then(function (response) {
             console.log(response);
             $scope.leadFollowupData = response.data;
@@ -396,7 +403,8 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
         $scope.dr_data.dr_name = myRequestDBService.dr_name;
         $scope.dr_data.contact_mobile_no = myRequestDBService.contact_mobile_no;
         console.log($scope.dr_data);
-        $scope.getLeadFollowupList(myRequestDBService.dr_id);
+        $scope.followup_filter = 'Today';
+        $scope.getLeadFollowupList(myRequestDBService.dr_id,'','Today');
         $ionicPopover.fromTemplateUrl('add_remark', {
             scope: $scope,
         }).then(function(popovers) {
@@ -419,8 +427,8 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
 
     $scope.onSaveFollowUpRemarkHandler = function(dr_id,followup_id) {
         console.log(dr_id,followup_id);
-        
-        var parameter = { 'function_name': 'closeFollowup','dr_id': dr_id,'id': followup_id ,'followup_done_remark': $scope.data.remark};
+        console.log($scope.data);
+        var parameter = { 'function_name': 'closeFollowup','dr_id': dr_id,'id': followup_id ,'followup_done_remark': $scope.data};
         myRequestDBService.sfaPostServiceRequest("/Okaya_LMS/getPostData", parameter).then(function (response) 
         {
             console.log(response);
@@ -1186,7 +1194,10 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
         myRequestDBService.contact_mobile_no = contact_mobile_no;
         myRequestDBService.type_name = type_name;
         myRequestDBService.state_name = state_name;
-        console.log(myRequestDBService.dr_id);
+        myRequestDBService.leadTabActive = $scope.lead_filter.leadFor;
+        myRequestDBService.statusTabActive = $scope.lead_filter.status;
+        console.log(myRequestDBService.leadTabActive);
+        console.log(myRequestDBService.statusTabActive);
         $state.go('tab.' + page_name);
         $scope.leadpopovers.hide();
     }
@@ -1278,7 +1289,7 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
             $scope.onGetAllLeadType();
         }
         
-        $scope.leadStatusList = [{ status_name: "Win" }, { status_name: "Qualified" }, { status_name: "Close" }, { status_name: "Lost" }];
+        $scope.leadStatusList = [{ status_name: "Win" }, { status_name: "Qualified" }, { status_name: "Qualified Close" }, { status_name: "Lost" }];
         $scope.getActivityType();
         // $scope.getProductCategoryList();
     }

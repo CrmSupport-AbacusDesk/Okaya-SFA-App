@@ -1,7 +1,7 @@
 <ion-view view-title="Lead Detail">
     <!-- BACKBTN ICON START -->
     <ion-nav-buttons side="left">
-        <a href="#/tab/lead-list" class="cs-backbtn button button-icon icon ion-android-arrow-back font18 fff"></a>
+        <a ng-click="goToBackPageHandler()" class="cs-backbtn button button-icon icon ion-android-arrow-back font18 fff"></a>
     </ion-nav-buttons>
     <!-- BACKBTN ICON END-->
 
@@ -20,10 +20,6 @@
                 <div class="top-head">
                     <ul>
                         <li>
-                            <p>{{dateFormat(leadDetailData.date_created)}}</p>
-                            <span>Date Created</span>
-                        </li>
-                        <li>
                             <p>{{leadDetailData.created_by_name}}</p>
                             <span>Created By</span>
                         </li>
@@ -31,6 +27,10 @@
                             <p>{{leadDetailData.source_name}}</p>
                             <span>Source</span>
                         </li>
+                        <!-- <li>
+                            <p>{{dateFormat(leadDetailData.date_created)}}</p>
+                            <span>Date Created</span>
+                        </li> -->
                     </ul>
                     <!-- <a class="right-btn">Edit Lead</a> -->
                 </div>
@@ -42,6 +42,10 @@
                         <span class="ellipsis">{{leadDetailData.contact_name ? leadDetailData.contact_name : 'N/A'}} - {{leadDetailData.contact_mobile_no}}</span>
                     </div>
                     <a href="tel: {{row.contact_mobile_no}}" class="dialer"><i class="material-icons">call</i></a>
+                </div>
+                <div class="cs-secation" ng-if="leadDetailData.assign_to_name">
+                    <p><span>Assigned Date :</span> {{dateFormat(leadDetailData.feild_assign_date)}}</p>
+                    <p><span>Assigned Name :</span> {{leadDetailData.assign_to_name}}</p>
                 </div>
                 <div class="bottom-sec">
                     <p><strong>Address</strong>: {{leadDetailData.street}} {{leadDetailData.state_name}}{{leadDetailData.district_name ? ', '+leadDetailData.district_name : ''}} {{leadDetailData.city ? ', '+leadDetailData.city : ''}}{{leadDetailData.pincode ? '- '+leadDetailData.pincode : ''}}</p>
