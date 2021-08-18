@@ -73,7 +73,7 @@
                         <div ng-if="data.activityType !='Meeting'" class="form-space">
                             <label class="item-input item-select cs-select csm-input mb0" ng-class="{'has-error': AddForm.status.$invalid && AddForm.$submitted}">
                                 <div class="input-label">Update Lead Status</div>
-                                <select name="status" ng-model="data.status" ng-change="getReason(data.status);getLeadCategoryList(data.status)" required>
+                                <select name="status" ng-model="data.status" ng-change="getReason(data.status);getLeadCategoryList(data.status);onGetProductCategoryList()" required>
                                     <option value="" disabled selected>Select Lead Status <sup>*</sup></option>
                                     <option ng-repeat="row in leadStatusList" value="{{row.status_name}}">{{row.status_name}}</option>
                                 </select>
@@ -109,8 +109,161 @@
                         <div ng-if="data.activityType !='Meeting'" class="cs-add-form">
                             <div class="input-field field-input" ng-class="{'has-error': AddForm.remark.$invalid && AddForm.$submitted}">
                                 <label for="last_name">Remark</label>
-                                <textarea ng-model="data.remark" name="remark" class="validate"
-                                style="height: 100px !important; padding: 10px !important;" required></textarea>
+                                <textarea ng-model="data.remark" name="remark" class="validate" minlength="10" style="height: 100px !important; padding: 10px !important;" required></textarea>
+                                <span class="error-left relative" ng-show="AddForm.$submitted && AddForm.remark.$error.minlength">* Remark Must be Minimum 10 Letters!</span>
+                            </div>
+                        </div>
+                        
+                        <div ng-if="data.status == 'Win' && data.activityType !='Meeting'">
+                            <div class="cs-add-form mt20">
+                                <div class="field-input">
+                                    <select ng-model="data.category" ng-options="row.category as row.category for row in categoryListData" ng-change="onGetSubcategoryList()" class="browser-default">
+                                        <option value="" disabled selected>Select Category</option>
+                                    </select>
+                                    
+                                    <select ng-model="data.sub_category" ng-options="row.sub_category as row.sub_category for row in subCategoryData" ng-change="onGetProductList()" class="browser-default">
+                                        <option value="" disabled selected>Select Subcategory</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="cs-select field-input" ng-class="{'has-error': AddForm.product.$invalid && AddForm.$submitted}">
+                                    <label for="last_name" class="fix-label">Select Product<span>*</span></label>
+                                    <div class="add-css-select pt0 selectopt no-padding  add2">
+                                        <searchable-multiselect display-attr="Key" selected-items="data.product" all-items="productListData" add-item="single_product_item_select(item)">
+                                        </searchable-multiselect>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            <div class="flex-input">
+                                <div class="input-field field-input wp100">
+                                    <input ng-model="data.qty" ng-change="onCalculateItemTotalHandler('Order')" name="qty"
+                                    id="qty" type="number" min="0" class="validate">
+                                    <label class="active" for="last_name">QTY</label>
+                                </div>
+                                <div class="input-field field-input wp100">
+                                    <input ng-model="data.rate" name="rate" id="rate"
+                                    ng-change="onCalculateItemTotalHandler('Order')" type="number" class="validate">
+                                    <label class="active" for="last_name">Rate</label>
+                                </div>
+                                
+                                <div class="input-field field-input wp100 mr0">
+                                    <input ng-model="data.discountPercent" name="discountPercent" id="discountPercent"
+                                    type="number" ng-change="onCalculateItemTotalHandler('Order')" class="validate">
+                                    <label class="active" for="last_name">Discount (%)</label>
+                                </div>
+                            </div>
+                            
+                            <div class="flex-input">
+                                <div class="input-field field-input wp100">
+                                    <input ng-model="data.gstPercent" name="gstPercent" id="gstPercent" type="number"
+                                    ng-change="onCalculateItemTotalHandler('Order')" class="validate">
+                                    <label class="active" for="last_name">GST (%)</label>
+                                </div>
+                                
+                                <div class="input-field field-input wp100">
+                                    <input ng-model="data.itemFinalAmount" name="itemFinalAmount" id="itemFinalAmount"
+                                    type="number" class="validate" readonly>
+                                    <label class="active" for="last_name">Amount</label>
+                                </div>
+                                
+                                <a ng-click="onAddToCartHandler('Order')" class="cs-btn" ng-class="{'btn-opacity':!data.product}" ng-disabled="!data.product">
+                                    <i class="material-icons">add</i>
+                                </a>
+                            </div>
+                            
+                            <div ng-if="cartItemData.length > 0" class="cart-card">
+                                <div class="list-heading">Item Information</div>
+                                <div class="coman-list mt0 mr0 ml0" ng-repeat="row in cartItemData">
+                                    <div class="center-item padding10" style="border-bottom: 1px dashed #ccc;">
+                                        <div class="cs-content ellipsis">
+                                            <p class="ellipsis">{{row.categoryName}}, {{row.subCategoryName}}, {{row.productName}}</p>
+                                            <span class="ellipsis">#{{row.productCode}}</span>
+                                        </div>
+                                        <a ng-click="onDeleteFromCartHandler($index)" class="dialer circle-btn">
+                                            <i class="material-icons">delete_sweep</i>
+                                        </a>
+                                    </div>
+                                    <div class="top-head">
+                                        <ul>
+                                            <li class="wp100">
+                                                <p>{{row.qty}}</p>
+                                                <span>Quantity</span>
+                                            </li>
+                                            <li class="wp100">
+                                                <p> &#8377; {{row.rate}}</p>
+                                                <span>Rate</span>
+                                            </li>
+                                            
+                                            <li class="wp100">
+                                                <p>&#8377; {{getRoundAmountHandler(row.discountAmount)}}</p>
+                                                <span>Discount ({{row.discountPercent}}%)</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="cs-secation padding10">
+                                        <p><span>CGST ({{row.cgstPercent}} %) :</span> &#8377; {{getRoundAmountHandler(row.cgstAmount)}}</p>
+                                        <p><span>SGST ({{row.sgstPercent}} %) :</span> &#8377; {{getRoundAmountHandler(row.sgstAmount)}}</p>
+                                        <p><span>IGST ({{row.igstPercent}} %) :</span> &#8377; {{getRoundAmountHandler(row.igstAmount)}}</p>
+                                    </div>
+                                    <div class="bottom-sec">
+                                        <p class="clamp2 text-right"><strong>Amount</strong>: 
+                                            <span style="font-size: 16px;">&#8377;{{getRoundAmountHandler(row.itemFinalAmount)}}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div ng-if="cartItemData.length > 0" class="cs-add-form mt15">
+                                <div class="field-input">
+                                    <select ng-model="data.deliveryBy" ng-change="onDeliveryByTypeChangeHandler(data.deliveryBy)" class="browser-default">
+                                        <option value="" disabled selected>Delivery By Type</option>
+                                        <option ng-show="data.type != 'Distributor'" value="Dealer">Dealer</option>
+                                        <option ng-show="data.type != 'Distributor'" value="Distributor">Distributor</option>
+                                        <option ng-show="data.type=='Distributor'" value="Company">Company</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div ng-show="(data.deliveryBy == 'Dealer' || data.deliveryBy == 'Distributor' ) && cartItemData.length > 0" class="cs-add-form mt15">
+                                <div class="field-input">
+                                    <label for="last_name" class="fix-label">Dispatch By Name <span>*</span></label>
+                                    <div class="add-css-select pt0 selectopt no-padding  add2">
+                                        <searchable-multiselect display-attr="Key" ng-change="onDeliveryByTypeChangeHandler(data.deliveryBy)" selected-items="data.dispatch_by" all-items="orderDispatchByData" add-item="dispatch_by_select(item)">
+                                        </searchable-multiselect>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            <div ng-if="cartItemData.length > 0" class="summary-table">
+                                <table>
+                                    <tr>
+                                        <td class="w130">Discount Amount</td>
+                                        <td class="text-right" style="font-size: 14px;">{{getRoundAmountHandler(cartSummaryData.discountAmount)}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pre Tax Total</td>
+                                        <td class="text-right" style="font-size: 14px;">{{getRoundAmountHandler(cartSummaryData.discountedAmount)}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>CGST Amount</td>
+                                        <td class="text-right" style="font-size: 14px;">Rs.{{getRoundAmountHandler(cartSummaryData.cgstAmount)}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>SGST Amount</td>
+                                        <td class="text-right" style="font-size: 14px;">Rs.{{getRoundAmountHandler(cartSummaryData.sgstAmount)}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>IGST Amount</td>
+                                        <td class="text-right" style="font-size: 14px;">Rs.{{getRoundAmountHandler(cartSummaryData.igstAmount)}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total (Rs) </td>
+                                        <td class="text-right" style="font-size: 14px;">Rs.{{getRoundAmountHandler(cartSummaryData.itemFinalAmount)}}</td>
+                                    </tr>
+                                </table>
                             </div>
                         </div>
                         
@@ -120,7 +273,7 @@
                                 Do you want to create any follow up ?
                             </label>
                         </div>
-
+                        
                         <div ng-if="data.isFollowUp && data.activityType !='Meeting'" class="form-space mt20">
                             <label ng-class="{'has-error': AddForm.followUpType.$invalid && AddForm.$submitted}" class="item-input item-select cs-select csm-input mb0">
                                 <div class="input-label">FollowUp Type</div>
@@ -144,7 +297,9 @@
                     </div>
                     
                     <div class="input-submit padding16">
-                        <button type="submit">{{data.activityType == 'Meeting' ? 'Start Meeting' : 'Save'}}</button>
+                        <button type="submit" ng-if="data.status == 'Win' && data.activityType !='Meeting'" ng-class="{'btn-opacity':!data.deliveryBy || !data.dispatch_by}" ng-disabled="!data.deliveryBy || !data.dispatch_by">Save</button>
+                        <button type="submit" ng-if="data.activityType =='Meeting'">{{data.activityType == 'Meeting' ? 'Start Meeting' : 'Save'}}</button>
+                        <button type="submit" ng-if="data.status != 'Win' && data.activityType !='Meeting'">{{data.activityType == 'Meeting' ? 'Start Meeting' : 'Save'}}</button>
                     </div>
                 </form>
             </ion-content>

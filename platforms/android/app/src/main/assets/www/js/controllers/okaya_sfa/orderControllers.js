@@ -565,7 +565,7 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
     }
     
     
-    $scope.filter_date = [];
+    $scope.filter_date = {};
     $scope.filter = [];
     $scope.filter_users = [];
     $scope.users_filter_id = [];
@@ -612,6 +612,89 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
         $scope.data.orderTab = 'user_order';
         $scope.getOrderListData('onLoad', '');
     }
+    
+    // ----------------------Target Module Functions Start--------------------------------- //
+    
+    $scope.filterActive = false;
+    $scope.getTargetListData = function () {
+        $ionicLoading.show({
+            template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>'
+        });
+        
+        if ($scope.filter_year) {
+            $scope.targetList = [];
+            $scope.filterActive = true;
+        }
+        console.log($scope.filter_year);
+        
+        myRequestDBService.getTargetList($scope.filter_year).then(function (response) {
+            console.log(response);
+            $scope.targetList = response.data;
+            console.log($scope.targetList);
+            $ionicLoading.hide();
+            
+        }, function (err) {
+            $ionicLoading.hide();
+            console.error(err);
+        });
+    }
+    
+    $scope.onGoToTargetDetailPage = function (month,year,target_percentage,target_value,target_achievement) {
+        myAllSharedService.drTypeFilterData.targetMonth = month;
+        myAllSharedService.drTypeFilterData.targetYear = year;
+        myAllSharedService.drTypeFilterData.target_percentage = target_percentage;
+        myAllSharedService.drTypeFilterData.target_value = target_value;
+        myAllSharedService.drTypeFilterData.target_achievement = target_achievement;
+        console.log(myAllSharedService.drTypeFilterData);
+        $state.go('tab.primary-target-detail');        
+    }
+    
+    $scope.getTargetDetail = function () {
+        console.log($scope.targetMonth,$scope.targetYear);
+        
+        $ionicLoading.show({
+            template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>'
+        });
+        
+        myRequestDBService.getTargetDetail($scope.targetMonth,$scope.targetYear).then(function (response) {
+            console.log(response);
+            $scope.targetdetail = response.data.data;
+            console.log($scope.targetdetail);
+            $ionicLoading.hide();
+            
+        }, function (err) {
+            $ionicLoading.hide();
+            console.error(err);
+        });
+    }
+    
+    
+    if ($location.path() == '/tab/primary-target-list') {
+        $scope.getTargetListData();
+    }
+
+    
+    if ($location.path() == '/tab/primary-target-detail') {
+        console.log('target-detail');
+        $scope.targetMonth = myAllSharedService.drTypeFilterData.targetMonth;
+        $scope.targetYear = myAllSharedService.drTypeFilterData.targetYear;
+        $scope.targetPercentage = myAllSharedService.drTypeFilterData.target_percentage;
+        $scope.targetValue = myAllSharedService.drTypeFilterData.target_value;
+        $scope.targetAchievement = myAllSharedService.drTypeFilterData.target_achievement;
+        console.log(myAllSharedService.drTypeFilterData);
+
+        $scope.getTargetDetail();
+    }
+    
+    $scope.filter_year = '';
+    $scope.clearTargetFilter = function () {
+        console.log('clear Target Filter');
+        $scope.filterActive = false;
+        $scope.filter_year = '';
+        $scope.getTargetListData();
+    }
+    
+    // ----------------------Target Module Functions End--------------------------------- //
     
     $scope.leadListFilter = false;
     $scope.sec_order = {};
@@ -1712,7 +1795,7 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
         $scope.billinglistdata();
     }
     
-
+    
     $scope.updateStatus = function(status){
         
         console.log($scope.orderDetail.id);
