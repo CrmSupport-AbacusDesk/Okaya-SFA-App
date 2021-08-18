@@ -15,7 +15,7 @@
                 </div> -->
             </div>
             <div class="user-column">
-
+                
                 <div class="user-profile pr-icon">
                     <img ng-if="!loginData.loginImage" src="img/profile.svg" class="default">
                     <img ng-if="loginData.loginImage" ng-src="{{uploadURL}}{{loginData.loginImage}}" class="add-img" style="width: 100%; height: 100%;">
@@ -26,7 +26,7 @@
                 </div>
             </div>
         </div>
-
+        
         <h4 class="nrml-head" ng-if="dashboardData['drCountData'].length > 0 && !loginData.channelSalesLogin">My Leads</h4>
         <div class="total-count" ng-if="dashboardData['drCountData'].length > 0 && !loginData.channelSalesLogin">
             <a ng-click = "onGoToDrListHandler(row)" ng-repeat="row in dashboardData['drCountData']">
@@ -40,7 +40,7 @@
         </div>
         <div class="bx-container mt20 mb0">
             <h2>Today Records</h2>
-
+            
             <div class="forword-page padding0 mt10">
                 <a ng-click = "onGoToRootPageHandler('CheckIn')">
                     <p><span>{{dashboardData['todayMeetingCount'].allMeetings}}</span>Activity</p>
@@ -62,15 +62,15 @@
                     <div class="info">{{dashboardData['sfaSecOrdCount'].total_qty ? 'Item Qty : '+dashboardData['sfaSecOrdCount'].total_qty : 'No Orders'}} </div>
                     <h1 ng-click="onGoToRootPageHandler('sfaSecOrder')" class="addorder-tab">ADD NEW</h1>
                 </a>
-
+                
                 <a ng-click="gotoPage(0,0,'','lead-followup-list')">
                     <p class="icon-invert"><i class="material-icons">phone_forwarded</i></p>
                     <div class="info">Lead FollowUp</div>
                 </a>
             </div>
         </div>
-
-
+        
+        
         <div class="pd-left-right16 mt20 mb5">
             <a href="#/tab/report-dashboard">
                 <div class="go-btn artificial">
@@ -88,7 +88,7 @@
                 </div>
             </a>
         </div>
-
+        
         <!-- <h4 class="nrml-head" ng-if="loginData.loginAccessLevel == '4'">My Distribution Network</h4> -->
         <div class="total-count" ng-if="loginData.loginAccessLevel == '4'">
             <a ng-click = "gotoDrPage(row.type_name)" ng-repeat="row in dashboardData['distriCountData']">
@@ -96,34 +96,36 @@
                 <span>{{row.type_name}}</span>
             </a>
         </div>
-
-        <div class="pr16 pl16" ng-if="dashboardData.collectionPlan!=0">
-            <div class="target-bar">
-
-                <h3>Today Outstanding Collection </h3>
+        
+        <div class="pr16 pl16">
+            <div class="target-bar tr-change">
+                <div class="tr-top">
+                    <h3><i class="material-icons">event_note</i> {{dashboardData.target.month}} {{dashboardData.target.year}}</h3>
+                    <div class="tr-frwd"><a href="#/tab/primary-target-list">See More <i class="material-icons">keyboard_arrow_right</i></a></div>
+                </div>
 
                 <span class="progress-bar">
-                    <span class="inside" style=" width: {{dashboardData.achive_percent}}%;">&nbsp;</span>
+                    <span class="inside" style=" width: {{NaN ? dashboardData.achive_percent : 0}}%;">&nbsp;</span>
                 </span>
                 <div class="v-s">
-                    <h2>Target <span>&#8377; {{dashboardData.collectionPlan}} Lac.</span></h2>
-                    <h2>Achieve <span>&#8377; {{dashboardData.collectionAchivement ? dashboardData.collectionAchivement + ' Lac.' : 0}}</span></h2>
+                    <h2>Target <span>&#8377; {{dashboardData.target.target_value ? dashboardData.target.target_value : 0}}</span></h2>
+                    <h2>Achieve <span>&#8377; {{dashboardData.target.achievement ? dashboardData.target.achievement : 0}}</span></h2>
                 </div>
             </div>
         </div>
-
-
+        
+        
         <div class="cs-space" style="padding:16px 20px;">
             <a ng-if="loginData.loginAccessLevel == '4'" ng-click="loginData.startAttendance ? goToPage('tab.network-add') : loginAlert()" class="cs-btn">Add Dealer</a>
             <a ng-if="loginData.loginAccessLevel == '4'" ng-click="loginData.startAttendance ? goToPage('tab.travel-add') : loginAlert()" class="cs-btn">Add Travel</a>
             <a href="#/tab/lead-add" ng-if="loginData.loginAccessLevel == '3'" class="cs-btn">Add New Lead</a>
             <a ng-click="loginData.startAttendance ? goToPage('tab.followup-add') : loginAlert()" class="cs-btn">Add Follow Up</a>
         </div>
-
+        
         <div class="h70">&nbsp;</div>
         <!-- <button ng-click="loginData.startAttendance=!   loginData.startAttendance">test</button> -->
     </ion-content>
-
+    
     <ion-footer-bar class="ds_ion-footer-bar">
         <div class="csm_work_time _start" ng-click = "onActivateGPSLocationHandler('startAttend')" ng-if="data.isAttendanceDataReceived == 'Yes' && !attendData.start_time">
             <div class="cs-left">
@@ -137,7 +139,7 @@
                 <button>Start Work Time</button>
             </div>
         </div>
-
+        
         <div class="csm_work_time _stop" ng-click = "onActivateGPSLocationHandler('stopAttend')" ng-if="data.isAttendanceDataReceived == 'Yes' && attendData.start_time && attendData.stop_time==''">
             <div class="cs-left">
                 <div class="icon"><img src="img/okaya-img/Stop_clock.png" alt=""></div>
@@ -151,5 +153,5 @@
             </div>
         </div>
     </ion-footer-bar>
-
+    
 </ion-view>

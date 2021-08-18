@@ -2,92 +2,92 @@
 var angularApp = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngMaterial', 'ngCordova', 'angular-search-and-select','chart.js'])
 
 angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService, $cordovaSQLite, $ionicPopup, $ionicLoading, $state, $ionicHistory, $timeout, $rootScope, $cordovaAppVersion) {
-
+  
   $ionicPlatform.ready(function () {
-
+    
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
-
+      
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
       cordova.plugins.Keyboard.disableScroll(true);
     }
-
+    
     if (window.StatusBar) {
-
+      
       StatusBar.show();
       StatusBar.backgroundColorByHexString("#469e50");
       StatusBar.overlaysWebView(false);
     }
-
+    
     $ionicPlatform.registerBackButtonAction(function () {
-
+      
       if ($ionicHistory.currentStateName() === 'tab.dashboard' || $ionicHistory.currentStateName() === 'login') {
-
+        
         if (backbutton == 0) {
-
+          
           backbutton++;
           window.plugins.toast.showShortBottom('Press again to exit');
           $timeout(function () { backbutton = 0; }, 2500);
-
+          
         } else {
-
+          
           ionic.Platform.exitApp();
         }
-
+        
       } else if ($ionicHistory.currentStateName() === 'tab.lead-counter' || $ionicHistory.currentStateName() === 'tab.menu' || $ionicHistory.currentStateName() === 'tab.all-followup-list' || $ionicHistory.currentStateName() === 'tab.all-activity-list') {
-
+        
         $state.go('tab.dashboard');
-
+        
       } else {
-
+        
         navigator.app.backHistory();
       }
-
+      
     }, 100);
-
-
+    
+    
     if (window.cordova) {
-
+      
       db = $cordovaSQLite.openDB({ name: "my.app", iosDatabaseLocation: 'default' });
       console.log("Android");
-
+      
     } else {
-
+      
       db = window.openDatabase("my.app", '1', 'my', 1024 * 1024 * 100);
       console.log("browser");
     }
-
-
-
+    
+    
+    
     function onHideSplashHandler() {
-
+      
       $timeout(function () {
         navigator.splashscreen.hide();
       }, 100);
     }
-
-
+    
+    
     $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS " + dbTableName + " (id integer primary key,username text,password text, organisationId text)");
-
+    
     var query = "SELECT username, password, organisationId FROM " + dbTableName + " ORDER BY id DESC LIMIT 1";
-
+    
     $cordovaSQLite.execute(db, query).then(function (res) {
-
+      
       if (res.rows.length > 0 && res.rows.item(0).username && res.rows.item(0).password) {
-
+        
         $ionicLoading.show({
           template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>'
         });
-
+        
         myRequestDBService.login(res.rows.item(0).username, res.rows.item(0).password, res.rows.item(0).organisationId)
         .then(function (result) {
-
+          
           console.log(result);
-
+          
           onHideSplashHandler()
           $ionicLoading.hide();
-
+          
           const loginData = {};
-
+          
           loginData.loginId = result.loginData.id;
           loginData.loginName = result.loginData.name;
           loginData.loginType = result.loginData.loginType;
@@ -111,81 +111,81 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
           else {
             loginData.channelSalesLogin = false;
           }
-
+          
           myAllSharedService.loginData = loginData;
           $state.go('tab.dashboard');
-
+          
           if (window.cordova && ionic.Platform.isAndroid()) {
             console.log("Android");
             init(loginData.loginId);
           }
-
+          
           if (window.cordova && ionic.Platform.isIOS()) {
             console.log("IOS");
             init(loginData.loginId);
           }
           // console.log(loginData.loginOrganisationId);
-
-
+          
+          
         }, function (result) {
-
+          
           onHideSplashHandler()
           $ionicLoading.hide();
-
+          
           $state.go('login');
         });
-
+        
       } else {
-
+        
         onHideSplashHandler();
-
+        
         $ionicLoading.hide();
         $state.go('login');
       }
-
+      
     }, function (err) {
-
+      
       console.error(err);
       onHideSplashHandler();
-
+      
     });
-
+    
   });
-
+  
 })
 
 
 .config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
-
+  
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
   $stateProvider
-
-
+  
+  
   .state('tab', {
     url: '/tab',
     abstract: true,
     templateUrl: 'templates/tabs.html',
     controller: 'dashCtrl'
   })
-
+  
   .state('login', {
     url: '/login',
     cache: false,
     templateUrl: 'templates/login.html',
     controller: 'loginCtrl'
   })
-
+  
   .state('change-password', {
     url: '/change-password',
     cache: false,
     templateUrl: 'templates/change-password.html',
     controller: 'loginCtrl'
   })
-
-
+  
+  
   .state('tab.dashboard', {
     url: '/dashboard',
     cache: false,
@@ -196,7 +196,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.lead-counter', {
     url: '/lead-counter',
     cache: false,
@@ -207,7 +207,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.lead-list', {
     url: '/lead-list',
     cache: false,
@@ -218,7 +218,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.lead-detail', {
     url: '/lead-detail',
     cache: false,
@@ -229,7 +229,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.lead-activity-list', {
     url: '/lead-activity-list',
     cache: false,
@@ -240,7 +240,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.sfa_dr_activity', {
     url: '/sfa_dr_activity',
     cache: false,
@@ -251,7 +251,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.sfa_dr_followup', {
     url: '/sfa_dr_followup',
     cache: false,
@@ -262,8 +262,8 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
-
+  
+  
   .state('tab.lead-meeting-end', {
     url: '/lead-meeting-end',
     cache: false,
@@ -274,8 +274,8 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
-
+  
+  
   .state('tab.lead-followup-list', {
     url: '/lead-followup-list',
     cache: false,
@@ -286,7 +286,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.lead-close-followup', {
     url: '/lead-close-followup',
     cache: false,
@@ -297,8 +297,8 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
-
+  
+  
   .state('tab.lead-requirement-list', {
     url: '/lead-requirement-list',
     cache: false,
@@ -309,7 +309,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   // .state('tab.lead-requirement-add', {
   //     url: '/lead-requirement-add',
   //     cache:false,
@@ -320,7 +320,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
   //         }
   //     }
   // })
-
+  
   .state('tab.requirement-add', {
     url: '/requirement-add',
     cache: false,
@@ -331,7 +331,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.add-lead-followup', {
     url: '/add-lead-followup',
     cache: false,
@@ -342,7 +342,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.add-lead-activity', {
     url: '/add-lead-activity',
     cache: false,
@@ -353,8 +353,8 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
-
+  
+  
   .state('tab.lead-order-list', {
     url: '/lead-order-list',
     cache: false,
@@ -365,8 +365,8 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
-
+  
+  
   .state('tab.lead-quotation-list', {
     url: '/lead-quotation-list',
     cache: false,
@@ -377,8 +377,8 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
-
+  
+  
   .state('tab.lead-quotation-add', {
     url: '/lead-quotation-add',
     cache: false,
@@ -399,8 +399,8 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
-
+  
+  
   .state('tab.all-followup-list', {
     url: '/all-followup-list',
     cache: false,
@@ -411,7 +411,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.followup-add', {
     url: '/followup-add',
     cache: false,
@@ -422,7 +422,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.all-activity-list', {
     url: '/all-activity-list',
     cache: false,
@@ -430,11 +430,33 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       'tab-all-activity-list': {
         templateUrl: 'templates/all-activity-list.html',
         controller: 'activityCtrl'
-
+        
       }
     }
   })
 
+  .state('tab.primary-target-list', {
+    url: '/primary-target-list',
+    cache: false,
+    views: {
+      'tab-menu': {
+        templateUrl: 'templates/okaya_sfa/primary-target-list.html',
+        controller: 'sfaOrderCtrl'
+      }
+    }
+  })
+
+  .state('tab.primary-target-detail', {
+    url: '/primary-target-detail',
+    cache: false,
+    views: {
+      'tab-menu': {
+        templateUrl: 'templates/okaya_sfa/primary-target-detail.html',
+        controller: 'sfaOrderCtrl'
+      }
+    }
+  })
+  
   .state('tab.menu', {
     url: '/menu',
     cache: false,
@@ -445,7 +467,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.attendance', {
     url: '/attendance',
     cache: false,
@@ -456,9 +478,9 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
-
-
+  
+  
+  
   .state('tab.catalogue', {
     url: '/catalogue',
     cache: false,
@@ -469,7 +491,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.all-order-list', {
     url: '/all-order-list',
     cache: false,
@@ -501,8 +523,8 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
-
+  
+  
   .state('tab.sfa-order-add', {
     url: '/sfa-order-add',
     cache: false,
@@ -513,7 +535,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.sfa-order-detail', {
     url: '/sfa-order-detail',
     cache: false,
@@ -524,7 +546,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.sfa-pending-order-detail', {
     url: '/sfa-pending-order-detail',
     cache: false,
@@ -536,33 +558,33 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
     }
   })
   /////////////////
-
+  
   // BILLIG DETAILS//////////
-
+  
   .state('tab.sfa-billing-list', {
     url: '/sfa-billing-list',
     cache:false,
     views: {
-        'tab-menu': {
-            templateUrl: 'templates/okaya_sfa/sfa-billing-list.html',
-            controller: 'dms_controller'
-        }
+      'tab-menu': {
+        templateUrl: 'templates/okaya_sfa/sfa-billing-list.html',
+        controller: 'dms_controller'
+      }
     }
   })
   .state('tab.billing-detail', {
     url: '/billing-detail',
     cache:false,
     views: {
-        'tab-menu': {
-            templateUrl: 'templates/okaya_sfa/billing-detail.html',
-            controller: 'dms_controller'
-        }
+      'tab-menu': {
+        templateUrl: 'templates/okaya_sfa/billing-detail.html',
+        controller: 'dms_controller'
+      }
     }
   })
   ////////////////////
-
+  
   //////////// Bhanu///////////
-
+  
   .state('tab.SFA_LeaveApplicationlist', {
     url: '/SFA_LeaveApplicationlist',
     cache: false,
@@ -583,7 +605,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.PJP', {
     url: '/PJP',
     cache: false,
@@ -594,9 +616,9 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   //////////////////////////////
-
+  
   .state('tab.customer-list', {
     url: '/customer-list',
     cache: false,
@@ -607,7 +629,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.order-detail', {
     url: '/order-detail',
     cache: false,
@@ -618,8 +640,8 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
-
+  
+  
   .state('tab.order-add', {
     url: '/order-add',
     cache: false,
@@ -630,7 +652,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.lead-add', {
     url: '/lead-add',
     cache: false,
@@ -641,7 +663,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.lead-edit', {
     url: '/lead-edit',
     cache: false,
@@ -652,8 +674,8 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
-
+  
+  
   .state('tab.add-activity', {
     url: '/add-activity',
     cache: false,
@@ -664,8 +686,8 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
-
+  
+  
   .state('tab.activity-meeting-end', {
     url: '/activity-meeting-end',
     cache: false,
@@ -676,8 +698,8 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
-
+  
+  
   .state('tab.profile', {
     url: '/profile',
     cache: false,
@@ -688,7 +710,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.edit-profile', {
     url: '/edit-profile',
     cache: false,
@@ -699,8 +721,8 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
-
+  
+  
   .state('tab.travel', {
     url: '/travel',
     cache: false,
@@ -711,10 +733,10 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
-
+  
+  
   ///ankit
-
+  
   .state('tab.report-dashboard', {
     url: '/report-dashboard',
     cache: false,
@@ -725,9 +747,9 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   ///ankit
-
+  
   .state('tab.travel-add', {
     url: '/travel-add',
     cache: false,
@@ -748,7 +770,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.travel-edit', {
     url: '/travel-edit',
     cache: false,
@@ -759,7 +781,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.expense', {
     url: '/expense',
     cache: false,
@@ -800,7 +822,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.organisation-setting', {
     url: '/organisation-setting',
     cache: false,
@@ -811,7 +833,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.distribution-network', {
     url: '/distribution-network',
     cache: false,
@@ -822,7 +844,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.stock', {
     url: '/stock',
     cache: false,
@@ -834,7 +856,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.daily-plan-report', {
     url: '/daily-plan-report',
     cache: false,
@@ -845,8 +867,8 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
-
+  
+  
   .state('tab.collection-report', {
     url: '/collection-report',
     cache: false,
@@ -857,7 +879,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.collection-punch', {
     url: '/collection-punch',
     cache: false,
@@ -868,7 +890,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.collection-plan', {
     url: '/collection-plan',
     cache: false,
@@ -879,7 +901,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.network-add', {
     url: '/network-add',
     cache: false,
@@ -890,7 +912,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.network-edit', {
     url: '/network-edit',
     cache: false,
@@ -901,8 +923,8 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
-
+  
+  
   .state('tab.network-detail', {
     url: '/network-detail',
     cache: false,
@@ -913,8 +935,8 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
-
+  
+  
   .state('tab.scheme_enroll', {
     url: '/scheme_enroll',
     cache: false,
@@ -925,14 +947,14 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('map-network', {
     url: '/map-network',
     templateUrl: 'templates/okaya_sfa/point-loc-network.html',
     cache: false,
     controller: 'networkController'
   })
-
+  
   .state('tab.map-network', {
     url: '/map-network',
     cache: false,
@@ -943,7 +965,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.tab-imgdoc', {
     url: '/tab-imgdoc',
     cache: false,
@@ -954,8 +976,8 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
-
+  
+  
   .state('tab.gallery', {
     url: '/gallery-ret',
     cache: false,
@@ -966,17 +988,17 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
-
+  
+  
   // $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
-
+  
   // var param = function(obj) {
   //   var query = '',
   //   name, value, fullSubName, subName, subValue, innerObj, i;
-
+  
   //   for (name in obj) {
   //     value = obj[name];
-
+  
   //     if (value instanceof Array) {
   //       for (i = 0; i < value.length; ++i) {
   //         subValue = value[i];
@@ -997,14 +1019,14 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
   //     }
   //     else if (value !== undefined && value !== null) query += encodeURIComponent(name) + '=' + encodeURIComponent(value) + '&';
   //   }
-
+  
   //   return query.length ? query.substr(0, query.length - 1) : query;
   // };
-
+  
   // $httpProvider.defaults.transformRequest = [function(data) {
   //     return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
   // }];
-
+  
 })
 
 
@@ -1017,7 +1039,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
 app.directive("searchableMultiselect", function ($timeout) {
   return {
     templateUrl: 'js/dependancies/manualSearchandselect.html',
-
+    
     restrict: 'AE',
     scope: {
       displayAttr: '@',
@@ -1031,12 +1053,12 @@ app.directive("searchableMultiselect", function ($timeout) {
       element.bind('click', function (e) {
         e.stopPropagation();
       });
-
+      
       scope.width = element[0].getBoundingClientRect();
-
+      
       scope.updateSelectedItems = function (obj) {
         console.log(obj);
-
+        
         var selectedObj;
         var index;
         for (i = 0; typeof scope.selectedItems !== 'undefined' && i < scope.selectedItems.length; i++) {
@@ -1047,7 +1069,7 @@ app.directive("searchableMultiselect", function ($timeout) {
           }
         }
         console.log(selectedObj);
-
+        
         if (typeof selectedObj === 'undefined') {
           scope.addItem({ item: obj });
         }
@@ -1055,7 +1077,7 @@ app.directive("searchableMultiselect", function ($timeout) {
           scope.addItem({ item: obj });
         }
       };
-
+      
       scope.isItemSelected = function (item) {
         if (typeof scope.selectedItems === 'undefined') return false;
         var tmpItem;
@@ -1070,7 +1092,7 @@ app.directive("searchableMultiselect", function ($timeout) {
         }
         return false;
       };
-
+      
       scope.commaDelimitedSelected = function () {
         var list = "";
         angular.forEach(scope.selectedItems, function (item, index) {

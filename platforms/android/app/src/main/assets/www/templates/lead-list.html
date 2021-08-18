@@ -93,7 +93,7 @@
     </div>
     <div class="h40"></div>
     
-    <ion-infinite-scroll immediate-check="false" ng-if="noMoreListingAvailable==false" on-infinite="getleadlist(lead_filter.leadFor,'scroll',lead_filter.status,'All')" distance="20%" class="myspinner">
+    <ion-infinite-scroll immediate-check="false" ng-if="noMoreListingAvailable==false" on-infinite="getleadlist(lead_filter.leadFor,'scroll',lead_filter.status,lead_filter.activeTab)" distance="20%" class="myspinner">
     </ion-infinite-scroll>
 </ion-content>
 
@@ -112,9 +112,12 @@
         <ul ng-if="lead_filter.status=='Qualified'">
             <li ng-click="getleadlist(lead_filter.leadFor,'',lead_filter.status,lead_filter.activeTab);lead_filter.activeTab = 'activity_done'" ng-class="lead_filter.activeTab == 'activity_done' ? 'active' : ''">
                 <a>Activity Done</a>
+                 <!-- <span>{{lead_filter.activity_done}}</span> -->
             </li>
-            <li ng-click="getleadlist(lead_filter.leadFor,'',lead_filter.status,lead_filter.activeTab);lead_filter.activeTab = 'activity_not_done'" ng-class="lead_filter.activeTab == 'activity_not_done' ? 'active' : ''">
-                <a>Activity Not Done</a>
+            <li ng-click="getleadlist(lead_filter.leadFor,'',lead_filter.status,lead_filter.activeTab);lead_filter.activeTab = 'activity_not_done'" ng-class="lead_filter.activeTab == 'activity_not_done' ? 'clr-red active' : ''">
+                <a ng-class="lead_filter.activeTab == 'activity_not_done' ? 'white-text' : ''">Activity Not Done 
+                    <!-- <span>{{lead_filter.activity_not_done}}</span> -->
+                </a>
             </li>
         </ul>
     </div>
@@ -130,9 +133,12 @@
         <ul ng-if="lead_filter.status=='Qualified'">
             <li ng-click="getleadlist(lead_filter.leadFor,'',lead_filter.status,lead_filter.activeTab);lead_filter.activeTab = 'activity_done'" ng-class="lead_filter.activeTab == 'activity_done' ? 'active' : ''">
                 <a>Activity Done</a>
+                 <!-- <span>{{lead_filter.activity_done}}</span> -->
             </li>
-            <li ng-click="getleadlist(lead_filter.leadFor,'',lead_filter.status,lead_filter.activeTab);lead_filter.activeTab = 'activity_not_done'" ng-class="lead_filter.activeTab == 'activity_not_done' ? 'active' : ''">
-                <a>Activity Not Done</a>
+            <li ng-click="getleadlist(lead_filter.leadFor,'',lead_filter.status,lead_filter.activeTab);lead_filter.activeTab = 'activity_not_done'" ng-class="lead_filter.activeTab == 'activity_not_done' ? 'clr-red active' : ''">
+                <a ng-class="lead_filter.activeTab == 'activity_not_done' ? 'white-text' : ''">Activity Not Done 
+                    <!-- <span>{{lead_filter.activity_not_done}}</span> -->
+                </a>
             </li>
         </ul>
     </div>

@@ -20,6 +20,7 @@ app.controller('dashCtrl', function ($scope, $rootScope, searchSelect, $ionicMod
     $scope.currentTime  = moment($scope.currentTime).format('h:mm:s')
     console.log($scope.currentTime);
     $scope.leadTabActive = false;
+    $scope.targetTabActive = false;
     
     
     // $scope.getCurrentTime = function()
