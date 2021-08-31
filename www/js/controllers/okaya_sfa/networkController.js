@@ -18,6 +18,10 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
         $scope.networkTabActive = 1;
     }
     
+    $scope.dateFormat = function (date) {
+        return moment(date).format("DD MMM YYYY")
+    }
+    
     $scope.goToBackPageHandler = function() {
         $ionicHistory.goBack();
     }
@@ -43,9 +47,10 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
         $state.go('tab.network-add');
     }
     
-    $scope.goToNetworkDetail = function(drId)
+    $scope.goToNetworkDetail = function(drId,drType)
     {
         myAllSharedService.drTypeFilterData.drId = drId;
+        myAllSharedService.drTypeFilterData.drType = drType;
         $state.go('tab.network-detail');
     }
     
@@ -308,7 +313,7 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
         
     }
     
-    $scope.getDrDetailData = function(drId) {
+    $scope.getDrDetailData = function(drId,drType) {
         
         $ionicLoading.show({
             template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>'
@@ -316,7 +321,7 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
         
         $scope.isRequestInProcess = true;
         
-        myRequestDBService.getDrDetailData(drId)
+        myRequestDBService.getDrDetailData(drId,drType)
         .then(function(response) {
             
             console.log(response);
@@ -928,7 +933,7 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
         
         // $cordovaImagePicker.getPictures(options).then(function (results) {
         //     console.log(results);
-            
+        
         //     //Loop through acquired images
         //     for (var i = 0; i < results.length; i++) {
         //         $scope.mediaData.push({
@@ -936,11 +941,11 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
         //         });
         //     }
         //     console.log($scope.mediaData);
-            
+        
         // }, function (error) {
         //     console.log('Error: ' + JSON.stringify(error));    // In case of error
         // });
-
+        
         navigator.camera.getPicture(onPhotoURISuccess, onFail,{
             quality: 50,
             sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM,
@@ -2157,10 +2162,11 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
     if($location.path() == '/tab/network-detail')
     {
         $scope.data.drId = myAllSharedService.drTypeFilterData.drId;
-        console.log("Network Detail = >",$scope.data.drId);
+        $scope.data.drType = myAllSharedService.drTypeFilterData.drType;
+        console.log("Network Detail = >",$scope.data.drId,$scope.data.drType);
         if($scope.data.drId)
         {
-            $scope.getDrDetailData($scope.data.drId)
+            $scope.getDrDetailData($scope.data.drId,$scope.data.drType)
         }
     }
     
@@ -3484,6 +3490,276 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
         // $scope.getAssignDistributor();
         $scope.getCollectionPunchData();
         
+    }
+    
+    $ionicModal.fromTemplateUrl('scheme_count', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(scheme_count) {
+        $scope.scheme_count = scheme_count;
+    });
+    $scope.schemeOpenModel = function(image) {
+        $scope.scheme_count.show();
+        console.log(image);
+        $scope.camp_image = image;
+        console.log($scope.camp_image);
+    };
+    $scope.schemeCloseModel = function() {
+        $scope.scheme_count.hide();
+    };
+
+    $scope.getCampaignDetail = function(camp_id,drId)
+    {
+        console.log(camp_id);
+        console.log(drId);
+        $ionicLoading.show({
+            template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>'
+        });
+        myRequestDBService.getCampaignDetail(camp_id,drId)
+        .then(function (resp)
+        {
+            console.log(resp);
+            $scope.campaignDetail = resp.campDetail;
+            $scope.campaignImage = resp.campDetail.campaign_banner;
+            console.log($scope.campaignImage);
+            console.log($scope.campaignDetail);
+            $ionicLoading.hide();
+        }, function (err)
+        {
+            $ionicLoading.hide();
+            console.error(err);
+        });
+    }
+    
+    $scope.open_camera = function()
+    {
+        var val = 'remove-pic';
+        // Show the action sheet
+        var hideSheet = $ionicActionSheet.show({
+            buttons: [
+                { text: "<i class='icon ion-android-image'></i> Take Picture From Gallery"},
+                { text: "<i class='icon ion-camera'></i> Open Camera" },
+                { text: "<i class='icon ion-android-delete orange-color'></i> Remove Photo", className: val}
+            ],
+            cancelText: 'Cancel',
+            cancel: function() {
+                // add cancel code..
+            },
+            buttonClicked: function(index)
+            {
+                //return true;
+                
+                if(index === 0) { // Manual Button
+                    $scope.perameter();
+                }
+                else if(index === 1){
+                    $scope.getPicture();
+                }
+                return true;
+            }
+        })
+    }
+    
+    $scope.getPicture = function (options)
+    {
+        var options = {
+            quality : 50,
+            targetWidth: 500,
+            targetHeight: 500,
+            saveToPhotoAlbum: false
+        };
+        
+        Camera.getPicture(options).then(function(imageData)
+        {
+            var options = {
+                fileKey: "image",
+                fileName: "image.jpg",
+                chunkedMode: false,
+                mimeType: "image/*",
+            };
+            $scope.mediaData.push({
+                src: imageData
+            });
+        }, function(err) {
+        })
+    };
+    
+    $scope.perameter=function()
+    {
+        cordova.plugins.diagnostic.getCameraAuthorizationStatus({
+            successCallback: function(status) {
+                if(status === cordova.plugins.diagnostic.permissionStatus.GRANTED)
+                {
+                    $scope.openGallary();
+                }
+                else
+                {
+                    cordova.plugins.diagnostic.requestCameraAuthorization({
+                        successCallback: function(data_status)
+                        {
+                            if(data_status != 'DENIED')
+                            {
+                                $scope.openGallary();
+                            }
+                        },
+                        errorCallback: function(error)
+                        {
+                            console.error(error);
+                        },
+                        externalStorage: true
+                    });
+                }
+            },
+            errorCallback: function(error){
+                console.error("The following error occurred: "+error);
+            },
+            externalStorage: true
+        });
+    }
+    
+    $scope.openGallary = function()
+    {
+        var options = {
+            maximumImagesCount: 1, // Max number of selected images, I'm using only one for this example
+            width: 500,
+            height: 500,
+            quality: 50  // Higher is better
+        };
+        // $cordovaImagePicker.getPictures(options).then(function (results) {
+        //     console.log(results);
+        //     //Loop through acquired images
+        //     for (var i = 0; i < results.length; i++) {
+        //         $scope.mediaData.push({
+        //             src: results[i]
+        //         });
+        //     }
+        //     console.log($scope.mediaData);
+        // }, function(error) {
+        //     console.log('Error: ' + JSON.stringify(error));    // In case of error
+        // });
+        navigator.camera.getPicture(onPhotoURISuccess, onFail,{
+            quality: 50,
+            sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM,
+            destinationType: navigator.camera.DestinationType.FILE_URI
+        });
+        function onPhotoURISuccess(imageURI){
+            console.log("onPhotoURISuccess"+imageURI);
+            $scope.mediaData.push({
+                src:imageURI,
+            });
+            console.log($scope.mediaData);
+        }
+        function onFail(message) {
+            console.log('onFail: ' + message);
+            alert('Failed beause' + message);
+        }
+    }
+    
+    $scope.delete_camp_img = function(index)
+    {
+        console.log("index");
+        console.log(index);
+        $scope.mediaData.splice(index,1);
+    }
+    
+    $scope.updateCampaign=function()
+    {
+        console.log($scope.data);
+        console.log($scope.drCode);
+        console.log($scope.drId);
+        console.log($scope.camp_id);
+        $scope.data.drCode = $scope.drCode;
+        $scope.data.drId = $scope.drId;
+        $scope.data.camp_id = $scope.camp_id;
+        $scope.data.src = $scope.mediaData;
+        // $scope.data.id = mySCSharedService.id;
+        
+        // $scope.data.tab = $rootScope.tab;
+        console.log($scope.data);
+        console.log(serverURL);
+        $ionicLoading.show({
+            template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>'
+        });
+        cordova.plugins.locationAccuracy.request(function (success) {
+            console.log(success);
+            var option = { timeout: 12000, enableHighAccuracy: true, maximumAge: 0};
+            $cordovaGeolocation.getCurrentPosition(option).then(function (position) {
+                $ionicLoading.hide();
+                console.log(position.coords.latitude, position.coords.longitude);
+                $scope.data.latitude = position.coords.latitude;
+                $scope.data.longitude = position.coords.longitude;
+                if ($scope.data.latitude && $scope.data.longitude) {
+                    myRequestDBService.getUpdateCampaign($scope.data).then(function(result) {
+                        console.log(result);
+                        if($scope.mediaData.length > 0) {
+                            console.log('testimage upload');
+                            $scope.uploadImageData($scope.data);
+                            $ionicLoading.hide();
+                        } else {
+                            $ionicLoading.hide();
+                            $ionicHistory.goBack();
+                        }
+                    });
+                }
+            }, function (error) {
+                $ionicLoading.hide();
+                console.log("Could not get location");
+            });
+        }, function (error) {
+            $ionicLoading.hide();
+            $ionicPopup.alert({
+                title: 'Error!',
+                template: 'To continue, Activate GPS Location!'
+            });
+        }, cordova.plugins.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY);
+        
+    }
+    
+    $scope.uploadImageData = function(data) {
+        var cnt = 0;
+        console.log(data);
+        angular.forEach($scope.mediaData, function(val, key) {
+            var options = {
+                fileKey: "file",
+                fileName: "image.jpg",
+                chunkedMode: false,
+                mimeType: "image/*",
+            };
+            // serverURL + "/App_Customer/updateCampaign"  updateTechImage
+            $cordovaFileTransfer.upload(serverURL + "/App_Customer/updateCampaignImage/" + data.drId+'/'+data.camp_id+'/'+$scope.loginData.loginId, val.src, options ).then(function(result) {
+                console.log("SUCCESS: " + JSON.stringify(result));
+                cnt++;
+                if(cnt == $scope.mediaData.length) {
+                    $ionicLoading.hide();
+                    $ionicHistory.goBack();
+                }
+            }, function(err) {
+                console.log("ERROR: " + JSON.stringify(err));
+            }, function (progress) {
+            });
+        });
+        $ionicLoading.hide();
+        
+    };
+    
+    $scope.goToCampaign = function(drName,drCode,drMobile,drId,camp_id)
+    {
+        myAllSharedService.drTypeFilterData.drName = drName;
+        myAllSharedService.drTypeFilterData.drCode = drCode;
+        myAllSharedService.drTypeFilterData.drMobile = drMobile;
+        myAllSharedService.drTypeFilterData.drId = drId;
+        myAllSharedService.drTypeFilterData.camp_id = camp_id;
+        $state.go('tab.sfa_dr_campaign');
+    }
+    
+    if($location.path() == '/tab/sfa_dr_campaign')
+    {
+        $scope.drName = myAllSharedService.drTypeFilterData.drName;
+        $scope.drCode = myAllSharedService.drTypeFilterData.drCode;
+        $scope.drMobile = myAllSharedService.drTypeFilterData.drMobile;
+        $scope.drId = myAllSharedService.drTypeFilterData.drId;
+        $scope.camp_id = myAllSharedService.drTypeFilterData.camp_id;
+        $scope.getCampaignDetail($scope.camp_id,$scope.drId);
     }
     
     // var location = "https://maps.googleapis.com/maps/api/geocode/json?latlng=18.4791911,73.8729479&key=AIzaSyD9OoPX-RFRqkhIuRsWOPj4xKnVelhRRK8&sensor=false"

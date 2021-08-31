@@ -136,7 +136,12 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
         var data = {
             search: searchKey,
             order_type: $scope.order_type,
+            dr_id: $scope.data.dr_id,
         };
+
+        // var data = {
+        //     search: searchKey,
+        // };
         
         // console.log(targetArr);
         
@@ -1297,14 +1302,14 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
     }
     
     $scope.itemList = [];
-    $scope.getItemList = function (value) {
+    $scope.getItemList = function (value,dr_id) {
         console.log(value);
-        
+        console.log(dr_id);
         $ionicLoading.show({
             template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>'
         });
         
-        var data = { category: value }
+        var data = { category: value , dr_id: dr_id}
         $scope.itemList = [];
         myRequestDBService.sfaPostServiceRequest('/App_Order/getItemList', data)
         .then(function (response) {
@@ -1367,6 +1372,7 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
             console.log(newValue);
             
             $scope.data.dr_id = newValue.Value;
+            $rootScope.dr_id = newValue.Value;
             $scope.data.dr_name = newValue.Key;
             $scope.data.type_name = newValue.type_name;
             
@@ -1403,7 +1409,7 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
         if (newValue && newValue.Value && newValue.Value != oldValue.Value) {
             
             console.log(newValue);
-            $scope.getItemList(newValue.Value);
+            $scope.getItemList(newValue.Value,$rootScope.dr_id);
             // console.log($scope.search.categoryName);
             
             // $scope.search.subCategoryName = { Key: "Select Sub Category", Value: "" };

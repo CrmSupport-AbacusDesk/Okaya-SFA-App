@@ -988,6 +988,17 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
+
+  .state('tab.sfa_dr_campaign', {
+    url: '/sfa_dr_campaign',
+    cache: false,
+    views: {
+      'tab-menu': {
+        templateUrl: 'templates/okaya_sfa/sfa_dr_campaign.html',
+        controller: 'networkController'
+      }
+    }
+  })
   
   
   // $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';

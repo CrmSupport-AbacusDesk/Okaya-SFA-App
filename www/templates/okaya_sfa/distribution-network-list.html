@@ -48,7 +48,7 @@
         </ion-refresher>
     
         <div ng-repeat="row in myNetworkList" class="coman-list">
-            <div class="top-head" ng-click="goToNetworkDetail(row.id)">
+            <div class="top-head" ng-click="goToNetworkDetail(row.id,row.type_name)">
                 <ul>
                     <li>
                         <p>{{!row.dateCreatedInFormat ? 'N/A' : row.dateCreatedInFormat}}</p>
@@ -66,9 +66,9 @@
             </div>
             
             <div class="center-item">
-                <div class="cs-icon" ng-click="goToNetworkDetail(row.id)">{{row.dr_name[0] ? row.dr_name[0] : '--'}}
+                <div class="cs-icon" ng-click="goToNetworkDetail(row.id,row.type_name)">{{row.dr_name[0] ? row.dr_name[0] : '--'}}
                 </div>
-                <div class="cs-content" ng-click="goToNetworkDetail(row.id)">
+                <div class="cs-content" ng-click="goToNetworkDetail(row.id,row.type_name)">
                     <p>{{row.dr_name ? row.dr_name : 'N/A'}} {{row.dr_code ? '('+row.dr_code+')' : ''}}</p>
                     <span>{{row.contact_name ? row.contact_name : 'N/A'}}</span>
                 </div>

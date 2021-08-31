@@ -109,9 +109,50 @@
             </div>
         </div>
         
+        <div class="pd-left-right16 mt20">
+            <section class="ac-container">
+                <figure class="mb0">
+                    <input id="ac-{{$index+1}}" name="accordion-1" type="checkbox" class="ds-none">
+                    <label for="ac-{{$index+1}}" class="header-label"> Campaign Management</label>
+                    <article class="padding0">
+                        <div class="offerlist">
+                            <a class="figure pb23" ng-click="goToCampaign(drDetail.drData.dr_name,drDetail.drData.dr_code,drDetail.drData.sfa_contact_no,drDetail.drData.id,row.id);" ng-repeat="row in drDetail.camp_data">
+                                <div class="desc">
+                                    <div class="off">
+                                        <h1>{{row.title}}</h1>
+                                        <p>{{row.camp_code}}</p>
+                                    </div>
+                                    <div class="gifts">
+                                        <div class="t-count">{{row.app_images}}</div>
+                                        <div class="gin">
+                                            <p>Attachment</p>
+                                            <p>Are Available</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="thumb">
+                                    <img ng-if="row.app_banner.image_name == ''" src="img/dft_product.svg" alt="">
+                                    <img ng-if="row.app_banner.image_name != ''" src="{{uploadURL+row.app_banner.image_name}}" alt="">
+                                </div>
+                                <span class="flag-discount st-tube" ng-class="{'deactive': row.camp_status == 'Deactive'}">{{row.camp_status}}</span>
+                            </a>
+                        </div>
+
+                        <div class="data-not-found center h130" ng-if="drDetail.camp_data.length == 0">
+                            <div class="outer">
+                                <div class="innear">
+                                    <img src="img/data-not-found.svg" alt="">
+                                    <h2 class="mt10">Temporarily , No Data Available!</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </figure>
+            </section>
+        </div>
         
         <div ng-if="drDetail && drDetail.drData" class="forword-page flat-item anchor-bdr padding16">
-                        
+            
             <!-- <a ng-if="drDetail.drData.type_name=='Dealer'" ng-click="gotoPage(drDetail.drData.id,drDetail.drData.dr_name,drDetail.drData.sfa_contact_no,'scheme_enroll')" class="no-height">
                 <p class="df jcc" ng-if="drDetail.scheme_enroll==true"><span class="df"><i class="material-icons">check_circle</i></span></p>
                 <p class="df jcc" ng-if="drDetail.scheme_enroll==false"><span class="df"><i class="material-icons red-text">cancel</i></span></p>
@@ -185,7 +226,7 @@
                 </div>
             </div>
         </div>
-       
+        
         <div class="h70"></div>
     </ion-content>
     

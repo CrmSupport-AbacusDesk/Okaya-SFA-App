@@ -152,6 +152,7 @@ li {
 .text-left{text-align: left !important;}
 .font500{font-weight: 500 !important;}
 .position-inherit{position: inherit !important;}
+.hidden{overflow: scroll;}
 
 .ab-center {
   left: 0px;
@@ -1645,14 +1646,14 @@ ion-slide {
   display: none !important
 }
 
-.cs-slider {
+/* .cs-slider {
   position: relative;
   box-shadow: 0px 3px 6px 0px #ccc
 }
 
 .cs-slider .swiper-wrapper {
   position: inherit
-}
+} */
 
 .user-list .list .item {
   padding: 10px;
@@ -11546,6 +11547,7 @@ ul.left-auto li
 .border-left0{border-left: 0px !important;}
 .border-right0{border-right: 0px !important;}
 .border1px{border: 1px solid #ccc !important;}
+.border1px-solid{border: 1px solid !important;}
 .box-shadow-none{box-shadow: none !important;}
 .border-radius{border-radius: 0px !important;}
 .border-radius3{border-radius: 3px !important;}
@@ -13864,6 +13866,7 @@ span.progress-bar span.inside
   box-shadow: 0px 10px 16px 0px rgba(255, 255, 255, 0.5);
 }
 .radius0{border-radius: 0px !important;}
+.radius4{border-radius: 4px !important;}
 .no-shadow{box-shadow: none !important;}
 .bdr-botm{border-bottom: 3px solid #737373 !important;}
 .bdr-top1{border-top: 1px solid #cccccc !important;}

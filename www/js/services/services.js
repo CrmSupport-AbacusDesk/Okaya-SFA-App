@@ -388,7 +388,7 @@ angular.module('starter.services', [])
         
         
         /*DR Detail function  start*/
-        getDrDetailData: function (drId) {
+        getDrDetailData: function (drId,drType) {
             
             var deferred = $q.defer();
             var promise = deferred.promise;
@@ -397,7 +397,8 @@ angular.module('starter.services', [])
             $http.post(serverURL + "/App_Customer/getDetail", {
                 
                 loginData: myAllSharedService.loginData,
-                drId: drId
+                drId: drId,
+                drType: drType
                 
             }, { timeout: 30000 }).then(function (response) {
                 
@@ -432,6 +433,95 @@ angular.module('starter.services', [])
         },
         /* DR Detail function end*/
         
+        /*Campaign Detail function  start*/
+        getCampaignDetail: function (camp_id,drId) {
+            
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+            
+            // $http.post(serverURL+"/App_Customer/getDrDetail", {
+            $http.post(serverURL + "/App_Customer/getCampDetail", {
+                
+                loginData: myAllSharedService.loginData,
+                camp_id: camp_id,
+                drId: drId
+                
+            }, { timeout: 30000 }).then(function (response) {
+                
+                console.log(response);
+                deferred.resolve(response.data);
+                
+            }, function (error) {
+                
+                $ionicLoading.hide();
+                
+                $ionicPopup.alert({
+                    title: 'Error!',
+                    template: 'Check Internet Connection, Try Again!'
+                });
+                
+                console.log("Server Error on 1st login: " + JSON.stringify(error));
+                deferred.reject(error);
+            });
+            
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            };
+            
+            promise.error = function (fn) {
+                
+                promise.then(null, fn);
+                return promise;
+            };
+            
+            return promise;
+        },
+        /* Campaign Detail function end*/
+        
+        /*Update Detail function  start*/
+        getUpdateCampaign: function (capm_data) {
+            
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+            
+            $http.post(serverURL + "/App_Customer/updateCampaign", {
+                
+                loginData: myAllSharedService.loginData,
+                capm_data: capm_data
+                
+            }, { timeout: 30000 }).then(function (response) {
+                
+                console.log(response);
+                deferred.resolve(response.data);
+                
+            }, function (error) {
+                
+                $ionicLoading.hide();
+                
+                $ionicPopup.alert({
+                    title: 'Error!',
+                    template: 'Check Internet Connection, Try Again!'
+                });
+                
+                console.log("Server Error on 1st login: " + JSON.stringify(error));
+                deferred.reject(error);
+            });
+            
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            };
+            
+            promise.error = function (fn) {
+                
+                promise.then(null, fn);
+                return promise;
+            };
+            
+            return promise;
+        },
+        /* Update Detail function end*/
         
         /* All Dr Stautus List function  start*/
         getDrAllStatusData: function () {

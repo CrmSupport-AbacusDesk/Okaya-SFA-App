@@ -215,22 +215,31 @@
                                 </div>
                             </div>
                             
+                            <!-- <label ng-class="{'has-error': AddForm.activityType.$invalid && AddForm.$submitted}" class="item-input item-select cs-select csm-input mb0">
+                                <div class="input-label">Select Activity Type</div>
+                                <select name="activityType" ng-model="data.activityType" required>
+                                    <option value="" disabled selected>Select Activity Type <sup>*</sup></option>
+                                    <option ng-show="row.name !='Call'" ng-repeat="row in activityTypeList" value="{{row.name}}">{{row.name}}</option>
+                                </select>
+                            </label> -->
+                            
                             <div ng-if="cartItemData.length > 0" class="cs-add-form mt15">
-                                <div class="field-input">
-                                    <select ng-model="data.deliveryBy" ng-change="onDeliveryByTypeChangeHandler(data.deliveryBy)" class="browser-default">
+                                <label class="item-input item-select cs-select csm-input" ng-class="{'has-error': AddForm.deliveryBy.$invalid && AddForm.$submitted}">
+                                    <div class="input-label">Select Delivery Type</div>
+                                    <select name="deliveryBy" ng-model="data.deliveryBy" ng-change="onDeliveryByTypeChangeHandler(data.deliveryBy)" required >
                                         <option value="" disabled selected>Delivery By Type</option>
                                         <option ng-show="data.type != 'Distributor'" value="Dealer">Dealer</option>
                                         <option ng-show="data.type != 'Distributor'" value="Distributor">Distributor</option>
                                         <option ng-show="data.type=='Distributor'" value="Company">Company</option>
                                     </select>
-                                </div>
+                                </label>
                             </div>
                             
-                            <div ng-show="(data.deliveryBy == 'Dealer' || data.deliveryBy == 'Distributor' ) && cartItemData.length > 0" class="cs-add-form mt15">
-                                <div class="field-input">
-                                    <label for="last_name" class="fix-label">Dispatch By Name <span>*</span></label>
-                                    <div class="add-css-select pt0 selectopt no-padding  add2">
-                                        <searchable-multiselect display-attr="Key" ng-change="onDeliveryByTypeChangeHandler(data.deliveryBy)" selected-items="data.dispatch_by" all-items="orderDispatchByData" add-item="dispatch_by_select(item)">
+                            <div ng-show="(data.deliveryBy == 'Dealer' || data.deliveryBy == 'Distributor' ) && cartItemData.length > 0" class="cs-add-form mt25" >
+                                <div class="field-input cs-select" ng-class="{'has-error border1px-solid': AddForm.dispatch_by.$invalid && AddForm.$submitted}">
+                                    <label for="" class="fix-label">Dispatch By Name <span>*</span></label>
+                                    <div class="no-padding">
+                                        <searchable-multiselect display-attr="Key" name="dispatch_by" ng-model="data.dispatch_by" ng-change="onDeliveryByTypeChangeHandler(data.deliveryBy)" selected-items="data.dispatch_by" all-items="orderDispatchByData" add-item="dispatch_by_select(item)" required>
                                         </searchable-multiselect>
                                     </div>
                                 </div>
@@ -297,7 +306,8 @@
                     </div>
                     
                     <div class="input-submit padding16">
-                        <button type="submit" ng-if="data.status == 'Win' && data.activityType !='Meeting'" ng-class="{'btn-opacity':!data.deliveryBy || !data.dispatch_by}" ng-disabled="!data.deliveryBy || !data.dispatch_by">Save</button>
+                        <!-- ng-class="{'btn-opacity':!data.deliveryBy || !data.dispatch_by}" ng-disabled="!data.deliveryBy || !data.dispatch_by" -->
+                        <button type="submit" ng-if="data.status == 'Win' && data.activityType !='Meeting'" ng-class="{'btn-opacity':!cartItemData.length}" ng-disabled="!cartItemData.length">Save</button>
                         <button type="submit" ng-if="data.activityType =='Meeting'">{{data.activityType == 'Meeting' ? 'Start Meeting' : 'Save'}}</button>
                         <button type="submit" ng-if="data.status != 'Win' && data.activityType !='Meeting'">{{data.activityType == 'Meeting' ? 'Start Meeting' : 'Save'}}</button>
                     </div>
