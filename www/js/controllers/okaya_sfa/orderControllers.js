@@ -644,7 +644,7 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
         });
     }
     
-    $scope.onGoToTargetDetailPage = function (month,year,target_percentage,target_value,target_achievement) {
+    $scope.onGoToprimaryTargetDetail = function (month,year,target_percentage,target_value,target_achievement) {
         myAllSharedService.drTypeFilterData.targetMonth = month;
         myAllSharedService.drTypeFilterData.targetYear = year;
         myAllSharedService.drTypeFilterData.target_percentage = target_percentage;
@@ -691,12 +691,83 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
         $scope.getTargetDetail();
     }
     
+    
     $scope.filter_year = '';
     $scope.clearTargetFilter = function () {
         console.log('clear Target Filter');
         $scope.filterActive = false;
         $scope.filter_year = '';
         $scope.getTargetListData();
+    }
+
+    $scope.filterActive = false;
+    $scope.getsecondaryTargetListData = function () {
+        $ionicLoading.show({
+            template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>'
+        });
+        
+        if ($scope.filter_year) {
+            $scope.targetList = [];
+            $scope.filterActive = true;
+        }
+        console.log($scope.filter_year);
+        
+        myRequestDBService.getsecondaryTargetList($scope.filter_year).then(function (response) {
+            console.log(response);
+            $scope.targetList = response.data;
+            console.log($scope.targetList);
+            $ionicLoading.hide();
+            
+        }, function (err) {
+            $ionicLoading.hide();
+            console.error(err);
+        });
+    }
+    
+    $scope.onGoTosecondaryTargetDetail = function (month,year,target_percentage,target_value,target_achievement) {
+        myAllSharedService.drTypeFilterData.targetMonth = month;
+        myAllSharedService.drTypeFilterData.targetYear = year;
+        myAllSharedService.drTypeFilterData.target_percentage = target_percentage;
+        myAllSharedService.drTypeFilterData.target_value = target_value;
+        myAllSharedService.drTypeFilterData.target_achievement = target_achievement;
+        console.log(myAllSharedService.drTypeFilterData);
+        $state.go('tab.secondary-target-detail');        
+    }
+    
+    $scope.getsecondaryTargetDetail = function () {
+        console.log($scope.targetMonth,$scope.targetYear);
+        
+        $ionicLoading.show({
+            template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>'
+        });
+        
+        myRequestDBService.getsecondaryTargetDetail($scope.targetMonth,$scope.targetYear).then(function (response) {
+            console.log(response);
+            $scope.targetdetail = response.data.data;
+            console.log($scope.targetdetail);
+            $ionicLoading.hide();
+            
+        }, function (err) {
+            $ionicLoading.hide();
+            console.error(err);
+        });
+    }
+
+    if ($location.path() == '/tab/secondary-target-list') {
+        $scope.getsecondaryTargetListData();
+    }
+
+    
+    if ($location.path() == '/tab/secondary-target-detail') {
+        console.log('SECONDARY TARGET DETAIL');
+        $scope.targetMonth = myAllSharedService.drTypeFilterData.targetMonth;
+        $scope.targetYear = myAllSharedService.drTypeFilterData.targetYear;
+        $scope.targetPercentage = myAllSharedService.drTypeFilterData.target_percentage;
+        $scope.targetValue = myAllSharedService.drTypeFilterData.target_value;
+        $scope.targetAchievement = myAllSharedService.drTypeFilterData.target_achievement;
+        console.log(myAllSharedService.drTypeFilterData);
+
+        $scope.getsecondaryTargetDetail();
     }
     
     // ----------------------Target Module Functions End--------------------------------- //

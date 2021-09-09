@@ -34,7 +34,7 @@
     
     <div class="search_filter">
         <div class="search-input">
-            <input type="text" name="search" ng-model="lead_filter.search"  ng-keyup="$event.keyCode == 13 ?getleadlist(lead_filter.leadFor,'',lead_filter.status) : null" placeholder="Search ...">
+            <input type="text" name="search" ng-model="lead_filter.search"  ng-keyup="$event.keyCode == 13 ?getleadlist(lead_filter.leadFor,'',lead_filter.status,lead_filter.activeTab) : null" placeholder="Search ...">
         </div>
         <a class="filter-btn" ng-click="filter(true)">
             <i class="material-icons">filter_list</i>
@@ -121,9 +121,28 @@
             </li>
         </ul>
     </div>
-    <div class="fix-add flat">
+
+    <!-- <div class="df ac jc ml16">
+        <input id="fabCheckbox" type="checkbox" class="fab-checkbox" />
+        <label class="fab" for="fabCheckbox">
+            <span class="fab-dots fab-dots-1"></span>
+            <span class="fab-dots fab-dots-2"></span>
+            <span class="fab-dots fab-dots-3"></span>
+        </label>
+        <div class="fab-wheel" >
+            <a class="fab-action fab-action-5" href="#/tab/lead-add">
+                <div class="text-line">
+                    <p>Add CVE Lead</p>
+                </div>
+                <i class="material-icons">queue</i>
+            </a>
+        </div>
+    </div> -->
+
+    <div class="fix-add flat with-text">
         <a href="#/tab/lead-add">
-            <i class="material-icons">add</i>
+            Add CVE Lead
+            <i class="material-icons">queue</i>
         </a>
     </div>
 </div>

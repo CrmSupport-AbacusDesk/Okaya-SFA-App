@@ -47,9 +47,10 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
         $state.go('tab.network-add');
     }
     
-    $scope.goToNetworkDetail = function(drId)
+    $scope.goToNetworkDetail = function(drId,drType)
     {
         myAllSharedService.drTypeFilterData.drId = drId;
+        myAllSharedService.drTypeFilterData.drType = drType;
         $state.go('tab.network-detail');
     }
     
@@ -312,7 +313,7 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
         
     }
     
-    $scope.getDrDetailData = function(drId) {
+    $scope.getDrDetailData = function(drId,drType) {
         
         $ionicLoading.show({
             template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>'
@@ -320,7 +321,7 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
         
         $scope.isRequestInProcess = true;
         
-        myRequestDBService.getDrDetailData(drId)
+        myRequestDBService.getDrDetailData(drId,drType)
         .then(function(response) {
             
             console.log(response);
@@ -2161,10 +2162,11 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
     if($location.path() == '/tab/network-detail')
     {
         $scope.data.drId = myAllSharedService.drTypeFilterData.drId;
-        console.log("Network Detail = >",$scope.data.drId);
+        $scope.data.drType = myAllSharedService.drTypeFilterData.drType;
+        console.log("Network Detail = >",$scope.data.drId,$scope.data.drType);
         if($scope.data.drId)
         {
-            $scope.getDrDetailData($scope.data.drId)
+            $scope.getDrDetailData($scope.data.drId,$scope.data.drType)
         }
     }
     

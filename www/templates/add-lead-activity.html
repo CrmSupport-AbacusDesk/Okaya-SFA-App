@@ -73,7 +73,7 @@
                         <div ng-if="data.activityType !='Meeting'" class="form-space">
                             <label class="item-input item-select cs-select csm-input mb0" ng-class="{'has-error': AddForm.status.$invalid && AddForm.$submitted}">
                                 <div class="input-label">Update Lead Status</div>
-                                <select name="status" ng-model="data.status" ng-change="getReason(data.status);getLeadCategoryList(data.status);onGetProductCategoryList()" required>
+                                <select name="status" ng-model="data.status" ng-change="getReason(data.status);getLeadCategoryList(data.status);onGetProductCategoryList();CHECK_STATUS_QUALIFIED();" required>
                                     <option value="" disabled selected>Select Lead Status <sup>*</sup></option>
                                     <option ng-repeat="row in leadStatusList" value="{{row.status_name}}">{{row.status_name}}</option>
                                 </select>
@@ -85,7 +85,7 @@
                                 
                                 <div class="input-label">Update Lead Category</div>
                                 
-                                <select name="category" ng-model="data.category"  ng-options="row.name as row.name for row in leadCategoryList" required>
+                                <select name="lead_category" ng-model="data.lead_category"  ng-options="row.name as row.name for row in leadCategoryList" required>
                                     
                                     <option value="" disabled selected>Select Lead Category <sup>*</sup></option>
                                     
@@ -99,7 +99,7 @@
                                 <div class="input-label">
                                     {{(data.status == 'Qualified' || data.status == 'Validate') ? 'No Closer Reason' : 'Status Reason'}}
                                 </div>
-                                <select name="reason" ng-model="data.reason" ng-change="CHECK_POSTPONE()" required>
+                                <select name="reason" ng-model="data.reason" ng-change="CHECK_POSTPONE();CHECK_STATUS_QUALIFIED();" required>
                                     <option value="" disabled selected>Select {{data.status}} Reason <sup>*</sup></option>
                                     <option ng-repeat="row in leadReasonList" value="{{row.name}}">{{row.name}}</option>
                                 </select>
@@ -145,27 +145,27 @@
                                 <div class="input-field field-input wp100">
                                     <input ng-model="data.rate" name="rate" id="rate"
                                     ng-change="onCalculateItemTotalHandler('Order')" type="number" class="validate">
-                                    <label class="active" for="last_name">Rate</label>
+                                    <label class="active" for="last_name">Amount with GST</label>
                                 </div>
                                 
                                 <div class="input-field field-input wp100 mr0">
-                                    <input ng-model="data.discountPercent" name="discountPercent" id="discountPercent"
-                                    type="number" ng-change="onCalculateItemTotalHandler('Order')" class="validate">
-                                    <label class="active" for="last_name">Discount (%)</label>
+                                    <input ng-model="data.gstPercent" name="gstPercent" id="gstPercent" type="number"
+                                    ng-change="onCalculateItemTotalHandler('Order')" class="validate">
+                                    <label class="active" for="last_name">GST (%)</label>
                                 </div>
                             </div>
                             
                             <div class="flex-input">
                                 <div class="input-field field-input wp100">
-                                    <input ng-model="data.gstPercent" name="gstPercent" id="gstPercent" type="number"
-                                    ng-change="onCalculateItemTotalHandler('Order')" class="validate">
-                                    <label class="active" for="last_name">GST (%)</label>
+                                    <input ng-model="data.discountPercent" name="discountPercent" id="discountPercent"
+                                    type="number" ng-change="onCalculateItemTotalHandler('Order')" class="validate">
+                                    <label class="active" for="last_name">Discount (%)</label>
                                 </div>
                                 
                                 <div class="input-field field-input wp100">
                                     <input ng-model="data.itemFinalAmount" name="itemFinalAmount" id="itemFinalAmount"
                                     type="number" class="validate" readonly>
-                                    <label class="active" for="last_name">Amount</label>
+                                    <label class="active" for="last_name">Basic Amount</label>
                                 </div>
                                 
                                 <a ng-click="onAddToCartHandler('Order')" class="cs-btn" ng-class="{'btn-opacity':!data.product}" ng-disabled="!data.product">

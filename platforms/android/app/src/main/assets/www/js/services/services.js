@@ -388,7 +388,7 @@ angular.module('starter.services', [])
         
         
         /*DR Detail function  start*/
-        getDrDetailData: function (drId) {
+        getDrDetailData: function (drId,drType) {
             
             var deferred = $q.defer();
             var promise = deferred.promise;
@@ -397,7 +397,8 @@ angular.module('starter.services', [])
             $http.post(serverURL + "/App_Customer/getDetail", {
                 
                 loginData: myAllSharedService.loginData,
-                drId: drId
+                drId: drId,
+                drType: drType
                 
             }, { timeout: 30000 }).then(function (response) {
                 
@@ -1560,6 +1561,64 @@ angular.module('starter.services', [])
             var deferred = $q.defer();
             var promise = deferred.promise;
             $http.post(serverURL + "/okaya_sfa/Distribution_Network/distributorTargetDetail",
+            {
+                loginData: myAllSharedService.loginData,
+                month: month,
+                year: year
+                
+            }, { timeout: 30000 }).then(function (response) {
+                
+                console.log(response);
+                deferred.resolve(response);
+            });
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            };
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            };
+            
+            return promise;
+        },
+
+        getsecondaryTargetList: function (filter_year) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+            
+            $http.post(serverURL + "/okaya_sfa/Distribution_Network/dealerTargetList",
+            {
+                loginData: myAllSharedService.loginData,
+                filter_year : filter_year
+                
+            }).then(function (response) {
+                console.log(response);
+                deferred.resolve(response.data);
+            }, function (error) {
+                $ionicLoading.hide();
+                $ionicPopup.alert({
+                    title: 'Error!',
+                    template: 'Check Internet Connection, Try Again!'
+                });
+                deferred.reject(error);
+            });
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            };
+            promise.error = function (fn) {
+                
+                promise.then(null, fn);
+                return promise;
+            };
+            return promise;
+        },
+        
+        getsecondaryTargetDetail: function (month,year) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+            $http.post(serverURL + "/okaya_sfa/Distribution_Network/dealerTargetDetail",
             {
                 loginData: myAllSharedService.loginData,
                 month: month,

@@ -33,7 +33,7 @@
                         <div class="off">
                             <h1>{{campaignDetail.title}} / {{campaignDetail.camp_code}}</h1>
                             <p class="mb0">Start Date : {{dateFormat(campaignDetail.start_date)}}</a></p>
-                            <p>End Date : {{dateFormat(campaignDetail.end_date)}}<a class="font11" href="#/orptab/orp_term_condition" style="text-decoration: none;">Status : {{campaignDetail.camp_status}}</a></p>
+                            <p>End Date : {{dateFormat(campaignDetail.end_date)}}<a class="font11" style="text-decoration: none;">Status : {{campaignDetail.camp_status}}</a></p>
                         </div>
                         <div class="bottom-sec" style="margin: 4px -10px -10px -10px;" ng-if="campaignDetail.description">
                             <p><strong>Description</strong><span ng-bind-html="campaignDetail.description"></span></p>
@@ -47,8 +47,9 @@
 
                     <div class="upload-doc mt0">
                         <ul>
-                            <li class="image-upload" ng-repeat="row in campaignDetail.campaign_banner" ng-click="schemeOpenModel(row.image_name)">
-                                <img src="{{uploadURL+row.image_name}}">
+                            <!-- ng-click="schemeOpenModel(row.image_name)" -->
+                            <li class="image-upload" ng-repeat="row in campaignDetail.campaign_banner" >
+                                <img src="{{uploadURL+row.image_name}}" ng-click="showImages(0,row.image_name)">
                             </li>
                         </ul>
                     </div>

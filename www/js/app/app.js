@@ -456,6 +456,28 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
+
+  .state('tab.secondary-target-list', {
+    url: '/secondary-target-list',
+    cache: false,
+    views: {
+      'tab-menu': {
+        templateUrl: 'templates/okaya_sfa/secondary-target-list.html',
+        controller: 'sfaOrderCtrl'
+      }
+    }
+  })
+
+  .state('tab.secondary-target-detail', {
+    url: '/secondary-target-detail',
+    cache: false,
+    views: {
+      'tab-menu': {
+        templateUrl: 'templates/okaya_sfa/secondary-target-detail.html',
+        controller: 'sfaOrderCtrl'
+      }
+    }
+  })
   
   .state('tab.menu', {
     url: '/menu',
