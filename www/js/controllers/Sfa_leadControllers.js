@@ -34,6 +34,23 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
         }
     }
     
+    $scope.CHECK_STATUS_QUALIFIED = function()
+    {
+        console.log($scope.data.status);
+        
+        if ($scope.data.status && $scope.data.status == "Qualified")
+        {
+            $scope.data.isFollowUp = true;
+            $scope.data.disabled = true;
+        }
+        else
+        {
+            $scope.data.isFollowUp = false;
+            $scope.data.disabled = false;
+            
+        }
+    }
+    
     // $scope.currentDate = moment().format('YYYY-MM-DD');
     $scope.selectedDate = moment().format('YYYY-MM-DD');
     $scope.currentDate = new Date();
@@ -163,7 +180,9 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
                 $scope.noMoreListingAvailable = true;
             }
             $scope.leadListData = $scope.leadListData.concat(response.data);
-            
+            $scope.leadActivityDoneCount = response.activity_done_count;
+            $scope.leadActivityNotDoneCount = response.activity_not_done_count;
+            console.log($scope.leadActivityDoneCount);
             $scope.lead_filter.myCount = response.myAssign;
             $scope.lead_filter.teamCount = response.teamAssign;
             // $scope.lead_filter.activity_done = response.activity_done;
@@ -228,15 +247,22 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
             if (response.status == "Success") {
                 console.log('Success');
                 setTimeout(() => {
-                    $state.go('tab.lead-list');
                     
                     $ionicPopup.alert({
                         title: 'Success',
-                        template: 'Lead Added succesfully'
+                        template: response.message
                     });
                     
+                    $state.go('tab.lead-list');
                 }, 500);
                 
+            }
+            else
+            {
+                $ionicPopup.alert({
+                    title: 'Error!',
+                    template: 'Something went wrong !!'
+                });
             }
         });
     }
@@ -674,7 +700,11 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
     
     $scope.ProductCategoryList = [];
     $scope.getProductCategoryList = function () {
-        var parameter = { function_name: 'getProductCategoryList' };
+        var parameter = { function_name: 'getProductCategoryList'};
+        if($location.path() == '/tab/lead-add')
+        {
+            parameter.source_from = 'lead-add';
+        }
         myRequestDBService.sfaPostServiceRequest("/Okaya_LMS/getPostData", parameter).then(function (response) {
             console.log(response);
             $scope.ProductCategoryList = response.data;
@@ -685,6 +715,10 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
     $scope.ProductSubCategoryList = [];
     $scope.getProductSubCategoryList = function (category) {
         var parameter = { function_name: 'getProductSubCategory', 'category': category };
+        if($location.path() == '/tab/lead-add')
+        {
+            parameter.source_from = 'lead-add';
+        }
         myRequestDBService.sfaPostServiceRequest("/Okaya_LMS/getPostData", parameter).then(function (response) {
             console.log(response);
             $scope.ProductSubCategoryList = response.data;
@@ -850,7 +884,7 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
             
             $ionicLoading.hide();
             if (response.status == 'Success') {
-
+                
                 $state.go('tab.lead-activity-list');
             }
             else {
@@ -868,11 +902,11 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
         });
         
     }
-
+    
     $scope.onSaveLeadOrderData = function () {
-
+        
         var orderData = {};
-
+        
         if ($scope.drDetail.dr_id) {
             orderData.dr_name = $scope.drDetail.dr_name;
             orderData.dr_id = $scope.drDetail.dr_id;
@@ -886,11 +920,11 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
         orderData.dispatch_by_id = $scope.data.dispatch_by_id;
         orderData.orderDetail = $scope.cartSummaryData;
         orderData.order_item = $scope.cartItemData;
-
+        
         $ionicLoading.show({
             template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>'
         });
-
+        
         var parameter = { function_name: 'submitOrder', 'data': orderData };
         myRequestDBService.sfaPostServiceRequest("/Okaya_LMS/getPostData", parameter).then(function (response) {
             console.log(response);
@@ -1101,8 +1135,12 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
                     else {
                         console.log("else in if");
                         $ionicLoading.hide();
-
-                        $scope.onSaveLeadOrderData();
+                        
+                        if ($scope.data.status == "Win") 
+                        {
+                            console.log('in condition');
+                            $scope.onSaveLeadOrderData();
+                        }
                         $scope.onSaveActivityHandler('', '');
                         
                     }
@@ -1413,7 +1451,11 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
             sgstAmount = 0;
             
             igstPercent = gstPercentApply;
-            igstAmount = $scope.data.discountedAmount * (igstPercent / 100);
+            igstAmount = (($scope.data.discountedAmount / (igstPercent+100)) * 100);
+            // igstAmount = $scope.data.discountedAmount * (igstPercent / 100);
+            console.log($scope.data.discountedAmount);
+            console.log(igstPercent);
+            console.log(igstAmount);
         }
         
         $scope.data.cgstPercent = cgstPercent;
@@ -1427,7 +1469,8 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
         
         $scope.data.itemGstAmount = $scope.data.cgstAmount + $scope.data.sgstAmount + $scope.data.igstAmount;
         
-        $scope.data.itemFinalAmount = $scope.data.discountedAmount + $scope.data.itemGstAmount;
+        $scope.data.itemFinalAmount = $scope.data.itemGstAmount;
+        // $scope.data.itemFinalAmount = $scope.data.discountedAmount + $scope.data.itemGstAmount;
         
         console.log($scope.data);
     }
@@ -1617,51 +1660,51 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
             
         });
     }
-
+    
     $scope.orderDispatchByData = [];
-
+    
     $scope.onDeliveryByTypeChangeHandler = function (dispatchBy) {
-
+        
         console.log(dispatchBy);
-
+        
         $scope.orderDispatchByData = [];
-
+        
         var url;
-
+        
         if (dispatchBy == 'Dealer') {
             url = 'GET_DEALET_DATA';
         }
         else {
             url = "getDistributorData";
         }
-
+        
         if (dispatchBy != 'Company') 
         {
             $ionicLoading.show({
                 template: '<ion-spinner icon="android"></ion-spinner><p>Loading...</p>'
             });
-
+            
             myRequestDBService.onGetPostRequest('/App_Expense/' + url, '')
-                .then(function (result) {
-
-                    $ionicLoading.hide();
-                    console.log(result);
-                    $scope.search.dealerName = [];
-
-                    $scope.orderDispatchByData = result.data;
-
-                    fetchingRecords = false;
-
-                }, function (errorMessage) {
-                    console.log(errorMessage);
-                    window.console.warn(errorMessage);
-                    $ionicLoading.hide();
-                    fetchingRecords = false;
-                });
+            .then(function (result) {
+                
+                $ionicLoading.hide();
+                console.log(result);
+                $scope.search.dealerName = [];
+                
+                $scope.orderDispatchByData = result.data;
+                
+                fetchingRecords = false;
+                
+            }, function (errorMessage) {
+                console.log(errorMessage);
+                window.console.warn(errorMessage);
+                $ionicLoading.hide();
+                fetchingRecords = false;
+            });
         }
-
+        
     }
-
+    
     $scope.dispatch_by_select = function (item) {
         console.log(item);
         $scope.data.dispatch_by = new Array();
@@ -1669,7 +1712,7 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
         console.log($scope.data.dispatch_by);
         $scope.data.dispatch_by_id = item.Value;
         $scope.data.dispatch_by_name = item.Key;
-
+        
     }
     
     // $scope.GoToActivitylist = function (id, dr_name, contact_mobile_no) {
@@ -1722,7 +1765,7 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
     }
     
     if ($location.path() == '/tab/lead-add') {
-        $scope.getleadAdd();
+        // $scope.getleadAdd();
         $scope.getLeadType();
         $scope.getProductCategoryList(myRequestDBService.category, myRequestDBService.sub_category, myRequestDBService.product_name);
         

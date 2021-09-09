@@ -456,6 +456,28 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
+
+  .state('tab.secondary-target-list', {
+    url: '/secondary-target-list',
+    cache: false,
+    views: {
+      'tab-menu': {
+        templateUrl: 'templates/okaya_sfa/secondary-target-list.html',
+        controller: 'sfaOrderCtrl'
+      }
+    }
+  })
+
+  .state('tab.secondary-target-detail', {
+    url: '/secondary-target-detail',
+    cache: false,
+    views: {
+      'tab-menu': {
+        templateUrl: 'templates/okaya_sfa/secondary-target-detail.html',
+        controller: 'sfaOrderCtrl'
+      }
+    }
+  })
   
   .state('tab.menu', {
     url: '/menu',
@@ -984,6 +1006,17 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
     views: {
       'tab-imgdoc': {
         templateUrl: 'templates/okaya_sfa/gallery.html',
+        controller: 'networkController'
+      }
+    }
+  })
+
+  .state('tab.sfa_dr_campaign', {
+    url: '/sfa_dr_campaign',
+    cache: false,
+    views: {
+      'tab-menu': {
+        templateUrl: 'templates/okaya_sfa/sfa_dr_campaign.html',
         controller: 'networkController'
       }
     }

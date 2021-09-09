@@ -1,0 +1,114 @@
+<ion-view view-title="Campaign Management">
+    
+    <ion-nav-buttons side="left">
+        <a ng-click="goToBackPageHandler()"
+        class="cs-backbtn button button-icon icon ion-android-arrow-back font18 fff"></a>
+    </ion-nav-buttons>
+    
+    <ion-nav-buttons side="right" class="custom-right-btn">
+        <!-- <div ng-if="drDetail.drData.type_id != '6' && drDetail.drData.type_id != '12'"
+            ng-click="onShowPopUpHandler($event, drDetail.drData.id, 'leadDetail')" class="right-nav-btn nav-search">
+            <a><i class="material-icons">more_vert</i></a>
+        </div> -->
+    </ion-nav-buttons>
+    
+    <ion-content>
+        <form name="Addform" novalidate ng-submit="Addform.$valid ? updateCampaign() : ''">
+            
+            <div class="coman-list clrd-bg sticky">
+                <div class="center-item">
+                    <div class="cs-icon">{{drName[0]}}</div>
+                    <div class="cs-content">
+                        <p class="mb0">{{drName}}</p>
+                        <span>{{drCode}}</span>
+                    </div>
+                    
+                    <a href="tel: {{drMobile}}" class="dialer"><i class="material-icons">call</i></a>
+                </div>
+            </div>
+            
+            <div class="offerlist ofdetail">
+                <div class="figure mt0">
+                    <div class="desc">
+                        <div class="off">
+                            <h1>{{campaignDetail.title}} / {{campaignDetail.camp_code}}</h1>
+                            <p class="mb0">Start Date : {{dateFormat(campaignDetail.start_date)}}</a></p>
+                            <p>End Date : {{dateFormat(campaignDetail.end_date)}}<a class="font11" style="text-decoration: none;">Status : {{campaignDetail.camp_status}}</a></p>
+                        </div>
+                        <div class="bottom-sec" style="margin: 4px -10px -10px -10px;" ng-if="campaignDetail.description">
+                            <p><strong>Description</strong><span ng-bind-html="campaignDetail.description"></span></p>
+                        </div>
+                        <div class="bottom-sec" style="margin: 6px -10px -10px -10px;background: #e6e6e6cc;" ng-if="campaignDetail.app_remark">
+                            <p class="clamp2"><strong>Remark</strong>: 
+                                <span>{{campaignDetail.app_remark}}</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="upload-doc mt0">
+                        <ul>
+                            <!-- ng-click="schemeOpenModel(row.image_name)" -->
+                            <li class="image-upload" ng-repeat="row in campaignDetail.campaign_banner" >
+                                <img src="{{uploadURL+row.image_name}}" ng-click="showImages(0,row.image_name)">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+                        
+            <div class="pd-left-right16">
+                <div class="upload-doc mt20">
+                    <div class="font13 font500">
+                        Campaign Image <span class="font10 red-text">(Only 5)</span>
+                    </div>
+                    <ul class="no-padding">
+                        <li class="image-upload" ng-repeat="row in campaignDetail.attachment_image">
+                            <img src="{{uploadURL+row.image_name}}">
+                            <!-- <button class="del" ng-click="delete_camp_img($index,row)"><i class="material-icons">delete_sweep</i></button> -->
+                        </li>
+                        <li class="image-upload" ng-repeat="mediadatas in mediaData">
+                            <img src="{{mediadatas.src}}">
+                            <!-- <button class="del" ng-click="delete_camp_img($index)"><i class="material-icons">delete_sweep</i></button> -->
+                        </li>
+                        <li class="add-image" ng-click="open_camera();" ng-if="mediaData.length < 5">
+                            <i class="material-icons">add_a_photo</i>
+                            <p>Add Image</p>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="cs-add-form">
+                    <div ng-class="{'has-error': Addform.remark.$invalid && Addform.$submitted}"  class="input-field field-input">
+                        <textarea ng-model = "data.remark"  name = "remark" class="validate" style="height: 100px !important;" required></textarea>
+                        <label for="last_name">Remark</label>
+                    </div>
+                </div>
+                
+                <div class="cs-save-btn mt20">
+                    <button type="submit" class="wp100">Save</button>
+                </div>
+            </div>
+        </form>      
+        <div class="h50"></div>
+    </ion-content>
+
+    <script id="scheme_count" type="text/ng-template">
+        <ion-modal-view style="background: rgba(0, 0, 0, 0.7);">
+            <div class="orp_model padding10">
+                <div class="model_container ht100">
+                    <button ng-click="schemeCloseModel()" class="model_cancel"><i class="material-icons">cancel</i></button>
+                    
+                    <div class="mini_container ht100 padding16">
+                        <div class="md_heading mb16"><h1>Campaign Image</h1></div>
+                        
+                        <div class="md_body ht100">
+                            <div class="bt-container ht100 hidden">
+                                <img class="ht100" src="{{uploadURL+camp_image}}">
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </ion-modal-view>
+    </script>
+</ion-view>

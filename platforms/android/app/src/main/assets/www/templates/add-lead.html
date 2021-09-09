@@ -38,79 +38,74 @@
                     <div class="input-field field-input" ng-class="{'has-error': Addform.customerMobile.$invalid && Addform.$submitted}">
                         <input id="customerMobile" ng-model="data.customerMobile" type="number" name="customerMobile" minlength="10" maxlength="10" limit-to="10" class="validate" string-to-number required>
                         <label>Mobile<span>*</span></label>
-                        <span class="error-left relative" ng-show="Addform.$submitted && Addform.customerMobile.$error.minlength">* Mobile No. Must be
-                            10 Digit</span>
-                        </div>
-                        
-                        <div class="input-field field-input" ng-class="{'has-error': Addform.email.$invalid && Addform.$submitted}">
-                            <input class="validate" id="email" type="email" ng-model="data.email" name="email">
-                            <label>Email<span>*</span></label>
-                            <span class="error-left relative" ng-show="Addform.$submitted && Addform.email.$invalid && Addform.email.$error.required">*
-                                Email Invalid</span>
-                            </div>
-                        </div>
-                        
-                        <div class="cs-bg-heading padding0">
-                            <h2>Address Information</h2>
-                        </div>
-                        
-                        <div class="cs-add-form">
-                            <div class="input-field field-input" ng-class="{'has-error': Addform.pincode.$invalid && Addform.$submitted}">
-                                <input name="pincode" type="number" ng-model="data.pincode" id="pincode" class="validate" limit-to="6" maxlength="6" minlength="6" string-to-number ng-change="getPincodeAddess(data.pincode)" required>
-                                <label class="fix-label">Pincode <span>*</span></label>
-                                <span class="error-left relative" ng-show="Addform.$submitted && Addform.pincode.$invalid && !Addform.pincode.$error.required">* Pincode Must be 6 Digit!</span>
-                            </div>
-                            
-                            <div class="input-field field-input" ng-class="{'has-error': Addform.state_name.$invalid && Addform.$submitted}">
-                                <label class="fix-label">State<span>*</span></label>
-                                <input name="state_name" type="text" ng-model="data.state_name" id="state_name" class="validate"
-                                readonly required>
-                            </div>
-                            
-                            <div class="input-field field-input" ng-class="{'has-error': Addform.district_name.$invalid && Addform.$submitted}">
-                                <label class="fix-label">District<span>*</span></label>
-                                <input name="district_name" ng-model="data.district_name" id="district_name" type="text"
-                                class="validate" readonly required>
-                            </div>
-                            
-                            <div class="input-field field-input" ng-class="{'has-error': Addform.city.$invalid && Addform.$submitted}">
-                                <label class="fix-label">City <span>*</span></label>
-                                <input ng-model="data.city" name="city" id="city" type="text" class="validate" replace="[^a-zA-Z]" with="" required>
-                            </div>
-                            
-                            <div class="input-field field-input" ng-class="{'has-error': Addform.area.$invalid && Addform.$submitted}">
-                                <textarea ng-model="data.area" name="area" style="height: 80px !important;" required></textarea>
-                                <label class="fix-label">Street<span>*</span></label>
-                                <span class="error-left relative" ng-show="Addform.$submitted && Addform.area.$error.minlength">* Street Must be Minimum 10 Letters!</span>
-                            </div>
-                        </div>
-                        
-                        <div class="cs-bg-heading padding0">
-                            <h2>Requirment Information</h2>
-                        </div>
-                        
-                        <div class="cs-add-form">
-                            
-                            <div class="field-input mt20" ng-class="{'has-error': Addform.category.$invalid && Addform.$submitted}">
-                                <labelclass="fix-label">Product Category</label>
-                                <select class="browser-default" ng-model="data.category" name="category" ng-change="getProductSubCategoryList(data.category)" ng-options="itemRow.category as itemRow.category for itemRow in ProductCategoryList" required>
-                                    <option value="" disabled selected>Select Category<span>*</span></option>
-                                </select>
-                            </div>
-                            
-                            <div class="field-input mt20" ng-if="data.category" ng-class="{'has-error': Addform.sub_category.$invalid && Addform.$submitted}">
-                                <label class="fix-label">Product Sub Category</label>
-                                <select class="browser-default" ng-model="data.sub_category" name="sub_category" ng-change="getProductList(data.category,data.sub_category,data.product_name)" ng-options="itemRow.sub_category as itemRow.sub_category for itemRow in ProductSubCategoryList" required>
-                                    <option value="" disabled selected>Select Sub Category<span>*</span></option>
-                                </select>
-                            </div>
-                            
-                            <div class="field-input mt20" ng-if="data.sub_category"
-                            ng-class="{'has-error': Addform.product_name.$invalid && Addform.$submitted}">
-                            <label class="fix-label">Select Product</label>
-                            <select class="browser-default" ng-model="data.id" name="product_name"
-                            ng-change="productDetails(data.id)"
-                            ng-options="itemRow.id as itemRow.product_name for itemRow in ProductList">
+                        <span class="error-left relative" ng-show="Addform.$submitted && Addform.customerMobile.$error.minlength">* Mobile No. Must be 10 Digit</span>
+                    </div>
+                    
+                    <div class="input-field field-input" ng-class="{'has-error': Addform.email.$invalid && Addform.$submitted}">
+                        <input class="validate" id="email" type="email" ng-model="data.email" name="email">
+                        <label>Email<span>*</span></label>
+                        <span class="error-left relative" ng-show="Addform.$submitted && Addform.email.$invalid && Addform.email.$error.required">* Email Invalid</span>
+                    </div>
+                </div>
+                
+                <div class="cs-bg-heading padding0">
+                    <h2>Address Information</h2>
+                </div>
+                
+                <div class="cs-add-form">
+                    <div class="input-field field-input" ng-class="{'has-error': Addform.pincode.$invalid && Addform.$submitted}">
+                        <input name="pincode" type="number" ng-model="data.pincode" id="pincode" class="validate" limit-to="6" maxlength="6" minlength="6" string-to-number ng-change="getPincodeAddess(data.pincode)" required>
+                        <label class="fix-label">Pincode <span>*</span></label>
+                        <span class="error-left relative" ng-show="Addform.$submitted && Addform.pincode.$invalid && !Addform.pincode.$error.required">* Pincode Must be 6 Digit!</span>
+                    </div>
+                    
+                    <div class="input-field field-input" ng-class="{'has-error': Addform.state_name.$invalid && Addform.$submitted}">
+                        <label class="fix-label">State<span>*</span></label>
+                        <input name="state_name" type="text" ng-model="data.state_name" id="state_name" class="validate"
+                        readonly required>
+                    </div>
+                    
+                    <div class="input-field field-input" ng-class="{'has-error': Addform.district_name.$invalid && Addform.$submitted}">
+                        <label class="fix-label">District<span>*</span></label>
+                        <input name="district_name" ng-model="data.district_name" id="district_name" type="text"
+                        class="validate" readonly required>
+                    </div>
+                    
+                    <div class="input-field field-input" ng-class="{'has-error': Addform.city.$invalid && Addform.$submitted}">
+                        <label class="fix-label">City <span>*</span></label>
+                        <input ng-model="data.city" name="city" id="city" type="text" class="validate" replace="[^a-zA-Z]" with="" required>
+                    </div>
+                    
+                    <div class="input-field field-input" ng-class="{'has-error': Addform.area.$invalid && Addform.$submitted}">
+                        <textarea ng-model="data.area" name="area" style="height: 80px !important;" required></textarea>
+                        <label class="fix-label">Street<span>*</span></label>
+                        <span class="error-left relative" ng-show="Addform.$submitted && Addform.area.$error.minlength">* Street Must be Minimum 10 Letters!</span>
+                    </div>
+                </div>
+                
+                <div class="cs-bg-heading padding0">
+                    <h2>Requirment Information</h2>
+                </div>
+                
+                <div class="cs-add-form">
+                    
+                    <div class="field-input mt20" ng-class="{'has-error': Addform.category.$invalid && Addform.$submitted}">
+                        <labelclass="fix-label">Product Category</label>
+                        <select class="browser-default" ng-model="data.category" name="category" ng-change="getProductSubCategoryList(data.category)" ng-options="itemRow.category as itemRow.category for itemRow in ProductCategoryList" required>
+                            <option value="" disabled selected>Select Category<span>*</span></option>
+                        </select>
+                    </div>
+                    
+                    <div class="field-input mt20" ng-if="data.category" ng-class="{'has-error': Addform.sub_category.$invalid && Addform.$submitted}">
+                        <label class="fix-label">Product Sub Category</label>
+                        <select class="browser-default" ng-model="data.sub_category" name="sub_category" ng-change="getProductList(data.category,data.sub_category,data.product_name)" ng-options="itemRow.sub_category as itemRow.sub_category for itemRow in ProductSubCategoryList" required>
+                            <option value="" disabled selected>Select Sub Category<span>*</span></option>
+                        </select>
+                    </div>
+                    
+                    <div class="field-input mt20" ng-if="data.sub_category" ng-class="{'has-error': Addform.product_name.$invalid && Addform.$submitted}">
+                        <label class="fix-label">Select Product</label>
+                        <select class="browser-default" ng-model="data.id" name="product_name" ng-change="productDetails(data.id)" ng-options="itemRow.id as itemRow.product_name for itemRow in ProductList">
                             <option value="" disabled selected>Select Product<span>*</span></option>
                         </select>
                     </div>

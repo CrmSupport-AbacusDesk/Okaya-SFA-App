@@ -355,6 +355,14 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "clobbers": [
         "DocumentHandler"
       ]
+    },
+    {
+      "id": "@havesource/cordova-plugin-push.PushNotification",
+      "file": "plugins/@havesource/cordova-plugin-push/www/push.js",
+      "pluginId": "@havesource/cordova-plugin-push",
+      "clobbers": [
+        "PushNotification"
+      ]
     }
   ];
   module.exports.metadata = {
@@ -378,6 +386,6 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
     "cordova.plugins.diagnostic": "3.9.2",
     "cordova-plugin-document-viewer": "0.9.13",
     "polarcape-cordova-plugin-document-handler": "1.1.1",
-    "cordova-plugin-ionic-webview": "1.2.1"
+    "@havesource/cordova-plugin-push": "2.0.0"
   };
 });
