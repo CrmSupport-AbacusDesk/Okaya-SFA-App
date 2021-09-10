@@ -111,12 +111,13 @@
         </ul>
         <ul ng-if="lead_filter.status=='Qualified'">
             <li ng-click="getleadlist(lead_filter.leadFor,'',lead_filter.status,lead_filter.activeTab);lead_filter.activeTab = 'activity_done'" ng-class="lead_filter.activeTab == 'activity_done' ? 'active' : ''">
-                <a>Activity Done</a>
-                 <!-- <span>{{lead_filter.activity_done}}</span> -->
+                <a>Activity Done
+                    <span>{{leadActivityDoneCount}}</span>
+                </a>
             </li>
             <li ng-click="getleadlist(lead_filter.leadFor,'',lead_filter.status,lead_filter.activeTab);lead_filter.activeTab = 'activity_not_done'" ng-class="lead_filter.activeTab == 'activity_not_done' ? 'clr-red active' : ''">
                 <a ng-class="lead_filter.activeTab == 'activity_not_done' ? 'white-text' : ''">Activity Not Done 
-                    <!-- <span>{{lead_filter.activity_not_done}}</span> -->
+                    <span>{{leadActivityNotDoneCount}}</span>
                 </a>
             </li>
         </ul>
@@ -139,7 +140,7 @@
         </div>
     </div> -->
 
-    <div class="fix-add flat with-text">
+    <div class="fix-add with-text" style="bottom: 50px;">
         <a href="#/tab/lead-add">
             Add CVE Lead
             <i class="material-icons">queue</i>
@@ -151,12 +152,13 @@
     <div class="round-tab flat green-tab wp100">
         <ul ng-if="lead_filter.status=='Qualified'">
             <li ng-click="getleadlist(lead_filter.leadFor,'',lead_filter.status,lead_filter.activeTab);lead_filter.activeTab = 'activity_done'" ng-class="lead_filter.activeTab == 'activity_done' ? 'active' : ''">
-                <a>Activity Done</a>
-                 <!-- <span>{{lead_filter.activity_done}}</span> -->
+                <a>Activity Done
+                    <span>{{leadActivityDoneCount}}</span>
+                </a>
             </li>
             <li ng-click="getleadlist(lead_filter.leadFor,'',lead_filter.status,lead_filter.activeTab);lead_filter.activeTab = 'activity_not_done'" ng-class="lead_filter.activeTab == 'activity_not_done' ? 'clr-red active' : ''">
                 <a ng-class="lead_filter.activeTab == 'activity_not_done' ? 'white-text' : ''">Activity Not Done 
-                    <!-- <span>{{lead_filter.activity_not_done}}</span> -->
+                    <span>{{leadActivityNotDoneCount}}</span>
                 </a>
             </li>
         </ul>
