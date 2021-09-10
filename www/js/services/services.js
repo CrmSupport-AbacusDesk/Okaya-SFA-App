@@ -1640,6 +1640,96 @@ angular.module('starter.services', [])
             
             return promise;
         },
+
+        getDealerExpansionList: function (filter_year) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+            
+            $http.post(serverURL + "/okaya_sfa/Distribution_Network/dealerExpansionTargetList",
+            {
+                loginData: myAllSharedService.loginData,
+                filter_year : filter_year
+                
+            }).then(function (response) {
+                console.log(response);
+                deferred.resolve(response.data);
+            }, function (error) {
+                $ionicLoading.hide();
+                $ionicPopup.alert({
+                    title: 'Error!',
+                    template: 'Check Internet Connection, Try Again!'
+                });
+                deferred.reject(error);
+            });
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            };
+            promise.error = function (fn) {
+                
+                promise.then(null, fn);
+                return promise;
+            };
+            return promise;
+        },
+
+        getDealerExpansionDetail: function (month,year) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+            $http.post(serverURL + "/okaya_sfa/Distribution_Network/dealerExpansionTargetDetail",
+            {
+                loginData: myAllSharedService.loginData,
+                month: month,
+                year: year
+                
+            }, { timeout: 30000 }).then(function (response) {
+                
+                console.log(response);
+                deferred.resolve(response);
+            });
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            };
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            };
+            
+            return promise;
+        },
+
+        getDistributorExpansionList: function (filter_year) {
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+            
+            $http.post(serverURL + "/okaya_sfa/Distribution_Network/distributorExpansionTargetDetail",
+            {
+                loginData: myAllSharedService.loginData,
+                filter_year : filter_year
+                
+            }).then(function (response) {
+                console.log(response);
+                deferred.resolve(response.data);
+            }, function (error) {
+                $ionicLoading.hide();
+                $ionicPopup.alert({
+                    title: 'Error!',
+                    template: 'Check Internet Connection, Try Again!'
+                });
+                deferred.reject(error);
+            });
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            };
+            promise.error = function (fn) {
+                
+                promise.then(null, fn);
+                return promise;
+            };
+            return promise;
+        },
         
         // ------Target Module Functions Start--------- //
         

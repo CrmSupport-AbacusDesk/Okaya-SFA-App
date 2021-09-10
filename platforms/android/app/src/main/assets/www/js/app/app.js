@@ -478,6 +478,39 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
+
+  .state('tab.distributor-expansion', {
+    url: '/distributor-expansion',
+    cache: false,
+    views: {
+      'tab-menu': {
+        templateUrl: 'templates/okaya_sfa/distributor-expansion.html',
+        controller: 'sfaOrderCtrl'
+      }
+    }
+  })
+
+  .state('tab.dealer-expansion-list', {
+    url: '/dealer-expansion-list',
+    cache: false,
+    views: {
+      'tab-menu': {
+        templateUrl: 'templates/okaya_sfa/dealer-expansion-list.html',
+        controller: 'sfaOrderCtrl'
+      }
+    }
+  })
+
+  .state('tab.dealer-expansion-detail', {
+    url: '/dealer-expansion-detail',
+    cache: false,
+    views: {
+      'tab-menu': {
+        templateUrl: 'templates/okaya_sfa/dealer-expansion-detail.html',
+        controller: 'sfaOrderCtrl'
+      }
+    }
+  })
   
   .state('tab.menu', {
     url: '/menu',

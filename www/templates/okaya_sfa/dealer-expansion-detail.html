@@ -1,0 +1,51 @@
+<ion-view view-title="Dealer Expansion Detail">
+    
+    <ion-nav-buttons side="left">
+        <a href="#/tab/dealer-expansion-list" class="cs-backbtn button button-icon icon ion-android-arrow-back font18 fff"></a>
+    </ion-nav-buttons>
+    
+    <ion-content>
+        
+        <div class="pr16 pl16">
+            <div class="target-bar tr-change border-radius box-shadow-none padding0">
+                <div class="tr-top">
+                    <h3><i class="material-icons">event_note</i> {{targetMonth}} {{targetYear}}</h3>
+                </div>
+                
+                <span class="progress-bar">
+                    <span class="inside" style=" width: {{targetPercentage}}%;">&nbsp;</span>
+                </span>
+                <div class="v-s">
+                    <h2>Target <span>&#8377; {{targetValue}}</span></h2>
+                    <h2>Achieve <span>&#8377; {{targetAchievement}}</span></h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="cs-heading1 pt10" style="margin-bottom: -10px;">
+            <p>Brand Wise Information</p>
+        </div>
+        
+        <div class="coman-list" ng-repeat="row in targetdetail">            
+            <div class="pdlr muti-pdlr">
+                <h1>{{row.brand}}</h1>
+                <div class="cs-flex">
+                    <div class="bdr-field wp100">
+                        <span>Target</span>
+                        <p>{{row.target}}</p>
+                    </div>
+                    <div class="bdr-field wp100">
+                        <span>Achievement</span>
+                        <p>{{row.achievement}}</p>
+                    </div>
+                    <div class="bdr-field wp100">
+                        <span>Balance %</span>
+                        <p>{{row.achievement_percent}} %</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="h50"></div>
+    </ion-content>
+</ion-view>
