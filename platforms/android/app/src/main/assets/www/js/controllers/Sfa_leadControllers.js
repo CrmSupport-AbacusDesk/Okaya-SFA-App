@@ -180,7 +180,9 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
                 $scope.noMoreListingAvailable = true;
             }
             $scope.leadListData = $scope.leadListData.concat(response.data);
-            
+            $scope.leadActivityDoneCount = response.activity_done_count;
+            $scope.leadActivityNotDoneCount = response.activity_not_done_count;
+            console.log($scope.leadActivityDoneCount);
             $scope.lead_filter.myCount = response.myAssign;
             $scope.lead_filter.teamCount = response.teamAssign;
             // $scope.lead_filter.activity_done = response.activity_done;

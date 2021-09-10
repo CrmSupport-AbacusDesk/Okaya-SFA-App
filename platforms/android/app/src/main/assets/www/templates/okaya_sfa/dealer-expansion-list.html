@@ -1,0 +1,77 @@
+<ion-view view-title="Dealer Expansion">
+    
+    <ion-nav-buttons side="left">
+        <a href="#/tab/menu" class="cs-backbtn button button-icon icon ion-android-arrow-back font18 fff"></a>
+    </ion-nav-buttons>
+    
+    <ion-nav-buttons side="right" class="custom-right-btn">
+        <!-- <div ng-click="onSeachActionHandler('open')" class="right-nav-btn nav-search mr30">
+            <a menu-toggle="left">
+                <i class="material-icons">search</i>
+            </a>
+        </div> -->
+        <div class="right-nav-btn nav-search">
+            <a menu-toggle="left" ng-click="filter(true)">
+                <i class="material-icons">sort</i>
+                <span ng-show="filterActive == true" class="filter-dot"></span>
+            </a>
+        </div>
+        <!-- <div ng-class="isSearchBarOpen ? 'active' : ''" class="search-filter">
+            <input ng-model="data.search" type="text" id="searchData" ng-keyup="$event.keyCode == 13 ?getdealerExpansionListData() : null">
+            <a ng-click="onSeachActionHandler('close')" placeholder="Search" class="close-filter">
+                <i class="material-icons">keyboard_backspace</i>
+            </a>
+        </div> -->
+    </ion-nav-buttons>
+    
+    <ion-content>
+        <div class="pr16 pl16">
+            <!-- ng-class="{'light-red-bg' : row.target_percentage < '50'}" -->
+            <div class="target-bar tr-change"  ng-repeat="row in dealerExpansionList">
+                <div class="tr-top">
+                    <h3><i class="material-icons">event_note</i> {{row.month}} {{row.year}}</h3>
+                    <div class="tr-frwd"><a ng-click="onGoToDealerExpansionDetail(row.month,row.year,row.target_percentage,row.target_value,row.achievement)">See More <i class="material-icons">keyboard_arrow_right</i></a></div>
+                </div>
+                
+                <span class="progress-bar">
+                    <!-- {{NaN ? row.target_percentage : 0}} -->
+                    <span class="inside" style=" width: {{row.target_percentage}}%;">&nbsp;</span>
+                </span>
+                <div class="v-s">
+                    <h2>Target <span>&#8377; {{row.target_value ? row.target_value : '0'}}</span></h2>
+                    <h2>Achieve <span>&#8377; {{row.achievement ? row.achievement : '0'}}</span></h2>
+                </div>
+            </div>
+        </div>
+        
+        <div class="data-not-found" ng-if="dealerExpansionList.length == 0">
+            <div class="outer">
+                <div class="innear">
+                    <img src="img/data-not-found.svg" alt="">
+                    <h2>Temporarily , No Data Available!</h2>
+                </div>
+            </div>
+        </div>
+        <div class="h50"></div>
+    </ion-content>
+    
+    <div class="popover-model" ng-class="{'active':leadListFilter==true}">
+        <div class="filter-modal">
+            <div class="filter-head">
+                <button class="close-modal" ng-click="filter(false)"><i class="material-icons">keyboard_arrow_down</i></button>
+                <h2>Filter</h2>
+                <span ng-click="clearTargetFilter();leadListFilter=false;">Clear Filter</span>
+            </div>
+            <div class="filter-body">
+                <div class="cs-add-form pd-left-right16">
+                    <div class="input-field field-input mt25">
+                        <input type="number" class="validate" ng-model="filter_year" name="filter_year" minlength="4" maxlength ="4" limit-to="4" placeholder="Ex - 2000" ng-required="true" required>
+                        <label class="active" for="last_name">Year</label>
+                    </div>
+                </div>
+                
+                <button class="footer-btn" ng-click="getDealerExpansionListData();leadListFilter=false;" ng-disabled="!filter_year">Apply</button>
+            </div>
+        </div>
+    </div>
+</ion-view>

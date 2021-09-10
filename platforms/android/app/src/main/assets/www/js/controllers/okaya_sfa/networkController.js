@@ -2064,6 +2064,7 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
     $scope.selectedDr = [];
     $scope.select_mul_dr = function(data)
     {
+        console.log($scope.search.drName);
         console.log(data);
         
         var idx = $scope.search.drName.findIndex(row=>row == data.Key);
