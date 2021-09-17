@@ -1,39 +1,28 @@
 
 app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ionicModal, $state, myRequestDBService, myAllSharedService, $ionicLoading, $cordovaSQLite, $ionicPopup, $timeout, $ionicActionSheet, $cordovaImagePicker, Camera, $cordovaFileTransfer, $cordovaGeolocation, $cordovaToast, $location, $window, $ionicPlatform, $ionicHistory, $ionicModal, $stateParams, $ionicScrollDelegate, $ionicPopover) {
-    
     $scope.loginData = myAllSharedService.loginData;
     $scope.AssignSalesUser = [];
-    
     console.log($scope.loginData);
     $scope.isRequestInProcess;
     $scope.orderList = [];
     // $scope.loginData.team_List = [];
-    
     $scope.data = {};
     $scope.search = {};
-    
     $scope.data.isInsideLead = myAllSharedService.drTypeFilterData.isInsideLead;
     $rootScope.isAttendanceStart = myAllSharedService.loginData.startAttendance;
-    
     $scope.categoryList = [];
     $scope.subCategoryList = [];
     $scope.productList = [];
-    
     $scope.drList = [];
     $scope.drDeliveryByList = [];
-    
-    
     $scope.cartItemData = [];
     $scope.cartSummaryData = {};
     $scope.drDetail = myAllSharedService.drTypeFilterData.drDetail;
-    
     $scope.drOrderTypeData = [];
     $scope.deliveryByTypeList = [];
-    
     $scope.currentPage = 1;
     $scope.pageSize = 20;
     $scope.pagelimit = 0;
-    
     // $scope.currentDate =  new Date();
     $scope.currentDate = moment().format('YYYY-MM-DD');
     $scope.minDate = moment().subtract(7, 'days').format('YYYY-MM-DD');
@@ -41,7 +30,6 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
     $scope.isSearchBarOpen = false;
     $scope.order_type = myAllSharedService.drTypeFilterData.order_type;
     $scope.noMoreListingAvailable = false;
-    
     let fetchingRecords = false;
     
     $scope.changeStatus = function (statusType) {
@@ -59,7 +47,6 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
     //         $scope.data.statusModel = popovers;
     //     });
     // }
-    
     
     $scope.onGetCartItemDataHandler = function (typeInfo, searchKey, pagenumber) {
         
@@ -199,9 +186,7 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
         
     };
     
-    
     $scope.assignDistributor = [];
-    
     
     $scope.getAssignDistributor = function () {
         $scope.search.assign_dr_name = { Key: "Select Distributor", Value: "" };
@@ -237,7 +222,6 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
         });
         
     }
-    
     
     $scope.dis_list = [];
     $scope.getDistributor = function () {
@@ -2251,7 +2235,6 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
         $scope.billinglistdata();
     }
     
-    
     $scope.updateStatus = function(status){
         
         console.log($scope.orderDetail.id);
@@ -2301,12 +2284,4 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
         
         
     }
-    
-    
-    
 })
-
-
-
-
-

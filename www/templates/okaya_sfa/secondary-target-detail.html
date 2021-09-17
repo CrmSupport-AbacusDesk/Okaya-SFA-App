@@ -5,6 +5,29 @@
     </ion-nav-buttons>
     
     <ion-content>
+        <div class="cs-padding pb0">
+            <div class="cs-list new-tr-ch">
+                <div class="cs-tittle next-page after-none">
+                    <p>Category</p>
+                </div>
+                <div class="sm-box">
+                    <a ng-repeat="row in categoryTOTAL">
+                        <span>{{row.value}}</span>
+                        <p>{{row.name}}</p>
+                    </a>
+                </div>
+                
+                <div class="cs-tittle next-page after-none mt10">
+                    <p>Brand</p>
+                </div>
+                <div class="sm-box">
+                    <a ng-repeat="row in brandTotal">
+                        <span>{{row.value}}</span>
+                        <p>{{row.name}}</p>
+                    </a>
+                </div>
+            </div>
+        </div>
         
         <div class="pr16 pl16" hidden>
             <div class="target-bar tr-change border-radius box-shadow-none padding0">
@@ -21,63 +44,12 @@
                 </div>
             </div>
         </div>
-
-        <div class="coman-list clrd-bg margin0 border-radius box-shadow-none" style="display: none;">
-            <div class="top-head">
-                <ul>
-                    <li>
-                        <p>---</p>
-                        <span>Order ID</span>
-                    </li>
-                </ul>
-            </div>
-            
-            <div class="center-item">
-                <div class="cs-icon">R</div>
-                <div class="cs-content">
-                    <p>RAJSHREE ENTERPRISES</p>
-                    <span>10007815</span>
-                </div>
-                <a class="dialer"><i class="material-icons">keyboard_arrow_right</i></a>
-            </div>
-            
-            <div class="pdlr">
-                <div class="cs-flex">
-                    <div class="bdr-field wp100">
-                        <span>Order Status</span>
-                        <p>---</p>
-                    </div>
-                </div>
-            </div>
-        </div>
         
-        <div class="cs-heading1 pt10" style="margin-bottom: -10px;">
+        <div class="cs-heading1 pt10" style="margin-bottom: -10px;" ng-if="targetdetail.length">
             <p>Brand Wise Information</p>
         </div>
         
-        <div class="row" style="display: contents;">
         
-            <div class="form-space">
-                <label class="item-input item-select cs-select csm-input mb0">
-                    <div class="input-label">Category List <sup>*</sup></div>
-                    <select >
-                        <!-- <option value="" disabled selected>Select Lead Status </option> -->
-                        <option ng-repeat="row in categoryTOTAL">{{row.name}} , total - {{row.value}}</option>
-                    </select>
-                </label>
-            </div>
-           
-            <div class="form-space" >
-                <label class="item-input item-select cs-select csm-input mb0">
-                    <div class="input-label">Brand List <sup>*</sup></div>
-                    <select >
-                        <!-- <option value="" disabled selected>Select Lead Status </option> -->
-                        <option ng-repeat="row in brandTotal">{{row.name}} , total - {{row.value}}</option>
-                    </select>
-                </label>
-            </div>
-            </div>
-
         <div class="coman-list" ng-repeat="row in targetdetail">            
             <div class="pdlr muti-pdlr">
                 <h1>{{row.brand}}</h1>
@@ -91,7 +63,7 @@
                         <p>{{row.achievement}}</p>
                     </div>
                     <div class="bdr-field wp100">
-                        <span>Balance %</span>
+                        <span>Achievement %</span>
                         <p>{{row.achievement_percent}} %</p>
                     </div>
                 </div>
