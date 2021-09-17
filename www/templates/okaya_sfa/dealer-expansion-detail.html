@@ -6,7 +6,7 @@
     
     <ion-content>
         
-        <div class="pr16 pl16">
+        <div class="pr16 pl16" hidden>
             <div class="target-bar tr-change border-radius box-shadow-none padding0">
                 <div class="tr-top">
                     <h3><i class="material-icons">event_note</i> {{targetMonth}} {{targetYear}}</h3>
@@ -26,6 +26,29 @@
             <p>Brand Wise Information</p>
         </div>
         
+        <div class="row" style="display: contents;">
+        
+            <div class="form-space">
+                <label class="item-input item-select cs-select csm-input mb0">
+                    <div class="input-label">Category List <sup>*</sup></div>
+                    <select >
+                        <!-- <option value="" disabled selected>Select Lead Status </option> -->
+                        <option ng-repeat="row in categoryTOTAL">{{row.name}} , total - {{row.value}}</option>
+                    </select>
+                </label>
+            </div>
+           
+            <div class="form-space" >
+                <label class="item-input item-select cs-select csm-input mb0">
+                    <div class="input-label">Brand List <sup>*</sup></div>
+                    <select >
+                        <!-- <option value="" disabled selected>Select Lead Status </option> -->
+                        <option ng-repeat="row in brandTotal">{{row.name}} , total - {{row.value}}</option>
+                    </select>
+                </label>
+            </div>
+            </div>
+
         <div class="coman-list" ng-repeat="row in targetdetail">            
             <div class="pdlr muti-pdlr">
                 <h1>{{row.brand}}</h1>

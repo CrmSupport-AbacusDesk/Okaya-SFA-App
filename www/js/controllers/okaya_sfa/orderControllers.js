@@ -655,6 +655,7 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
         $state.go('tab.primary-target-detail');        
     }
     
+    $scope.brandcategory = [];
     $scope.getTargetDetail = function () {
         console.log($scope.targetMonth,$scope.targetYear);
         
@@ -665,7 +666,92 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
         myRequestDBService.getTargetDetail($scope.targetMonth,$scope.targetYear).then(function (response) {
             console.log(response);
             $scope.targetdetail = response.data.data;
+            var IBCATEGORY = 0;
+            var ABCATEGORY = 0;
+            var ERBCATEGORY = 0;
+            var SMFCATEGORY = 0;
+            var SOLARCATEGORY = 0;
+            
+            var IBDIGIBRAND = 0;
+            var IBMTEKBRAND = 0;
+            var IBOKAYABRAND = 0;
+            var IBVIVABRAND = 0;
+            var ABOKAYABRAND = 0;
+            var AH72OKAYABRAND = 0;
+            var ERBMTEKBRAND = 0;
+            var ERBOKAYABRAND = 0;
+            var SMFBIGBRAND = 0;
+            var SBOKAYABRAND = 0;
+            var SPGSOKAYABRAND = 0;
+            
+            for (let index = 0; index < $scope.targetdetail.length; index++) {
+                
+                if ($scope.targetdetail[index].data.length > 0) {            
+                    for (let index1 = 0; index1 < $scope.targetdetail[index].data.length; index1++) {
+                        //CATEGORY
+                        if ($scope.targetdetail[index].data[index1].category=='IB') {
+                             IBCATEGORY = $scope.targetdetail[index].data[index1].value*1 + IBCATEGORY*1;
+                        }
+                        else if($scope.targetdetail[index].data[index1].category=='ERB'){
+                            ERBCATEGORY = $scope.targetdetail[index].data[index1].value*1 + ERBCATEGORY*1;
+                        }
+                        else if($scope.targetdetail[index].data[index1].category=='AB'){
+                            ABCATEGORY = $scope.targetdetail[index].data[index1].value*1 + ABCATEGORY*1;
+                        }
+                        else if($scope.targetdetail[index].data[index1].category=='SMF'){
+                            SMFCATEGORY = $scope.targetdetail[index].data[index1].value*1 + SMFCATEGORY*1;
+                        }
+                        else if($scope.targetdetail[index].data[index1].category=='SOLAR'){
+                            SOLARCATEGORY = $scope.targetdetail[index].data[index1].value*1 + SOLARCATEGORY*1;
+                        }
+                        //BRANDS
+                         if($scope.targetdetail[index].data[index1].brand=='7.2AH - OKAYA'){
+                            AH72OKAYABRAND = $scope.targetdetail[index].data[index1].value*1 + AH72OKAYABRAND*1;
+                        }
+                        else if($scope.targetdetail[index].data[index1].brand=='AB - OKAYA'){
+                            ABOKAYABRAND = $scope.targetdetail[index].data[index1].value*1 + ABOKAYABRAND*1;
+                        }
+                        else if($scope.targetdetail[index].data[index1].brand=='ERB - MTEK'){
+                            ERBMTEKBRAND = $scope.targetdetail[index].data[index1].value*1 + ERBMTEKBRAND*1;
+                        }
+                        else if($scope.targetdetail[index].data[index1].brand=='ERB - OKAYA'){
+                            ERBOKAYABRAND = $scope.targetdetail[index].data[index1].value*1 + ERBOKAYABRAND*1;
+                        }
+                        else if($scope.targetdetail[index].data[index1].brand=='IB - DIGI'){
+                            IBDIGIBRAND = $scope.targetdetail[index].data[index1].value*1 + IBDIGIBRAND*1;
+                        }
+                        else if($scope.targetdetail[index].data[index1].brand=='IB - MTEK'){
+                            IBMTEKBRAND = $scope.targetdetail[index].data[index1].value*1 + IBMTEKBRAND*1;
+                        }
+                        else if($scope.targetdetail[index].data[index1].brand=='IB - OKAYA'){
+                            IBOKAYABRAND = $scope.targetdetail[index].data[index1].value*1 + IBOKAYABRAND*1;
+                        }
+                        else if($scope.targetdetail[index].data[index1].brand=='IB - VIVA'){
+                            IBVIVABRAND = $scope.targetdetail[index].data[index1].value*1 + IBVIVABRAND*1;
+                        }
+                        else if($scope.targetdetail[index].data[index1].brand=='SB - OKAYA'){
+                            SBOKAYABRAND = $scope.targetdetail[index].data[index1].value*1 + SBOKAYABRAND*1;
+                        }
+                        else if($scope.targetdetail[index].data[index1].brand=='SMF-BIG - OKAYA'){
+                            SMFBIGBRAND = $scope.targetdetail[index].data[index1].value*1 + SMFBIGBRAND*1;
+                        }
+                        else if($scope.targetdetail[index].data[index1].brand=='SPGS - OKAYA'){
+                            SPGSOKAYABRAND = $scope.targetdetail[index].data[index1].value*1 + SPGSOKAYABRAND*1;
+                        }   
+                    }
+
+                    
+                }
+                
+            }
             console.log($scope.targetdetail);
+
+            $scope.categoryTOTAL = [{'name':'IB','value':IBCATEGORY},{'name':'ERB','value':ERBCATEGORY},{'name':'AB','value':ABCATEGORY},{'name':'SMF','value':SMFCATEGORY},{'name':'SOLAR','value':SOLARCATEGORY}];
+
+            $scope.brandTotal = [{'name':'7.2AH - OKAYA','value':AH72OKAYABRAND},{'name':'AB - OKAYA','value':ABOKAYABRAND},{'name':'ERB - MTEK','value':ERBMTEKBRAND},{'name':'ERB - OKAYA','value':ERBOKAYABRAND},{'name':'IB - DIGI','value':IBDIGIBRAND},{'name':'IB - MTEK','value':IBMTEKBRAND},{'name':'IB - OKAYA','value':IBOKAYABRAND},{'name':'IB - VIVA','value':IBVIVABRAND},{'name':'SB - OKAYA','value':SBOKAYABRAND},{'name':'SMF-BIG - OKAYA','value':SMFBIGBRAND},{'name':'SPGS - OKAYA','value':SPGSOKAYABRAND}];
+
+            console.log($scope.categoryTOTAL);
+            console.log($scope.brandTotal);
             $ionicLoading.hide();
             
         }, function (err) {
@@ -748,6 +834,93 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
             console.log(response);
             $scope.targetdetail = response.data.data;
             console.log($scope.targetdetail);
+            var IBCATEGORY = 0;
+            var ABCATEGORY = 0;
+            var ERBCATEGORY = 0;
+            var SMFCATEGORY = 0;
+            var SOLARCATEGORY = 0;
+            
+            var IBDIGIBRAND = 0;
+            var IBMTEKBRAND = 0;
+            var IBOKAYABRAND = 0;
+            var IBVIVABRAND = 0;
+            var ABOKAYABRAND = 0;
+            var AH72OKAYABRAND = 0;
+            var ERBMTEKBRAND = 0;
+            var ERBOKAYABRAND = 0;
+            var SMFBIGBRAND = 0;
+            var SBOKAYABRAND = 0;
+            var SPGSOKAYABRAND = 0;
+            
+            for (let index = 0; index < $scope.targetdetail.length; index++) {
+                
+                // if ($scope.targetdetail[index].data.length > 0) {            
+                    // for (let index1 = 0; index1 < $scope.targetdetail[index].data.length; index1++) {
+                        //CATEGORY
+                        if ($scope.targetdetail[index].category=='IB') {
+                             IBCATEGORY = $scope.targetdetail[index].target*1 + IBCATEGORY*1;
+                        }
+                        else if($scope.targetdetail[index].category=='ERB'){
+                            ERBCATEGORY = $scope.targetdetail[index].target*1 + ERBCATEGORY*1;
+                        }
+                        else if($scope.targetdetail[index].category=='AB'){
+                            ABCATEGORY = $scope.targetdetail[index].target*1 + ABCATEGORY*1;
+                        }
+                        else if($scope.targetdetail[index].category=='SMF'){
+                            SMFCATEGORY = $scope.targetdetail[index].target*1 + SMFCATEGORY*1;
+                        }
+                        else if($scope.targetdetail[index].category=='SOLAR'){
+                            SOLARCATEGORY = $scope.targetdetail[index].target*1 + SOLARCATEGORY*1;
+                        }
+                        //BRANDS
+                         if($scope.targetdetail[index].brand=='7.2AH - OKAYA'){
+                            AH72OKAYABRAND = $scope.targetdetail[index].target*1 + AH72OKAYABRAND*1;
+                        }
+                        else if($scope.targetdetail[index].brand=='AB - OKAYA'){
+                            ABOKAYABRAND = $scope.targetdetail[index].target*1 + ABOKAYABRAND*1;
+                        }
+                        else if($scope.targetdetail[index].brand=='ERB - MTEK'){
+                            ERBMTEKBRAND = $scope.targetdetail[index].target*1 + ERBMTEKBRAND*1;
+                        }
+                        else if($scope.targetdetail[index].brand=='ERB - OKAYA'){
+                            ERBOKAYABRAND = $scope.targetdetail[index].target*1 + ERBOKAYABRAND*1;
+                        }
+                        else if($scope.targetdetail[index].brand=='IB - DIGI'){
+                            IBDIGIBRAND = $scope.targetdetail[index].target*1 + IBDIGIBRAND*1;
+                        }
+                        else if($scope.targetdetail[index].brand=='IB - MTEK'){
+                            IBMTEKBRAND = $scope.targetdetail[index].target*1 + IBMTEKBRAND*1;
+                        }
+                        else if($scope.targetdetail[index].brand=='IB - OKAYA'){
+                            IBOKAYABRAND = $scope.targetdetail[index].target*1 + IBOKAYABRAND*1;
+                        }
+                        else if($scope.targetdetail[index].brand=='IB - VIVA'){
+                            IBVIVABRAND = $scope.targetdetail[index].target*1 + IBVIVABRAND*1;
+                        }
+                        else if($scope.targetdetail[index].brand=='SB - OKAYA'){
+                            SBOKAYABRAND = $scope.targetdetail[index].target*1 + SBOKAYABRAND*1;
+                        }
+                        else if($scope.targetdetail[index].brand=='SMF-BIG - OKAYA'){
+                            SMFBIGBRAND = $scope.targetdetail[index].target*1 + SMFBIGBRAND*1;
+                        }
+                        else if($scope.targetdetail[index].brand=='SPGS - OKAYA'){
+                            SPGSOKAYABRAND = $scope.targetdetail[index].target*1 + SPGSOKAYABRAND*1;
+                        }   
+                    // }
+
+                    
+                // }
+                
+            }
+            console.log($scope.targetdetail);
+
+            $scope.categoryTOTAL = [{'name':'IB','value':IBCATEGORY},{'name':'ERB','value':ERBCATEGORY},{'name':'AB','value':ABCATEGORY},{'name':'SMF','value':SMFCATEGORY},{'name':'SOLAR','value':SOLARCATEGORY}];
+
+            $scope.brandTotal = [{'name':'7.2AH - OKAYA','value':AH72OKAYABRAND},{'name':'AB - OKAYA','value':ABOKAYABRAND},{'name':'ERB - MTEK','value':ERBMTEKBRAND},{'name':'ERB - OKAYA','value':ERBOKAYABRAND},{'name':'IB - DIGI','value':IBDIGIBRAND},{'name':'IB - MTEK','value':IBMTEKBRAND},{'name':'IB - OKAYA','value':IBOKAYABRAND},{'name':'IB - VIVA','value':IBVIVABRAND},{'name':'SB - OKAYA','value':SBOKAYABRAND},{'name':'SMF-BIG - OKAYA','value':SMFBIGBRAND},{'name':'SPGS - OKAYA','value':SPGSOKAYABRAND}];
+
+            console.log($scope.categoryTOTAL);
+            console.log($scope.brandTotal);
+
             $ionicLoading.hide();
             
         }, function (err) {
@@ -861,6 +1034,93 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
             console.log(response);
             $scope.targetdetail = response.data.data;
             console.log($scope.targetdetail);
+
+            var IBCATEGORY = 0;
+            var ABCATEGORY = 0;
+            var ERBCATEGORY = 0;
+            var SMFCATEGORY = 0;
+            var SOLARCATEGORY = 0;
+            
+            var IBDIGIBRAND = 0;
+            var IBMTEKBRAND = 0;
+            var IBOKAYABRAND = 0;
+            var IBVIVABRAND = 0;
+            var ABOKAYABRAND = 0;
+            var AH72OKAYABRAND = 0;
+            var ERBMTEKBRAND = 0;
+            var ERBOKAYABRAND = 0;
+            var SMFBIGBRAND = 0;
+            var SBOKAYABRAND = 0;
+            var SPGSOKAYABRAND = 0;
+            
+            for (let index = 0; index < $scope.targetdetail.length; index++) {
+                
+                // if ($scope.targetdetail[index].data.length > 0) {            
+                    // for (let index1 = 0; index1 < $scope.targetdetail[index].data.length; index1++) {
+                        //CATEGORY
+                        if ($scope.targetdetail[index].category=='IB') {
+                             IBCATEGORY = $scope.targetdetail[index].target*1 + IBCATEGORY*1;
+                        }
+                        else if($scope.targetdetail[index].category=='ERB'){
+                            ERBCATEGORY = $scope.targetdetail[index].target*1 + ERBCATEGORY*1;
+                        }
+                        else if($scope.targetdetail[index].category=='AB'){
+                            ABCATEGORY = $scope.targetdetail[index].target*1 + ABCATEGORY*1;
+                        }
+                        else if($scope.targetdetail[index].category=='SMF'){
+                            SMFCATEGORY = $scope.targetdetail[index].target*1 + SMFCATEGORY*1;
+                        }
+                        else if($scope.targetdetail[index].category=='SOLAR'){
+                            SOLARCATEGORY = $scope.targetdetail[index].target*1 + SOLARCATEGORY*1;
+                        }
+                        //BRANDS
+                         if($scope.targetdetail[index].brand=='7.2AH - OKAYA'){
+                            AH72OKAYABRAND = $scope.targetdetail[index].target*1 + AH72OKAYABRAND*1;
+                        }
+                        else if($scope.targetdetail[index].brand=='AB - OKAYA'){
+                            ABOKAYABRAND = $scope.targetdetail[index].target*1 + ABOKAYABRAND*1;
+                        }
+                        else if($scope.targetdetail[index].brand=='ERB - MTEK'){
+                            ERBMTEKBRAND = $scope.targetdetail[index].target*1 + ERBMTEKBRAND*1;
+                        }
+                        else if($scope.targetdetail[index].brand=='ERB - OKAYA'){
+                            ERBOKAYABRAND = $scope.targetdetail[index].target*1 + ERBOKAYABRAND*1;
+                        }
+                        else if($scope.targetdetail[index].brand=='IB - DIGI'){
+                            IBDIGIBRAND = $scope.targetdetail[index].target*1 + IBDIGIBRAND*1;
+                        }
+                        else if($scope.targetdetail[index].brand=='IB - MTEK'){
+                            IBMTEKBRAND = $scope.targetdetail[index].target*1 + IBMTEKBRAND*1;
+                        }
+                        else if($scope.targetdetail[index].brand=='IB - OKAYA'){
+                            IBOKAYABRAND = $scope.targetdetail[index].target*1 + IBOKAYABRAND*1;
+                        }
+                        else if($scope.targetdetail[index].brand=='IB - VIVA'){
+                            IBVIVABRAND = $scope.targetdetail[index].target*1 + IBVIVABRAND*1;
+                        }
+                        else if($scope.targetdetail[index].brand=='SB - OKAYA'){
+                            SBOKAYABRAND = $scope.targetdetail[index].target*1 + SBOKAYABRAND*1;
+                        }
+                        else if($scope.targetdetail[index].brand=='SMF-BIG - OKAYA'){
+                            SMFBIGBRAND = $scope.targetdetail[index].target*1 + SMFBIGBRAND*1;
+                        }
+                        else if($scope.targetdetail[index].brand=='SPGS - OKAYA'){
+                            SPGSOKAYABRAND = $scope.targetdetail[index].target*1 + SPGSOKAYABRAND*1;
+                        }   
+                    // }
+
+                    
+                // }
+                
+            }
+            console.log($scope.targetdetail);
+
+            $scope.categoryTOTAL = [{'name':'IB','value':IBCATEGORY},{'name':'ERB','value':ERBCATEGORY},{'name':'AB','value':ABCATEGORY},{'name':'SMF','value':SMFCATEGORY},{'name':'SOLAR','value':SOLARCATEGORY}];
+
+            $scope.brandTotal = [{'name':'7.2AH - OKAYA','value':AH72OKAYABRAND},{'name':'AB - OKAYA','value':ABOKAYABRAND},{'name':'ERB - MTEK','value':ERBMTEKBRAND},{'name':'ERB - OKAYA','value':ERBOKAYABRAND},{'name':'IB - DIGI','value':IBDIGIBRAND},{'name':'IB - MTEK','value':IBMTEKBRAND},{'name':'IB - OKAYA','value':IBOKAYABRAND},{'name':'IB - VIVA','value':IBVIVABRAND},{'name':'SB - OKAYA','value':SBOKAYABRAND},{'name':'SMF-BIG - OKAYA','value':SMFBIGBRAND},{'name':'SPGS - OKAYA','value':SPGSOKAYABRAND}];
+
+            console.log($scope.categoryTOTAL);
+            console.log($scope.brandTotal);
             $ionicLoading.hide();
             
         }, function (err) {
