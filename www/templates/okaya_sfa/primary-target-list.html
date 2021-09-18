@@ -30,7 +30,8 @@
             <div class="target-bar tr-change"  ng-repeat="row in targetList">
                 <div class="tr-top">
                     <h3><i class="material-icons">event_note</i> {{row.month}} {{row.year}}</h3>
-                    <div class="tr-frwd"><a ng-click="onGoToprimaryTargetDetail(row.month,row.year,row.target_percentage,row.target_value,row.achievement)">See More <i class="material-icons">keyboard_arrow_right</i></a></div>
+                    <div class="tr-frwd"><a ng-click="onGoToprimaryTargetDetail(row.month,row.year,row.target_percentage,row.target_value,row.achievement)" >See More <i class="material-icons">keyboard_arrow_right</i></a></div>
+                    <!-- ng-if="row.target_value != 0" -->
                 </div>
                 
                 <span class="progress-bar">
@@ -38,8 +39,8 @@
                     <span class="inside" style=" width: {{row.target_percentage}}%;">&nbsp;</span>
                 </span>
                 <div class="v-s">
-                    <h2>Target <span>&#8377; {{row.target_value ? row.target_value : '0'}}</span></h2>
-                    <h2>Achieve <span>&#8377; {{row.achievement ? row.achievement : '0'}}</span></h2>
+                    <h2>Target <span>{{row.target_value ? row.target_value : '0'}}</span></h2>
+                    <h2>Achieve <span>{{row.achievement ? row.achievement : '0'}}</span></h2>
                 </div>
             </div>
         </div>

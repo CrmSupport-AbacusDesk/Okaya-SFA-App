@@ -100,19 +100,16 @@
         <div class="pr16 pl16">
             <div class="target-bar tr-change">
                 <div class="tr-top">
-                    <h3>Primary target</h3>
-                </div>
-                <div class="tr-top">
-                    <h3><i class="material-icons">event_note</i> {{dashboardData.target.month}} {{dashboardData.target.year}}</h3>
+                    <h3><i class="material-icons">event_note</i> {{dashboardData.target.month}} {{dashboardData.target.year}} (Primary)</h3>
                     <div class="tr-frwd"><a href="#/tab/primary-target-list">See More <i class="material-icons">keyboard_arrow_right</i></a></div>
                 </div>
 
                 <span class="progress-bar">
-                    <span class="inside" style=" width: {{NaN ? dashboardData.achive_percent : 0}}%;">&nbsp;</span>
+                    <span class="inside" style=" width: {{dashboardData.target.target_percentage ? dashboardData.target.target_percentage : 0}}%;">&nbsp;</span>
                 </span>
                 <div class="v-s">
-                    <h2>Target <span>&#8377; {{dashboardData.target.target_value ? dashboardData.target.target_value : 0}}</span></h2>
-                    <h2>Achieve <span>&#8377; {{dashboardData.target.achievement ? dashboardData.target.achievement : 0}}</span></h2>
+                    <h2>Target <span>{{dashboardData.target.target_value ? dashboardData.target.target_value : 0}}</span></h2>
+                    <h2>Achieve <span>{{dashboardData.target.achievement ? dashboardData.target.achievement : 0}}</span></h2>
                 </div>
             </div>
         </div>
