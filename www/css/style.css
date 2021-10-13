@@ -14164,8 +14164,8 @@ span.progress-bar span.inside
 .search_filter
 {
   display: flex;
-  padding: 10px;
-  background: #fbfbfb;
+  padding: 0px 16px 10px 16px;
+  /* background: #fbfbfb; */
   box-sizing: content-box;
   position: sticky;
   top: 0;

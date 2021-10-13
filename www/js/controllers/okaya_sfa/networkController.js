@@ -42,6 +42,30 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
     $scope.isSearchBarOpen = false;
     $scope.noMoreListingAvailable = false;
     
+    $scope.alphabetOnly = function() {
+        console.log("validation");
+        var element = document.getElementById('alphabet_only');
+        element.value = element.value.replace(/[^a-zA-Z ]+/, '');
+    };
+    $scope.alphabetOnly1 = function() {
+        console.log("validation");
+        var element = document.getElementById('alphabet_only_1');
+        element.value = element.value.replace(/[^a-zA-Z ]+/, '');
+    };
+
+    $scope.validateMobile = function() {
+        console.log("mobile validation");
+        var input = document.getElementById('mobile_only');
+        var pattern = /^[6-9][0-9]{0,9}$/;
+        var value = input.value;
+        !pattern.test(value) && (input.value = value = '');
+        input.addEventListener('input', function() {
+            var currentValue = this.value;
+            if(currentValue && !pattern.test(currentValue)) this.value = value;
+            else value = currentValue;
+        });
+    };
+
     $scope.goToNetwork = function()
     {
         $state.go('tab.network-add');

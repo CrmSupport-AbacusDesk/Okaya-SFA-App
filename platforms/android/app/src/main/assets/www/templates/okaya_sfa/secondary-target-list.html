@@ -17,20 +17,35 @@
             </a>
         </div>
         <!-- <div ng-class="isSearchBarOpen ? 'active' : ''" class="search-filter">
-            <input ng-model="data.search" type="text" id="searchData" ng-keyup="$event.keyCode == 13 ?getTargetListData() : null">
+            <input ng-model="data.search" type="text" id="searchData" ng-keyup="$event.keyCode == 13 ?getsecTargetListData() : null">
             <a ng-click="onSeachActionHandler('close')" placeholder="Search" class="close-filter">
                 <i class="material-icons">keyboard_backspace</i>
             </a>
         </div> -->
     </ion-nav-buttons>
     
+    <!-- <div class="sticky bg-white top50">
+        <div class="round-tab">
+            <div>
+                <ul>
+                    <li ng-click="onTargetHandler('me')" ng-class="data.targetTab == 'me' ? 'active' : ''">
+                        <a>My Target</a>
+                    </li>
+                    <li ng-click="onTargetHandler('myTeam')" ng-class="data.targetTab == 'myTeam' ? 'active' : ''">
+                        <a>Team Target</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div> -->
+    
     <ion-content>
         <div class="pr16 pl16">
             <!-- ng-class="{'light-red-bg' : row.target_percentage < '50'}" -->
-            <div class="target-bar tr-change"  ng-repeat="row in targetList">
+            <div class="target-bar tr-change"  ng-repeat="row in secTargetList">
                 <div class="tr-top">
                     <h3><i class="material-icons">event_note</i> {{row.month}} {{row.year}}</h3>
-                    <div class="tr-frwd"><a ng-click="onGoTosecondaryTargetDetail(row.month,row.year,row.target_percentage,row.target_value,row.achievement)">See More <i class="material-icons">keyboard_arrow_right</i></a></div>
+                    <div class="tr-frwd"><a ng-click="onGoTosecondaryTargetDetail(row.month,row.year,row.target_percentage,row.target_value,row.achievement,targetUser)">See More <i class="material-icons">keyboard_arrow_right</i></a></div>
                 </div>
                 
                 <span class="progress-bar">
@@ -38,13 +53,13 @@
                     <span class="inside" style=" width: {{row.target_percentage}}%;">&nbsp;</span>
                 </span>
                 <div class="v-s">
-                    <h2>Target <span>&#8377; {{row.target_value ? row.target_value : '0'}}</span></h2>
-                    <h2>Achieve <span>&#8377; {{row.achievement ? row.achievement : '0'}}</span></h2>
+                    <h2>Target <span>{{row.target_value ? row.target_value : '0'}}</span></h2>
+                    <h2>Achieve <span>{{row.achievement ? row.achievement : '0'}}</span></h2>
                 </div>
             </div>
         </div>
         
-        <div class="data-not-found" ng-if="targetList.length == 0">
+        <div class="data-not-found" ng-if="secTargetList.length == 0">
             <div class="outer">
                 <div class="innear">
                     <img src="img/data-not-found.svg" alt="">
@@ -63,14 +78,42 @@
                 <span ng-click="clearTargetFilter();leadListFilter=false;">Clear Filter</span>
             </div>
             <div class="filter-body">
-                <div class="cs-add-form pd-left-right16">
-                    <div class="input-field field-input mt25">
+                <div class="cs-add-form pd-left-right16 cs-flex mt10">
+                    <div class="input-field field-input wp100">
                         <input type="number" class="validate" ng-model="filter_year" name="filter_year" minlength="4" maxlength ="4" limit-to="4" placeholder="Ex - 2000" ng-required="true" required>
                         <label class="active" for="last_name">Year</label>
                     </div>
+                    
+                    <div class="field-input wp100 ml16">
+                        <label class="font10">Select Month</label>
+                        <select class="browser-default" ng-model="filter_month" name="filter_month" required>
+                            <option value="" disabled selected>Select Month<span>*</span></option>
+                            <option name="January" value="January">January</option>
+                            <option name="February" value="February">February</option>
+                            <option name="March" value="March">March</option>
+                            <option name="April" value="April">April</option>
+                            <option name="May" value="May">May</option>
+                            <option name="June" value="June">June</option>
+                            <option name="July" value="July">July</option>
+                            <option name="August" value="August">August</option>
+                            <option name="September" value="September">September</option>
+                            <option name="October" value="October">October</option>
+                            <option name="November" value="November">November</option>
+                            <option name="December" value="December">December</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="pd-left-right16">
+                    <div class="field-input wp100">
+                        <label class="font10">Select User</label>
+                        <select class="browser-default" ng-model="targetUser" name="targetUser" required>
+                            <option value="" disabled selected>Select User<span>*</span></option>
+                            <option value="{{row.id}}" ng-repeat="row in employeList">{{row.name}}</option>
+                        </select>
+                    </div>
                 </div>
                 
-                <button class="footer-btn" ng-click="getTargetListData();leadListFilter=false;" ng-disabled="!filter_year">Apply</button>
+                <button class="footer-btn" ng-click="getsecondaryTargetListData();leadListFilter=false;" ng-class="{'btn-opacity':!filter_year && !filter_month && !targetUser}" ng-disabled="!filter_year && !filter_month && !targetUser">Apply</button>
             </div>
         </div>
     </div>

@@ -9417,6 +9417,38 @@ h4.nrml-head
   font-weight: 600;
 }
 
+.cs-list.new-tr-ch
+{
+  border-radius: 6px;
+  box-shadow: 0px 1px 4px 0px rgb(0 0 0 / 30%);
+  padding-top: 4px;
+}
+
+.cs-list.new-tr-ch .cs-tittle
+{
+  border-bottom: 0px;
+  padding-bottom: 5px;
+}
+
+.cs-list.new-tr-ch .sm-box a span
+{
+  color: #33b2f3 !important;
+  font-size: 12px;
+}
+
+.cs-list.new-tr-ch .sm-box a
+{
+  padding: 1px 5px 17px 5px;
+}
+
+.cs-list.new-tr-ch .sm-box a p
+{
+  font-size: 10px;
+  color: #000000;
+  font-weight: 500;
+  background: #e4e4e4;
+  height: 19px;
+}
 
 .cs-item-list
 {
@@ -9459,6 +9491,7 @@ h4.nrml-head
   width: auto;
   background: #ffffff;
   position: relative;
+  overflow: hidden;
 }
 
 .sm-box a:after
@@ -9489,8 +9522,6 @@ h4.nrml-head
   background: #f3f2f2;
   width: 100%;
   line-height: 20px;
-  border-bottom-right-radius: 6px;
-  border-bottom-left-radius: 6px;
   padding: 0px 5px;
   border-top: 1px solid #ccc;
   text-overflow: ellipsis;
@@ -14133,8 +14164,8 @@ span.progress-bar span.inside
 .search_filter
 {
   display: flex;
-  padding: 10px;
-  background: #fbfbfb;
+  padding: 0px 16px 10px 16px;
+  /* background: #fbfbfb; */
   box-sizing: content-box;
   position: sticky;
   top: 0;

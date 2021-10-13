@@ -8,7 +8,7 @@
         <div class="padding16">
             
             <div ng-class="{'has-error': Addform.customerMobile1.$invalid && Addform.$submitted,'verified_mobile':data.otpVerify}" class="input-field field-input ">
-                <input id="customerMobile1" ng-change="changeMobile()" ng-model="data.customerMobile1" type="number" name="customerMobile1" minlength = "10" maxlength ="10" limit-to = "10" class="validate" string-to-number required>
+                <input ng-change="changeMobile()" ng-model="data.customerMobile1" type="number" name="customerMobile1" minlength = "10" maxlength ="10" limit-to = "10" id="mobile_only" ng-keyup="validateMobile();" class="validate" string-to-number required>
                 <label ng-class="data.drId ? 'active' : ''" for="last_name">Mobile 1 <sup>*</sup></label>
                 <span class="error-left relative" ng-show="Addform.$submitted && Addform.customerMobile1.$error.minlength">* Mobile No. Must be 10 Digit</span>
                 <span class="error-left relative" ng-show="Addform.$submitted && Addform.customerMobile1.$error.maxlength">* Mobile No. Must be 10 Digit</span>
@@ -121,14 +121,15 @@
                         </div>
                         
                         <div ng-class="{'has-error': Addform.companyName.$invalid && Addform.$submitted}" class="input-field field-input">
-                            <input name="companyName" ng-model="data.companyName" id="companyName" type="text" class="validate" ng-required = "true" with="">
+                            <input name="companyName" ng-model="data.companyName" type="text" class="validate" id="alphabet_only" minlength = "3" ng-keyup="alphabetOnly();" ng-required = "true" with="">
                             <label for="last_name">Firm Name <sup>*</sup></label>
+                            <span class="error-left relative" ng-show="Addform.$submitted && Addform.companyName.$error.minlength ">*Name Must be Minimum 3 Letters!</span>
                         </div>
                         
                         <div ng-class="{'has-error': Addform.customerName.$invalid && Addform.$submitted}" class="input-field field-input">
-                            <input ng-model="data.customerName" name="customerName" id="customerName" type="text"
-                            class="validate" with="" required>
+                            <input ng-model="data.customerName" name="customerName" id="alphabet_only_1" minlength = "3" ng-keyup="alphabetOnly1();" type="text" class="validate" with="" required>
                             <label ng-class="data.drId ? 'active' : ''" for="last_name">Customer Name <sup>*</sup></label>
+                            <span class="error-left relative" ng-show="Addform.$submitted && Addform.customerName.$error.minlength ">*Name Must be Minimum 3 Letters!</span>
                         </div>
                         
                         <div ng-class="{'has-error': Addform.gst_no.$invalid && Addform.$submitted}" class="input-field field-input">

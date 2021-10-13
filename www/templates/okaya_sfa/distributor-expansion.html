@@ -3,15 +3,30 @@
     <ion-nav-buttons side="left">
         <a href="#/tab/menu" class="cs-backbtn button button-icon icon ion-android-arrow-back font18 fff"></a>
     </ion-nav-buttons>
-    <ion-nav-buttons side="right" class="custom-right-btn">
+    <!-- <ion-nav-buttons side="right" class="custom-right-btn">
         <div class="right-nav-btn nav-search">
             <a menu-toggle="left" ng-click="filter(true)">
                 <i class="material-icons">sort</i>
                 <span ng-show="filterActive == true" class="filter-dot"></span>
             </a>
         </div>
-    </ion-nav-buttons>
+    </ion-nav-buttons> -->
     
+    <!-- <div class="sticky bg-white top50">
+        <div class="round-tab">
+            <div>
+                <ul>
+                    <li ng-click="onTargetHandler('me')" ng-class="data.targetTab == 'me' ? 'active' : ''">
+                        <a>My Target</a>
+                    </li>
+                    <li ng-click="onTargetHandler('myTeam')" ng-class="data.targetTab == 'myTeam' ? 'active' : ''">
+                        <a>Team Target</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div> -->
+
     <ion-content>
         <div class="coman-list" ng-repeat="row in distributorExpansion">
             <div class="top-head">

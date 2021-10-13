@@ -1,39 +1,28 @@
 
 app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ionicModal, $state, myRequestDBService, myAllSharedService, $ionicLoading, $cordovaSQLite, $ionicPopup, $timeout, $ionicActionSheet, $cordovaImagePicker, Camera, $cordovaFileTransfer, $cordovaGeolocation, $cordovaToast, $location, $window, $ionicPlatform, $ionicHistory, $ionicModal, $stateParams, $ionicScrollDelegate, $ionicPopover) {
-    
     $scope.loginData = myAllSharedService.loginData;
     $scope.AssignSalesUser = [];
-    
     console.log($scope.loginData);
     $scope.isRequestInProcess;
     $scope.orderList = [];
     // $scope.loginData.team_List = [];
-    
     $scope.data = {};
     $scope.search = {};
-    
     $scope.data.isInsideLead = myAllSharedService.drTypeFilterData.isInsideLead;
     $rootScope.isAttendanceStart = myAllSharedService.loginData.startAttendance;
-    
     $scope.categoryList = [];
     $scope.subCategoryList = [];
     $scope.productList = [];
-    
     $scope.drList = [];
     $scope.drDeliveryByList = [];
-    
-    
     $scope.cartItemData = [];
     $scope.cartSummaryData = {};
     $scope.drDetail = myAllSharedService.drTypeFilterData.drDetail;
-    
     $scope.drOrderTypeData = [];
     $scope.deliveryByTypeList = [];
-    
     $scope.currentPage = 1;
     $scope.pageSize = 20;
     $scope.pagelimit = 0;
-    
     // $scope.currentDate =  new Date();
     $scope.currentDate = moment().format('YYYY-MM-DD');
     $scope.minDate = moment().subtract(7, 'days').format('YYYY-MM-DD');
@@ -41,7 +30,6 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
     $scope.isSearchBarOpen = false;
     $scope.order_type = myAllSharedService.drTypeFilterData.order_type;
     $scope.noMoreListingAvailable = false;
-    
     let fetchingRecords = false;
     
     $scope.changeStatus = function (statusType) {
@@ -59,7 +47,6 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
     //         $scope.data.statusModel = popovers;
     //     });
     // }
-    
     
     $scope.onGetCartItemDataHandler = function (typeInfo, searchKey, pagenumber) {
         
@@ -138,7 +125,7 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
             order_type: $scope.order_type,
             dr_id: $scope.data.dr_id,
         };
-
+        
         // var data = {
         //     search: searchKey,
         // };
@@ -199,9 +186,7 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
         
     };
     
-    
     $scope.assignDistributor = [];
-    
     
     $scope.getAssignDistributor = function () {
         $scope.search.assign_dr_name = { Key: "Select Distributor", Value: "" };
@@ -237,7 +222,6 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
         });
         
     }
-    
     
     $scope.dis_list = [];
     $scope.getDistributor = function () {
@@ -620,23 +604,50 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
     
     // ----------------------Target Module Functions Start--------------------------------- //
     
-    // ------------Primary Module Functions Start------------ //
+    // ------------Primary Module Functions Start------------ //    
+
+    $scope.onTargetHandler = function (type) {
+        $scope.data.targetTab = type;
+        if ($location.path() == '/tab/primary-target-list')
+        {
+            $scope.getTargetListData('');
+        }
+        if ($location.path() == '/tab/secondary-target-list')
+        {
+            $scope.getsecondaryTargetListData();
+        }
+        if ($location.path() == '/tab/distributor-expansion')
+        {
+            $scope.getDistributorExpansionList();
+        }
+        if ($location.path() == '/tab/dealer-expansion-list')
+        {
+            $scope.getDealerExpansionListData();
+        }
+        
+    }
+
     $scope.filterActive = false;
     $scope.getTargetListData = function () {
+        console.log($scope.data.targetTab);
         $ionicLoading.show({
             template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>'
         });
         
-        if ($scope.filter_year) {
+        if ($scope.filter_year || $scope.filter_month || $scope.targetUser) {
             $scope.targetList = [];
             $scope.filterActive = true;
         }
         console.log($scope.filter_year);
+        console.log($scope.filter_month);
+        console.log($scope.targetUser);
         
-        myRequestDBService.getTargetList($scope.filter_year).then(function (response) {
+        myRequestDBService.getTargetList($scope.filter_year,$scope.filter_month,$scope.data.targetTab,$scope.targetUser).then(function (response) {
             console.log(response);
             $scope.targetList = response.data;
+            $scope.employeList = response.assign_user;
             console.log($scope.targetList);
+            console.log($scope.employeList);
             $ionicLoading.hide();
             
         }, function (err) {
@@ -645,27 +656,168 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
         });
     }
     
-    $scope.onGoToprimaryTargetDetail = function (month,year,target_percentage,target_value,target_achievement) {
+    $scope.onGoToprimaryTargetDetail = function (month,year,target_percentage,target_value,target_achievement,targetUser) {
         myAllSharedService.drTypeFilterData.targetMonth = month;
         myAllSharedService.drTypeFilterData.targetYear = year;
         myAllSharedService.drTypeFilterData.target_percentage = target_percentage;
         myAllSharedService.drTypeFilterData.target_value = target_value;
         myAllSharedService.drTypeFilterData.target_achievement = target_achievement;
+        myAllSharedService.drTypeFilterData.targetUser = targetUser;
         console.log(myAllSharedService.drTypeFilterData);
         $state.go('tab.primary-target-detail');        
     }
-    
-    $scope.getTargetDetail = function () {
+        
+    $scope.brandcategory = [];
+    $scope.getTargetDetail = function (search,targetUser) {
         console.log($scope.targetMonth,$scope.targetYear);
+        console.log(search);
+        console.log(targetUser);
         
         $ionicLoading.show({
             template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>'
         });
         
-        myRequestDBService.getTargetDetail($scope.targetMonth,$scope.targetYear).then(function (response) {
+        myRequestDBService.getTargetDetail($scope.targetMonth,$scope.targetYear,search,targetUser).then(function (response) {
             console.log(response);
             $scope.targetdetail = response.data.data;
+            var IBCATEGORY = 0;
+            var ABCATEGORY = 0;
+            var ERBCATEGORY = 0;
+            var SMFCATEGORY = 0;
+            var SOLARCATEGORY = 0;
+            
+            var IBDIGIBRAND = 0;
+            var IBMTEKBRAND = 0;
+            var IBOKAYABRAND = 0;
+            var IBVIVABRAND = 0;
+            var ABOKAYABRAND = 0;
+            var AH72OKAYABRAND = 0;
+            var ERBMTEKBRAND = 0;
+            var ERBOKAYABRAND = 0;
+            var SMFBIGBRAND = 0;
+            var SBOKAYABRAND = 0;
+            var SPGSOKAYABRAND = 0;
+            
+            var IBachievementCATEGORY = 0;
+            var ABachievementCATEGORY = 0;
+            var ERBachievementCATEGORY = 0;
+            var SMFachievementCATEGORY = 0;
+            var SOLARachievementCATEGORY = 0;
+            
+            var IBDIGIachievementBRAND = 0;
+            var IBMTEKachievementBRAND = 0;
+            var IBOKAYAachievementBRAND = 0;
+            var IBVIVAachievementBRAND = 0;
+            var ABOKAYAachievementBRAND = 0;
+            var AH72OKAYAachievementBRAND = 0;
+            var ERBMTEKachievementBRAND = 0;
+            var ERBOKAYAachievementBRAND = 0;
+            var SMFBIGachievementBRAND = 0;
+            var SBOKAYAachievementBRAND = 0;
+            var SPGSOKAYAachievementBRAND = 0;
+            
+            for (let index = 0; index < $scope.targetdetail.length; index++) {
+                
+                if ($scope.targetdetail[index].data.length > 0) {            
+                    for (let index1 = 0; index1 < $scope.targetdetail[index].data.length; index1++) {
+                        //CATEGORY
+                        if ($scope.targetdetail[index].data[index1].category=='IB') {
+                            IBCATEGORY = $scope.targetdetail[index].data[index1].value*1 + IBCATEGORY*1;
+                            IBachievementCATEGORY = $scope.targetdetail[index].data[index1].achievement*1 + IBachievementCATEGORY;
+                        }
+                        else if($scope.targetdetail[index].data[index1].category=='ERB'){
+                            ERBCATEGORY = $scope.targetdetail[index].data[index1].value*1 + ERBCATEGORY*1;
+                            ERBachievementCATEGORY = $scope.targetdetail[index].data[index1].achievement*1 + ERBachievementCATEGORY*1;
+                        }
+                        else if($scope.targetdetail[index].data[index1].category=='AB'){
+                            ABCATEGORY = $scope.targetdetail[index].data[index1].value*1 + ABCATEGORY*1;
+                            ABachievementCATEGORY = $scope.targetdetail[index].data[index1].achievement*1 + ABachievementCATEGORY*1;
+                        }
+                        else if($scope.targetdetail[index].data[index1].category=='SMF'){
+                            SMFCATEGORY = $scope.targetdetail[index].data[index1].value*1 + SMFCATEGORY*1;
+                            SMFachievementCATEGORY = $scope.targetdetail[index].data[index1].achievement*1 + SMFachievementCATEGORY*1;
+                        }
+                        else if($scope.targetdetail[index].data[index1].category=='SOLAR'){
+                            SOLARCATEGORY = $scope.targetdetail[index].data[index1].value*1 + SOLARCATEGORY*1;
+                            SOLARachievementCATEGORY = $scope.targetdetail[index].data[index1].achievement*1 + SOLARachievementCATEGORY*1;
+                        }
+                        //BRANDS
+                        if($scope.targetdetail[index].data[index1].brand=='7.2AH - OKAYA'){
+                            AH72OKAYABRAND = $scope.targetdetail[index].data[index1].value*1 + AH72OKAYABRAND*1;   
+                            AH72OKAYAachievementBRAND = $scope.targetdetail[index].data[index1].achievement*1 + AH72OKAYAachievementBRAND*1;
+                        }
+                        else if($scope.targetdetail[index].data[index1].brand=='AB - OKAYA'){
+                            ABOKAYABRAND = $scope.targetdetail[index].data[index1].value*1 + ABOKAYABRAND*1;
+                            ABOKAYAachievementBRAND = $scope.targetdetail[index].data[index1].achievement*1 + ABOKAYAachievementBRAND*1;
+                        }
+                        else if($scope.targetdetail[index].data[index1].brand=='ERB - MTEK'){
+                            ERBMTEKBRAND = $scope.targetdetail[index].data[index1].value*1 + ERBMTEKBRAND*1;
+                            ERBMTEKachievementBRAND = $scope.targetdetail[index].data[index1].achievement*1 + ERBMTEKachievementBRAND*1;
+                        }
+                        else if($scope.targetdetail[index].data[index1].brand=='ERB - OKAYA'){
+                            ERBOKAYABRAND = $scope.targetdetail[index].data[index1].value*1 + ERBOKAYABRAND*1;
+                            ERBOKAYAachievementBRAND = $scope.targetdetail[index].data[index1].achievement*1 + ERBOKAYAachievementBRAND*1;
+                        }
+                        else if($scope.targetdetail[index].data[index1].brand=='IB - DIGI'){
+                            IBDIGIBRAND = $scope.targetdetail[index].data[index1].value*1 + IBDIGIBRAND*1;
+                            IBDIGIachievementBRAND = $scope.targetdetail[index].data[index1].achievement*1 + IBDIGIachievementBRAND*1;
+                        }
+                        else if($scope.targetdetail[index].data[index1].brand=='IB - MTEK'){
+                            IBMTEKBRAND = $scope.targetdetail[index].data[index1].value*1 + IBMTEKBRAND*1;                      
+                            IBMTEKachievementBRAND = $scope.targetdetail[index].data[index1].achievement*1 + IBMTEKachievementBRAND*1;
+                        }
+                        else if($scope.targetdetail[index].data[index1].brand=='IB - OKAYA'){
+                            IBOKAYABRAND = $scope.targetdetail[index].data[index1].value*1 + IBOKAYABRAND*1;
+                            IBOKAYAachievementBRAND = $scope.targetdetail[index].data[index1].achievement*1 + IBOKAYAachievementBRAND*1;
+                        }
+                        else if($scope.targetdetail[index].data[index1].brand=='IB - VIVA'){
+                            IBVIVABRAND = $scope.targetdetail[index].data[index1].value*1 + IBVIVABRAND*1;
+                            IBVIVAachievementBRAND = $scope.targetdetail[index].data[index1].achievement*1 + IBVIVAachievementBRAND*1;
+                        }
+                        else if($scope.targetdetail[index].data[index1].brand=='SB - OKAYA'){
+                            SBOKAYABRAND = $scope.targetdetail[index].data[index1].value*1 + SBOKAYABRAND*1;
+                            SBOKAYAachievementBRAND = $scope.targetdetail[index].data[index1].achievement*1 + SBOKAYAachievementBRAND*1;
+                        }
+                        else if($scope.targetdetail[index].data[index1].brand=='SMF-BIG - OKAYA'){
+                            SMFBIGBRAND = $scope.targetdetail[index].data[index1].value*1 + SMFBIGBRAND*1;
+                            SMFBIGachievementBRAND = $scope.targetdetail[index].data[index1].achievement*1 + SMFBIGachievementBRAND*1;
+                        }
+                        else if($scope.targetdetail[index].data[index1].brand=='SPGS - OKAYA'){
+                            SPGSOKAYABRAND = $scope.targetdetail[index].data[index1].value*1 + SPGSOKAYABRAND*1;
+                            SPGSOKAYAachievementBRAND = $scope.targetdetail[index].data[index1].achievement*1 + SPGSOKAYAachievementBRAND*1;
+                        }   
+                    }
+                    
+                    
+                }
+                
+            }
             console.log($scope.targetdetail);
+            
+            $scope.categoryTOTAL = [
+                {'name':'IB','achievement':IBachievementCATEGORY,'value':IBCATEGORY},
+                {'name':'ERB','achievement':ERBachievementCATEGORY,'value':ERBCATEGORY},
+                {'name':'SMF','achievement':SMFachievementCATEGORY,'value':SMFCATEGORY},
+                {'name':'SOLAR','achievement':SOLARachievementCATEGORY,'value':SOLARCATEGORY},
+                {'name':'AB','achievement':ABachievementCATEGORY,'value':ABCATEGORY}
+            ];
+            
+            $scope.brandTotal = [
+                {'name':'IB - DIGI','achievement':IBDIGIachievementBRAND,'value':IBDIGIBRAND},
+                {'name':'IB - MTEK','achievement':IBMTEKachievementBRAND,'value':IBMTEKBRAND},
+                {'name':'IB - OKAYA','achievement':IBOKAYAachievementBRAND,'value':IBOKAYABRAND},
+                {'name':'IB - VIVA','achievement':IBVIVAachievementBRAND,'value':IBVIVABRAND},
+                {'name':'ERB - MTEK','achievement':ERBMTEKachievementBRAND,'value':ERBMTEKBRAND},
+                {'name':'ERB - OKAYA','achievement':ERBOKAYAachievementBRAND,'value':ERBOKAYABRAND},
+                {'name':'7.2AH - OKAYA','achievement':AH72OKAYAachievementBRAND,'value':AH72OKAYABRAND},
+                {'name':'SMF-BIG - OKAYA','achievement':SMFBIGachievementBRAND,'value':SMFBIGBRAND},
+                {'name':'SB - OKAYA','achievement':SBOKAYAachievementBRAND,'value':SBOKAYABRAND},
+                {'name':'SPGS - OKAYA','achievement':SPGSOKAYAachievementBRAND,'value':SPGSOKAYABRAND},
+                {'name':'AB - OKAYA','achievement':ABOKAYAachievementBRAND,'value':ABOKAYABRAND}
+            ];
+            
+            console.log($scope.categoryTOTAL);
+            console.log($scope.brandTotal);
             $ionicLoading.hide();
             
         }, function (err) {
@@ -676,9 +828,10 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
     
     
     if ($location.path() == '/tab/primary-target-list') {
-        $scope.getTargetListData();
+        $scope.data.targetTab = 'me';
+        $scope.getTargetListData($scope.data.targetTab);
     }
-
+    
     
     if ($location.path() == '/tab/primary-target-detail') {
         console.log('target-detail');
@@ -687,38 +840,53 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
         $scope.targetPercentage = myAllSharedService.drTypeFilterData.target_percentage;
         $scope.targetValue = myAllSharedService.drTypeFilterData.target_value;
         $scope.targetAchievement = myAllSharedService.drTypeFilterData.target_achievement;
+        $scope.targetUser = myAllSharedService.drTypeFilterData.targetUser;
         console.log(myAllSharedService.drTypeFilterData);
-
-        $scope.getTargetDetail();
+        console.log($scope.targetUser);        
+        $scope.getTargetDetail('',$scope.targetUser);
     }
     // ------------Primary Module Functions END------------ //
     
-
+    
     // ------------Secondary Module Functions Start------------ //
     $scope.filter_year = '';
+    $scope.filter_month = '';
     $scope.clearTargetFilter = function () {
         console.log('clear Target Filter');
-        $scope.filterActive = false;
         $scope.filter_year = '';
-        $scope.getTargetListData();
+        $scope.filter_month = '';
+        $scope.targetUser = '';
+        $scope.filterActive = false;
+        if ($location.path() == '/tab/primary-target-list') 
+        {
+            $scope.getTargetListData();
+        }
+        if ($location.path() == '/tab/secondary-target-list') 
+        {
+            $scope.getsecondaryTargetListData();
+        }
     }
-
+    
     $scope.filterActive = false;
     $scope.getsecondaryTargetListData = function () {
         $ionicLoading.show({
             template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>'
         });
         
-        if ($scope.filter_year) {
+        if ($scope.filter_year || $scope.filter_month || $scope.targetUser) {
             $scope.targetList = [];
             $scope.filterActive = true;
         }
         console.log($scope.filter_year);
+        console.log($scope.filter_month);
+        console.log($scope.targetUser);
         
-        myRequestDBService.getsecondaryTargetList($scope.filter_year).then(function (response) {
+        myRequestDBService.getsecondaryTargetList($scope.filter_year,$scope.filter_month,$scope.data.targetTab,$scope.targetUser).then(function (response) {
             console.log(response);
-            $scope.targetList = response.data;
-            console.log($scope.targetList);
+            $scope.secTargetList = response.data;
+            $scope.employeList = response.assign_user;
+            console.log($scope.employeList);
+            console.log($scope.secTargetList);
             $ionicLoading.hide();
             
         }, function (err) {
@@ -727,27 +895,162 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
         });
     }
     
-    $scope.onGoTosecondaryTargetDetail = function (month,year,target_percentage,target_value,target_achievement) {
+    $scope.onGoTosecondaryTargetDetail = function (month,year,target_percentage,target_value,target_achievement,targetUser) {
         myAllSharedService.drTypeFilterData.targetMonth = month;
         myAllSharedService.drTypeFilterData.targetYear = year;
         myAllSharedService.drTypeFilterData.target_percentage = target_percentage;
         myAllSharedService.drTypeFilterData.target_value = target_value;
         myAllSharedService.drTypeFilterData.target_achievement = target_achievement;
+        myAllSharedService.drTypeFilterData.targetUser = targetUser;
         console.log(myAllSharedService.drTypeFilterData);
         $state.go('tab.secondary-target-detail');        
     }
     
-    $scope.getsecondaryTargetDetail = function () {
-        console.log($scope.targetMonth,$scope.targetYear);
+    $scope.getsecondaryTargetDetail = function (search,targetUser) {
+        console.log($scope.targetMonth,$scope.targetYear,search,targetUser);
         
         $ionicLoading.show({
             template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>'
         });
         
-        myRequestDBService.getsecondaryTargetDetail($scope.targetMonth,$scope.targetYear).then(function (response) {
+        myRequestDBService.getsecondaryTargetDetail($scope.targetMonth,$scope.targetYear,search,targetUser).then(function (response) {
             console.log(response);
             $scope.targetdetail = response.data.data;
             console.log($scope.targetdetail);
+            var IBCATEGORY = 0;
+            var ABCATEGORY = 0;
+            var ERBCATEGORY = 0;
+            var SMFCATEGORY = 0;
+            var SOLARCATEGORY = 0;
+            
+            var IBDIGIBRAND = 0;
+            var IBMTEKBRAND = 0;
+            var IBOKAYABRAND = 0;
+            var IBVIVABRAND = 0;
+            var ABOKAYABRAND = 0;
+            var AH72OKAYABRAND = 0;
+            var ERBMTEKBRAND = 0;
+            var ERBOKAYABRAND = 0;
+            var SMFBIGBRAND = 0;
+            var SBOKAYABRAND = 0;
+            var SPGSOKAYABRAND = 0;
+            
+            var IBachievementCATEGORY = 0;
+            var ABachievementCATEGORY = 0;
+            var ERBachievementCATEGORY = 0;
+            var SMFachievementCATEGORY = 0;
+            var SOLARachievementCATEGORY = 0;
+            
+            var IBDIGIachievementBRAND = 0;
+            var IBMTEKachievementBRAND = 0;
+            var IBOKAYAachievementBRAND = 0;
+            var IBVIVAachievementBRAND = 0;
+            var ABOKAYAachievementBRAND = 0;
+            var AH72OKAYAachievementBRAND = 0;
+            var ERBMTEKachievementBRAND = 0;
+            var ERBOKAYAachievementBRAND = 0;
+            var SMFBIGachievementBRAND = 0;
+            var SBOKAYAachievementBRAND = 0;
+            var SPGSOKAYAachievementBRAND = 0;
+            
+            for (let index = 0; index < $scope.targetdetail.length; index++) {
+                
+                // if ($scope.targetdetail[index].data.length > 0) {            
+                // for (let index1 = 0; index1 < $scope.targetdetail[index].data.length; index1++) {
+                //CATEGORY
+                if ($scope.targetdetail[index].category=='IB') {
+                    IBCATEGORY = $scope.targetdetail[index].target*1 + IBCATEGORY*1;
+                    IBachievementCATEGORY = $scope.targetdetail[index].achievement*1 + IBachievementCATEGORY;
+                }
+                else if($scope.targetdetail[index].category=='ERB'){
+                    ERBCATEGORY = $scope.targetdetail[index].target*1 + ERBCATEGORY*1;
+                    ERBachievementCATEGORY = $scope.targetdetail[index].achievement*1 + ERBachievementCATEGORY*1;
+                }
+                else if($scope.targetdetail[index].category=='AB'){
+                    ABCATEGORY = $scope.targetdetail[index].target*1 + ABCATEGORY*1;
+                    ABachievementCATEGORY = $scope.targetdetail[index].achievement*1 + ABachievementCATEGORY*1;
+                }
+                else if($scope.targetdetail[index].category=='SMF'){
+                    SMFCATEGORY = $scope.targetdetail[index].target*1 + SMFCATEGORY*1;
+                    SMFachievementCATEGORY = $scope.targetdetail[index].achievement*1 + SMFachievementCATEGORY*1;
+                }
+                else if($scope.targetdetail[index].category=='SOLAR'){
+                    SOLARCATEGORY = $scope.targetdetail[index].target*1 + SOLARCATEGORY*1;
+                    SOLARachievementCATEGORY = $scope.targetdetail[index].achievement*1 + SOLARachievementCATEGORY*1;
+                }
+                //BRANDS
+                if($scope.targetdetail[index].brand=='7.2AH - OKAYA'){
+                    AH72OKAYABRAND = $scope.targetdetail[index].target*1 + AH72OKAYABRAND*1;   
+                    AH72OKAYAachievementBRAND = $scope.targetdetail[index].achievement*1 + AH72OKAYAachievementBRAND*1;
+                }
+                else if($scope.targetdetail[index].brand=='AB - OKAYA'){
+                    ABOKAYABRAND = $scope.targetdetail[index].target*1 + ABOKAYABRAND*1;
+                    ABOKAYAachievementBRAND = $scope.targetdetail[index].achievement*1 + ABOKAYAachievementBRAND*1;
+                }
+                else if($scope.targetdetail[index].brand=='ERB - MTEK'){
+                    ERBMTEKBRAND = $scope.targetdetail[index].target*1 + ERBMTEKBRAND*1;
+                    ERBMTEKachievementBRAND = $scope.targetdetail[index].achievement*1 + ERBMTEKachievementBRAND*1;
+                }
+                else if($scope.targetdetail[index].brand=='ERB - OKAYA'){
+                    ERBOKAYABRAND = $scope.targetdetail[index].target*1 + ERBOKAYABRAND*1;
+                    ERBOKAYAachievementBRAND = $scope.targetdetail[index].achievement*1 + ERBOKAYAachievementBRAND*1;
+                }
+                else if($scope.targetdetail[index].brand=='IB - DIGI'){
+                    IBDIGIBRAND = $scope.targetdetail[index].target*1 + IBDIGIBRAND*1;
+                    IBDIGIachievementBRAND = $scope.targetdetail[index].achievement*1 + IBDIGIachievementBRAND*1;
+                }
+                else if($scope.targetdetail[index].brand=='IB - MTEK'){
+                    IBMTEKBRAND = $scope.targetdetail[index].target*1 + IBMTEKBRAND*1;                      
+                    IBMTEKachievementBRAND = $scope.targetdetail[index].achievement*1 + IBMTEKachievementBRAND*1;
+                }
+                else if($scope.targetdetail[index].brand=='IB - OKAYA'){
+                    IBOKAYABRAND = $scope.targetdetail[index].target*1 + IBOKAYABRAND*1;
+                    IBOKAYAachievementBRAND = $scope.targetdetail[index].achievement*1 + IBOKAYAachievementBRAND*1;
+                }
+                else if($scope.targetdetail[index].brand=='IB - VIVA'){
+                    IBVIVABRAND = $scope.targetdetail[index].target*1 + IBVIVABRAND*1;
+                    IBVIVAachievementBRAND = $scope.targetdetail[index].achievement*1 + IBVIVAachievementBRAND*1;
+                }
+                else if($scope.targetdetail[index].brand=='SB - OKAYA'){
+                    SBOKAYABRAND = $scope.targetdetail[index].target*1 + SBOKAYABRAND*1;
+                    SBOKAYAachievementBRAND = $scope.targetdetail[index].achievement*1 + SBOKAYAachievementBRAND*1;
+                }
+                else if($scope.targetdetail[index].brand=='SMF-BIG - OKAYA'){
+                    SMFBIGBRAND = $scope.targetdetail[index].target*1 + SMFBIGBRAND*1;
+                    SMFBIGachievementBRAND = $scope.targetdetail[index].achievement*1 + SMFBIGachievementBRAND*1;
+                }
+                else if($scope.targetdetail[index].brand=='SPGS - OKAYA'){
+                    SPGSOKAYABRAND = $scope.targetdetail[index].target*1 + SPGSOKAYABRAND*1;
+                    SPGSOKAYAachievementBRAND = $scope.targetdetail[index].achievement*1 + SPGSOKAYAachievementBRAND*1;
+                }                
+            }
+            console.log($scope.targetdetail);
+            
+            $scope.categoryTOTAL = [
+                {'name':'IB','achievement':IBachievementCATEGORY,'value':IBCATEGORY},
+                {'name':'ERB','achievement':ERBachievementCATEGORY,'value':ERBCATEGORY},
+                {'name':'SMF','achievement':SMFachievementCATEGORY,'value':SMFCATEGORY},
+                {'name':'SOLAR','achievement':SOLARachievementCATEGORY,'value':SOLARCATEGORY},
+                {'name':'AB','achievement':ABachievementCATEGORY,'value':ABCATEGORY}
+            ];
+            
+            $scope.brandTotal = [
+                {'name':'IB - DIGI','achievement':IBDIGIachievementBRAND,'value':IBDIGIBRAND},
+                {'name':'IB - MTEK','achievement':IBMTEKachievementBRAND,'value':IBMTEKBRAND},
+                {'name':'IB - OKAYA','achievement':IBOKAYAachievementBRAND,'value':IBOKAYABRAND},
+                {'name':'IB - VIVA','achievement':IBVIVAachievementBRAND,'value':IBVIVABRAND},
+                {'name':'ERB - MTEK','achievement':ERBMTEKachievementBRAND,'value':ERBMTEKBRAND},
+                {'name':'ERB - OKAYA','achievement':ERBOKAYAachievementBRAND,'value':ERBOKAYABRAND},
+                {'name':'7.2AH - OKAYA','achievement':AH72OKAYAachievementBRAND,'value':AH72OKAYABRAND},
+                {'name':'SMF-BIG - OKAYA','achievement':SMFBIGachievementBRAND,'value':SMFBIGBRAND},
+                {'name':'SB - OKAYA','achievement':SBOKAYAachievementBRAND,'value':SBOKAYABRAND},
+                {'name':'SPGS - OKAYA','achievement':SPGSOKAYAachievementBRAND,'value':SPGSOKAYABRAND},
+                {'name':'AB - OKAYA','achievement':ABOKAYAachievementBRAND,'value':ABOKAYABRAND}
+            ];
+            
+            console.log($scope.categoryTOTAL);
+            console.log($scope.brandTotal);
+            
             $ionicLoading.hide();
             
         }, function (err) {
@@ -755,11 +1058,13 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
             console.error(err);
         });
     }
-
+    
     if ($location.path() == '/tab/secondary-target-list') {
+        console.log('*YOU ARE IN SECONDARY TARGET LIST*');
+        $scope.data.targetTab = 'me';
         $scope.getsecondaryTargetListData();
     }
-
+    
     
     if ($location.path() == '/tab/secondary-target-detail') {
         console.log('SECONDARY TARGET DETAIL');
@@ -768,14 +1073,15 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
         $scope.targetPercentage = myAllSharedService.drTypeFilterData.target_percentage;
         $scope.targetValue = myAllSharedService.drTypeFilterData.target_value;
         $scope.targetAchievement = myAllSharedService.drTypeFilterData.target_achievement;
+        $scope.targetUser = myAllSharedService.drTypeFilterData.targetUser;
         console.log(myAllSharedService.drTypeFilterData);
-
-        $scope.getsecondaryTargetDetail();
+        
+        $scope.getsecondaryTargetDetail('',$scope.targetUser);
     }
     // ------------Secondary Module Functions END------------ //
-
+    
     // ------------Distributor Expansion Module Functions Start------------ //
-
+    
     $scope.filterActive = false;
     $scope.getDistributorExpansionList = function () {
         $ionicLoading.show({
@@ -788,7 +1094,7 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
         }
         console.log($scope.filter_year);
         
-        myRequestDBService.getDistributorExpansionList($scope.filter_year).then(function (response) {
+        myRequestDBService.getDistributorExpansionList($scope.filter_year,$scope.data.targetTab).then(function (response) {
             console.log(response);
             $scope.distributorExpansion = response.data;
             console.log($scope.distributorExpansion);
@@ -799,38 +1105,46 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
             console.error(err);
         });
     }
-
+    
     if ($location.path() == '/tab/distributor-expansion') {
         console.log('DISTRIBUTOR EXPANSION LIST');
+        $scope.data.targetTab = 'me';
         $scope.getDistributorExpansionList();
     }
-
+    
     // ------------Distributor Expansion Module Functions END------------ //
-
+    
     // ------------Dealer Expansion Module Functions Start------------ //
     $scope.filter_year = '';
-    $scope.clearTargetFilter = function () {
+    $scope.filter_month = '';
+    $scope.clearDealerExpansionFilter = function () {
         console.log('clear Target Filter');
         $scope.filterActive = false;
         $scope.filter_year = '';
+        $scope.filter_month = '';
+        $scope.targetUser = '';
         $scope.getTargetListData();
     }
-
+    
     $scope.filterActive = false;
     $scope.getDealerExpansionListData = function () {
         $ionicLoading.show({
             template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>'
         });
         
-        if ($scope.filter_year) {
-            $scope.dealerExpansionList = [];
+        if ($scope.filter_year || $scope.filter_month || $scope.targetUser) {
+            $scope.targetList = [];
             $scope.filterActive = true;
         }
         console.log($scope.filter_year);
+        console.log($scope.filter_month);
+        console.log($scope.targetUser);
         
-        myRequestDBService.getDealerExpansionList($scope.filter_year).then(function (response) {
+        myRequestDBService.getDealerExpansionList($scope.filter_year,$scope.filter_month,$scope.data.targetTab,$scope.targetUser).then(function (response) {
             console.log(response);
             $scope.dealerExpansionList = response.data;
+            $scope.employeList = response.assign_user;
+            console.log($scope.employeList);
             console.log($scope.dealerExpansionList);
             $ionicLoading.hide();
             
@@ -840,27 +1154,167 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
         });
     }
     
-    $scope.onGoToDealerExpansionDetail = function (month,year,target_percentage,target_value,target_achievement) {
+    $scope.onGoToDealerExpansionDetail = function (month,year,target_percentage,target_value,target_achievement,targetUser) {
         myAllSharedService.drTypeFilterData.targetMonth = month;
         myAllSharedService.drTypeFilterData.targetYear = year;
         myAllSharedService.drTypeFilterData.target_percentage = target_percentage;
         myAllSharedService.drTypeFilterData.target_value = target_value;
         myAllSharedService.drTypeFilterData.target_achievement = target_achievement;
+        myAllSharedService.drTypeFilterData.targetUser = targetUser;
         console.log(myAllSharedService.drTypeFilterData);
         $state.go('tab.dealer-expansion-detail');        
     }
     
-    $scope.getDealerExpansionDetail = function () {
-        console.log($scope.targetMonth,$scope.targetYear);
+    $scope.getDealerExpansionDetail = function (search,targetUser) {
+        console.log($scope.targetMonth,$scope.targetYear,search,targetUser);
         
         $ionicLoading.show({
             template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>'
         });
         
-        myRequestDBService.getDealerExpansionDetail($scope.targetMonth,$scope.targetYear).then(function (response) {
+        myRequestDBService.getDealerExpansionDetail($scope.targetMonth,$scope.targetYear,search,targetUser).then(function (response) {
             console.log(response);
             $scope.targetdetail = response.data.data;
             console.log($scope.targetdetail);
+            
+            var IBCATEGORY = 0;
+            var ABCATEGORY = 0;
+            var ERBCATEGORY = 0;
+            var SMFCATEGORY = 0;
+            var SOLARCATEGORY = 0;
+            
+            var IBDIGIBRAND = 0;
+            var IBMTEKBRAND = 0;
+            var IBOKAYABRAND = 0;
+            var IBVIVABRAND = 0;
+            var ABOKAYABRAND = 0;
+            var AH72OKAYABRAND = 0;
+            var ERBMTEKBRAND = 0;
+            var ERBOKAYABRAND = 0;
+            var SMFBIGBRAND = 0;
+            var SBOKAYABRAND = 0;
+            var SPGSOKAYABRAND = 0;
+            
+            var IBachievementCATEGORY = 0;
+            var ABachievementCATEGORY = 0;
+            var ERBachievementCATEGORY = 0;
+            var SMFachievementCATEGORY = 0;
+            var SOLARachievementCATEGORY = 0;
+            
+            var IBDIGIachievementBRAND = 0;
+            var IBMTEKachievementBRAND = 0;
+            var IBOKAYAachievementBRAND = 0;
+            var IBVIVAachievementBRAND = 0;
+            var ABOKAYAachievementBRAND = 0;
+            var AH72OKAYAachievementBRAND = 0;
+            var ERBMTEKachievementBRAND = 0;
+            var ERBOKAYAachievementBRAND = 0;
+            var SMFBIGachievementBRAND = 0;
+            var SBOKAYAachievementBRAND = 0;
+            var SPGSOKAYAachievementBRAND = 0;
+            
+            for (let index = 0; index < $scope.targetdetail.length; index++) {
+                
+                // if ($scope.targetdetail[index].data.length > 0) {            
+                // for (let index1 = 0; index1 < $scope.targetdetail[index].data.length; index1++) {
+                //CATEGORY
+                if ($scope.targetdetail[index].category=='IB') {
+                    IBCATEGORY = $scope.targetdetail[index].target*1 + IBCATEGORY*1;
+                    IBachievementCATEGORY = $scope.targetdetail[index].achievement*1 + IBachievementCATEGORY;
+                }
+                else if($scope.targetdetail[index].category=='ERB'){
+                    ERBCATEGORY = $scope.targetdetail[index].target*1 + ERBCATEGORY*1;
+                    ERBachievementCATEGORY = $scope.targetdetail[index].achievement*1 + ERBachievementCATEGORY*1;
+                }
+                else if($scope.targetdetail[index].category=='AB'){
+                    ABCATEGORY = $scope.targetdetail[index].target*1 + ABCATEGORY*1;
+                    ABachievementCATEGORY = $scope.targetdetail[index].achievement*1 + ABachievementCATEGORY*1;
+                }
+                else if($scope.targetdetail[index].category=='SMF'){
+                    SMFCATEGORY = $scope.targetdetail[index].target*1 + SMFCATEGORY*1;
+                    SMFachievementCATEGORY = $scope.targetdetail[index].achievement*1 + SMFachievementCATEGORY*1;
+                }
+                else if($scope.targetdetail[index].category=='SOLAR'){
+                    SOLARCATEGORY = $scope.targetdetail[index].target*1 + SOLARCATEGORY*1;
+                    SOLARachievementCATEGORY = $scope.targetdetail[index].achievement*1 + SOLARachievementCATEGORY*1;
+                }
+                //BRANDS
+                if($scope.targetdetail[index].brand=='7.2AH - OKAYA'){
+                    AH72OKAYABRAND = $scope.targetdetail[index].target*1 + AH72OKAYABRAND*1;   
+                    AH72OKAYAachievementBRAND = $scope.targetdetail[index].achievement*1 + AH72OKAYAachievementBRAND*1;
+                }
+                else if($scope.targetdetail[index].brand=='AB - OKAYA'){
+                    ABOKAYABRAND = $scope.targetdetail[index].target*1 + ABOKAYABRAND*1;
+                    ABOKAYAachievementBRAND = $scope.targetdetail[index].achievement*1 + ABOKAYAachievementBRAND*1;
+                }
+                else if($scope.targetdetail[index].brand=='ERB - MTEK'){
+                    ERBMTEKBRAND = $scope.targetdetail[index].target*1 + ERBMTEKBRAND*1;
+                    ERBMTEKachievementBRAND = $scope.targetdetail[index].achievement*1 + ERBMTEKachievementBRAND*1;
+                }
+                else if($scope.targetdetail[index].brand=='ERB - OKAYA'){
+                    ERBOKAYABRAND = $scope.targetdetail[index].target*1 + ERBOKAYABRAND*1;
+                    ERBOKAYAachievementBRAND = $scope.targetdetail[index].achievement*1 + ERBOKAYAachievementBRAND*1;
+                }
+                else if($scope.targetdetail[index].brand=='IB - DIGI'){
+                    IBDIGIBRAND = $scope.targetdetail[index].target*1 + IBDIGIBRAND*1;
+                    IBDIGIachievementBRAND = $scope.targetdetail[index].achievement*1 + IBDIGIachievementBRAND*1;
+                }
+                else if($scope.targetdetail[index].brand=='IB - MTEK'){
+                    IBMTEKBRAND = $scope.targetdetail[index].target*1 + IBMTEKBRAND*1;                      
+                    IBMTEKachievementBRAND = $scope.targetdetail[index].achievement*1 + IBMTEKachievementBRAND*1;
+                }
+                else if($scope.targetdetail[index].brand=='IB - OKAYA'){
+                    IBOKAYABRAND = $scope.targetdetail[index].target*1 + IBOKAYABRAND*1;
+                    IBOKAYAachievementBRAND = $scope.targetdetail[index].achievement*1 + IBOKAYAachievementBRAND*1;
+                }
+                else if($scope.targetdetail[index].brand=='IB - VIVA'){
+                    IBVIVABRAND = $scope.targetdetail[index].target*1 + IBVIVABRAND*1;
+                    IBVIVAachievementBRAND = $scope.targetdetail[index].achievement*1 + IBVIVAachievementBRAND*1;
+                }
+                else if($scope.targetdetail[index].brand=='SB - OKAYA'){
+                    SBOKAYABRAND = $scope.targetdetail[index].target*1 + SBOKAYABRAND*1;
+                    SBOKAYAachievementBRAND = $scope.targetdetail[index].achievement*1 + SBOKAYAachievementBRAND*1;
+                }
+                else if($scope.targetdetail[index].brand=='SMF-BIG - OKAYA'){
+                    SMFBIGBRAND = $scope.targetdetail[index].target*1 + SMFBIGBRAND*1;
+                    SMFBIGachievementBRAND = $scope.targetdetail[index].achievement*1 + SMFBIGachievementBRAND*1;
+                }
+                else if($scope.targetdetail[index].brand=='SPGS - OKAYA'){
+                    SPGSOKAYABRAND = $scope.targetdetail[index].target*1 + SPGSOKAYABRAND*1;
+                    SPGSOKAYAachievementBRAND = $scope.targetdetail[index].achievement*1 + SPGSOKAYAachievementBRAND*1;
+                }   
+                // }
+                
+                
+                // }
+                
+            }
+            console.log($scope.targetdetail);
+            
+            $scope.categoryTOTAL = [
+                {'name':'IB','achievement':IBachievementCATEGORY,'value':IBCATEGORY},
+                {'name':'ERB','achievement':ERBachievementCATEGORY,'value':ERBCATEGORY},
+                {'name':'SMF','achievement':SMFachievementCATEGORY,'value':SMFCATEGORY},
+                {'name':'SOLAR','achievement':SOLARachievementCATEGORY,'value':SOLARCATEGORY},
+                {'name':'AB','achievement':ABachievementCATEGORY,'value':ABCATEGORY}
+            ];
+            
+            $scope.brandTotal = [
+                {'name':'IB - DIGI','achievement':IBDIGIachievementBRAND,'value':IBDIGIBRAND},
+                {'name':'IB - MTEK','achievement':IBMTEKachievementBRAND,'value':IBMTEKBRAND},
+                {'name':'IB - OKAYA','achievement':IBOKAYAachievementBRAND,'value':IBOKAYABRAND},
+                {'name':'IB - VIVA','achievement':IBVIVAachievementBRAND,'value':IBVIVABRAND},
+                {'name':'ERB - MTEK','achievement':ERBMTEKachievementBRAND,'value':ERBMTEKBRAND},
+                {'name':'ERB - OKAYA','achievement':ERBOKAYAachievementBRAND,'value':ERBOKAYABRAND},
+                {'name':'7.2AH - OKAYA','achievement':AH72OKAYAachievementBRAND,'value':AH72OKAYABRAND},
+                {'name':'SMF-BIG - OKAYA','achievement':SMFBIGachievementBRAND,'value':SMFBIGBRAND},
+                {'name':'SB - OKAYA','achievement':SBOKAYAachievementBRAND,'value':SBOKAYABRAND},
+                {'name':'SPGS - OKAYA','achievement':SPGSOKAYAachievementBRAND,'value':SPGSOKAYABRAND},
+                {'name':'AB - OKAYA','achievement':ABOKAYAachievementBRAND,'value':ABOKAYABRAND}
+            ];
+            
+            console.log($scope.categoryTOTAL);
+            console.log($scope.brandTotal);
             $ionicLoading.hide();
             
         }, function (err) {
@@ -868,11 +1322,12 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
             console.error(err);
         });
     }
-
+    
     if ($location.path() == '/tab/dealer-expansion-list') {
+        $scope.data.targetTab = 'me';
         $scope.getDealerExpansionListData();
     }
-
+    
     
     if ($location.path() == '/tab/dealer-expansion-detail') {
         console.log('DEALER EXPANSION DETAIL');
@@ -881,14 +1336,15 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
         $scope.targetPercentage = myAllSharedService.drTypeFilterData.target_percentage;
         $scope.targetValue = myAllSharedService.drTypeFilterData.target_value;
         $scope.targetAchievement = myAllSharedService.drTypeFilterData.target_achievement;
+        $scope.targetUser = myAllSharedService.drTypeFilterData.targetUser;
         console.log(myAllSharedService.drTypeFilterData);
-
-        $scope.getDealerExpansionDetail();
+        
+        $scope.getDealerExpansionDetail('',$scope.targetUser);
     }
     // ------------Dealer Expansion Module Functions END------------ //
     
-
-
+    
+    
     // ----------------------Target Module Functions End--------------------------------- //
     
     $scope.leadListFilter = false;
@@ -924,6 +1380,7 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
             }
         }
     }
+    
     $scope.data.totalItemQty = 0;
     $scope.data.basicAmount = 0;
     $scope.data.discountAmount = 0;
@@ -956,8 +1413,6 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
         }
         
         console.log($scope.data.netAmount);
-        
-        
     }
     
     $scope.onAddToCartHandler = function (targetType) {
@@ -1047,17 +1502,13 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
         $scope.cartItemData.splice(index, 1);
         console.log($scope.cartItemData);
         $scope.calculateItemTotal($scope.cartItemData);
-        
-        
-        
     }
     
     $scope.calculateOrder = function () {
-        
         console.log($scope.cartItemData);
-        
         $scope.calculateItemTotal($scope.cartItemData);
     }
+    
     $scope.submitSfaOrderData = function () {
         $scope.data.order_type = $scope.order_type;
         $scope.data.order_date = moment($scope.data.order_date).format('YYYY-MM-DD');
@@ -1151,11 +1602,6 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
             });
             return;
         }
-        
-        
-        
-        
-        
     }
     
     $scope.onCalculateSummaryTotalDataHandler = function () {
@@ -1876,12 +2322,22 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
             }, 1000);
         }
         
-        if (type == 'close') {
-            
+        if (type == 'close') {          
             $scope.data.search = '';
             $scope.isSearchBarOpen = false;
+            if ($location.path() == '/tab/sfa-order-list') 
+            {
+                $scope.getOrderListData('onLoad', '');
+            }
             
-            $scope.getOrderListData('onLoad', '');
+            if ($location.path() == '/tab/secondary-target-list') 
+            {
+                $scope.getTargetDetail('onLoad');
+            }
+            if ($location.path() == '/tab/secondary-target-list') 
+            {
+                $scope.getsecondaryTargetDetail('onLoad');
+            }
         }
     }
     
@@ -1991,7 +2447,6 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
         $scope.billinglistdata();
     }
     
-    
     $scope.updateStatus = function(status){
         
         console.log($scope.orderDetail.id);
@@ -2041,12 +2496,4 @@ app.controller('sfaOrderCtrl', function ($scope, $rootScope, searchSelect, $ioni
         
         
     }
-    
-    
-    
 })
-
-
-
-
-
