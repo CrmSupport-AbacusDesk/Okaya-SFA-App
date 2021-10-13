@@ -26,7 +26,7 @@
                     </div>
                     
                     <div class="input-field field-input">
-                        <input name="companyName" ng-model="data.companyName" id="companyName" type="text" class="validate" replace="[^a-zA-Z]" with="">
+                        <input name="companyName" ng-model="data.companyName" id="companyName" type="text" class="validate" replace="[^a-zA-Z ()]" with="">
                         <label>Firm Name</label>
                     </div>
                     
@@ -89,16 +89,16 @@
                 
                 <div class="cs-add-form">
                     
-                    <div class="field-input mt20" ng-class="{'has-error': Addform.category.$invalid && Addform.$submitted}">
+                    <div class="field-input mt20">
                         <labelclass="fix-label">Product Category</label>
-                        <select class="browser-default" ng-model="data.category" name="category" ng-change="getProductSubCategoryList(data.category)" ng-options="itemRow.category as itemRow.category for itemRow in ProductCategoryList" required>
+                        <select class="browser-default cs-select" ng-class="{'has-error': Addform.category.$invalid && Addform.$submitted}" ng-model="data.category" name="category" ng-change="getProductSubCategoryList(data.category)" ng-options="itemRow.category as itemRow.category for itemRow in ProductCategoryList" required>
                             <option value="" disabled selected>Select Category<span>*</span></option>
                         </select>
                     </div>
                     
-                    <div class="field-input mt20" ng-if="data.category" ng-class="{'has-error': Addform.sub_category.$invalid && Addform.$submitted}">
+                    <div class="field-input mt20" ng-if="data.category">
                         <label class="fix-label">Product Sub Category</label>
-                        <select class="browser-default" ng-model="data.sub_category" name="sub_category" ng-change="getProductList(data.category,data.sub_category,data.product_name)" ng-options="itemRow.sub_category as itemRow.sub_category for itemRow in ProductSubCategoryList" required>
+                        <select class="browser-default cs-select" ng-class="{'has-error': Addform.sub_category.$invalid && Addform.$submitted}" ng-model="data.sub_category" name="sub_category" ng-change="getProductList(data.category,data.sub_category,data.product_name)" ng-options="itemRow.sub_category as itemRow.sub_category for itemRow in ProductSubCategoryList" required>
                             <option value="" disabled selected>Select Sub Category<span>*</span></option>
                         </select>
                     </div>

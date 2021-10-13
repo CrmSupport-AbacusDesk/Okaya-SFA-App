@@ -3,10 +3,48 @@
     <ion-nav-buttons side="left">
         <a href="#/tab/secondary-target-list" class="cs-backbtn button button-icon icon ion-android-arrow-back font18 fff"></a>
     </ion-nav-buttons>
+
+    <!-- <ion-nav-buttons side="right" class="custom-right-btn">
+        <div class="right-nav-btn nav-search">
+            <a ng-click="onSeachActionHandler('open')" menu-toggle="left"><i class="material-icons">search</i></a>
+        </div>
+
+        <div ng-class="isSearchBarOpen ? 'active' : ''" class="search-filter">
+            <input name="data.search" ng-model="data.search" type="text" id="searchData" placeholder="Search..." ng-change ="getsecondaryTargetDetail(data.search)">
+            <a ng-click = "onSeachActionHandler('close');search.dr_code='';getsecondaryTargetDetail();" placeholder = "Search" class="close-filter">
+                <i class="material-icons">keyboard_backspace</i>
+            </a>
+        </div>
+    </ion-nav-buttons> -->
     
     <ion-content>
+        <div class="cs-padding pb0">
+            <div class="cs-list new-tr-ch">
+                <div class="cs-tittle next-page after-none">
+                    <p>Category</p>
+                </div>
+                <div class="sm-box">
+                    <a ng-repeat="row in categoryTOTAL">
+                        <span>{{row.value}}</span> -
+                        <span>{{row.achievement}}</span>
+                        <p>{{row.name}}</p>
+                    </a>
+                </div>
+                
+                <div class="cs-tittle next-page after-none mt10">
+                    <p>Brand</p>
+                </div>
+                <div class="sm-box">
+                    <a ng-repeat="row in brandTotal">
+                        <span>{{row.value}}</span> -
+                        <span>{{row.achievement}}</span>
+                        <p>{{row.name}}</p>
+                    </a>
+                </div>
+            </div>
+        </div>
         
-        <div class="pr16 pl16">
+        <div class="pr16 pl16" hidden>
             <div class="target-bar tr-change border-radius box-shadow-none padding0">
                 <div class="tr-top">
                     <h3><i class="material-icons">event_note</i> {{targetMonth}} {{targetYear}}</h3>
@@ -21,41 +59,13 @@
                 </div>
             </div>
         </div>
-
-        <div class="coman-list clrd-bg margin0 border-radius box-shadow-none" style="display: none;">
-            <div class="top-head">
-                <ul>
-                    <li>
-                        <p>---</p>
-                        <span>Order ID</span>
-                    </li>
-                </ul>
-            </div>
-            
-            <div class="center-item">
-                <div class="cs-icon">R</div>
-                <div class="cs-content">
-                    <p>RAJSHREE ENTERPRISES</p>
-                    <span>10007815</span>
-                </div>
-                <a class="dialer"><i class="material-icons">keyboard_arrow_right</i></a>
-            </div>
-            
-            <div class="pdlr">
-                <div class="cs-flex">
-                    <div class="bdr-field wp100">
-                        <span>Order Status</span>
-                        <p>---</p>
-                    </div>
-                </div>
-            </div>
-        </div>
         
-        <div class="cs-heading1 pt10" style="margin-bottom: -10px;">
+        <div class="cs-heading1 pt10" style="margin-bottom: -10px;" ng-if="targetdetail.length">
             <p>Brand Wise Information</p>
         </div>
         
-        <div class="coman-list" ng-repeat="row in targetdetail">            
+        
+        <div class="coman-list" ng-repeat="row in targetdetail">
             <div class="pdlr muti-pdlr">
                 <h1>{{row.brand}}</h1>
                 <div class="cs-flex">
@@ -68,7 +78,7 @@
                         <p>{{row.achievement}}</p>
                     </div>
                     <div class="bdr-field wp100">
-                        <span>Balance %</span>
+                        <span>Achievement %</span>
                         <p>{{row.achievement_percent}} %</p>
                     </div>
                 </div>

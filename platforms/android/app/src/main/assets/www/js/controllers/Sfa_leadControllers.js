@@ -230,41 +230,58 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
     $scope.requiredata = [];
     $scope.data = {};
     $scope.getleadAdd = function () {
-        
+        let isInputEmpty = false;
+        let emptyMsg = '';
         console.log($scope.data);
-        
-        $ionicLoading.show({
-            template: '<ion-spinner icon="android"></ion-spinner><p>Loading...</p>'
-        });
-        
-        $scope.data.requirement = $scope.requiredata;
-        var parameter = { function_name: 'saveLeadData', 'data': $scope.data };
-        myRequestDBService.sfaPostServiceRequest("/Okaya_LMS/getPostData", parameter).then(function (response) {
-            console.log(response);
+        if(!$scope.requiredata.length)
+        {
+            isInputEmpty = true;
+            emptyMsg = 'Add Requirement!';
+        }
+
+        if (isInputEmpty) {
             
-            $ionicLoading.hide();
+            $ionicPopup.alert({
+                title: 'Error!',
+                template: emptyMsg
+            });
             
-            if (response.status == "Success") {
-                console.log('Success');
-                setTimeout(() => {
-                    
-                    $ionicPopup.alert({
-                        title: 'Success',
-                        template: response.message
-                    });
-                    
-                    $state.go('tab.lead-list');
-                }, 500);
+        }else
+        {
+            $ionicLoading.show({
+                template: '<ion-spinner icon="android"></ion-spinner><p>Loading...</p>'
+            });
+            
+            $scope.data.requirement = $scope.requiredata;
+            var parameter = { function_name: 'saveLeadData', 'data': $scope.data };
+            myRequestDBService.sfaPostServiceRequest("/Okaya_LMS/getPostData", parameter).then(function (response) {
+                console.log(response);
                 
-            }
-            else
-            {
-                $ionicPopup.alert({
-                    title: 'Error!',
-                    template: 'Something went wrong !!'
-                });
-            }
-        });
+                $ionicLoading.hide();
+                
+                if (response.status == "Success") {
+                    console.log('Success');
+                    setTimeout(() => {
+                        
+                        $ionicPopup.alert({
+                            title: 'Success',
+                            template: response.message
+                        });
+                        
+                        $state.go('tab.lead-list');
+                    }, 500);
+                    
+                }
+                else
+                {
+                    $ionicPopup.alert({
+                        title: 'Error!',
+                        template: 'Something went wrong !!'
+                    });
+                }
+            });
+        }
+        
     }
     // -------Lead add---------- //
     

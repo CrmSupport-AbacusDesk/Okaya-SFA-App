@@ -1525,14 +1525,17 @@ angular.module('starter.services', [])
         },
         
         // ------Target Module Functions Start--------- //
-        getTargetList: function (filter_year) {
+        getTargetList: function (filter_year,filter_month,targetTab,targetUser) {
             var deferred = $q.defer();
             var promise = deferred.promise;
             
             $http.post(serverURL + "/okaya_sfa/Distribution_Network/distributorTargetList",
             {
                 loginData: myAllSharedService.loginData,
-                filter_year : filter_year
+                filter_year : filter_year,
+                filter_month: filter_month,
+                targetTab: targetTab,
+                targetUser: targetUser
                 
             }).then(function (response) {
                 console.log(response);
@@ -1557,14 +1560,16 @@ angular.module('starter.services', [])
             return promise;
         },
         
-        getTargetDetail: function (month,year) {
+        getTargetDetail: function (month,year,search,targetUser) {
             var deferred = $q.defer();
             var promise = deferred.promise;
             $http.post(serverURL + "/okaya_sfa/Distribution_Network/distributorTargetDetail",
             {
                 loginData: myAllSharedService.loginData,
                 month: month,
-                year: year
+                year: year,
+                search: search,
+                targetUser : targetUser
                 
             }, { timeout: 30000 }).then(function (response) {
                 
@@ -1582,15 +1587,18 @@ angular.module('starter.services', [])
             
             return promise;
         },
-
-        getsecondaryTargetList: function (filter_year) {
+        
+        getsecondaryTargetList: function (filter_year,filter_month,targetTab,targetUser) {
             var deferred = $q.defer();
             var promise = deferred.promise;
             
             $http.post(serverURL + "/okaya_sfa/Distribution_Network/dealerTargetList",
             {
                 loginData: myAllSharedService.loginData,
-                filter_year : filter_year
+                filter_year : filter_year,
+                filter_month:filter_month,
+                targetTab : targetTab,
+                targetUser : targetUser
                 
             }).then(function (response) {
                 console.log(response);
@@ -1615,14 +1623,16 @@ angular.module('starter.services', [])
             return promise;
         },
         
-        getsecondaryTargetDetail: function (month,year) {
+        getsecondaryTargetDetail: function (month,year,search,targetUser) {
             var deferred = $q.defer();
             var promise = deferred.promise;
             $http.post(serverURL + "/okaya_sfa/Distribution_Network/dealerTargetDetail",
             {
                 loginData: myAllSharedService.loginData,
                 month: month,
-                year: year
+                year: year,
+                search: search,
+                targetUser : targetUser
                 
             }, { timeout: 30000 }).then(function (response) {
                 
@@ -1640,15 +1650,18 @@ angular.module('starter.services', [])
             
             return promise;
         },
-
-        getDealerExpansionList: function (filter_year) {
+        
+        getDealerExpansionList: function (filter_year,filter_month,targetTab,targetUser) {
             var deferred = $q.defer();
             var promise = deferred.promise;
             
             $http.post(serverURL + "/okaya_sfa/Distribution_Network/dealerExpansionTargetList",
             {
                 loginData: myAllSharedService.loginData,
-                filter_year : filter_year
+                filter_year : filter_year,
+                filter_month: filter_month,
+                targetTab : targetTab,
+                targetUser : targetUser
                 
             }).then(function (response) {
                 console.log(response);
@@ -1672,15 +1685,17 @@ angular.module('starter.services', [])
             };
             return promise;
         },
-
-        getDealerExpansionDetail: function (month,year) {
+        
+        getDealerExpansionDetail: function (month,year,search,targetUser) {
             var deferred = $q.defer();
             var promise = deferred.promise;
             $http.post(serverURL + "/okaya_sfa/Distribution_Network/dealerExpansionTargetDetail",
             {
                 loginData: myAllSharedService.loginData,
                 month: month,
-                year: year
+                year: year,
+                search: search,
+                targetUser : targetUser
                 
             }, { timeout: 30000 }).then(function (response) {
                 
@@ -1698,15 +1713,17 @@ angular.module('starter.services', [])
             
             return promise;
         },
-
-        getDistributorExpansionList: function (filter_year) {
+        
+        getDistributorExpansionList: function (filter_year,targetTab) {
             var deferred = $q.defer();
             var promise = deferred.promise;
             
             $http.post(serverURL + "/okaya_sfa/Distribution_Network/distributorExpansionTargetDetail",
             {
                 loginData: myAllSharedService.loginData,
-                filter_year : filter_year
+                filter_year : filter_year,
+                targetTab : targetTab,
+                targetTab : targetTab
                 
             }).then(function (response) {
                 console.log(response);
