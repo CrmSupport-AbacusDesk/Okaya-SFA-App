@@ -4,6 +4,7 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
     console.log("welcome in Network Controller");
     
     $scope.loginData = myAllSharedService.loginData;
+    console.log($scope.loginData);
     $scope.isSearchActive = false;
     
     $scope.data.otpVerify = false;
@@ -52,7 +53,7 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
         var element = document.getElementById('alphabet_only_1');
         element.value = element.value.replace(/[^a-zA-Z ]+/, '');
     };
-
+    
     $scope.validateMobile = function() {
         console.log("mobile validation");
         var input = document.getElementById('mobile_only');
@@ -65,7 +66,7 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
             else value = currentValue;
         });
     };
-
+    
     $scope.goToNetwork = function()
     {
         $state.go('tab.network-add');
@@ -492,15 +493,15 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
             });
             return;
         }
-        else if($scope.mediaData.length==0)
-        {
-            $ionicPopup.alert({
-                title: 'Error !',
-                template: 'Counter Image Required,please click or select !!'
-            });
-            return;
-            
-        }
+        // else if($scope.mediaData.length==0)
+        // {
+        //     $ionicPopup.alert({
+        //         title: 'Error !',
+        //         template: 'Counter Image Required,please click or select !!'
+        //     });
+        //     return;
+        
+        // }
         
         else
         {
@@ -566,9 +567,11 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
     }
     
     
-    
+    $scope.userBranch = '';
+    $scope.userZone = '';
     $scope.onSaveDrHandler = function() {
-        
+        console.log($scope.pincodeBranch + '/' + $scope.pincodeZone);
+                        
         if(!$scope.data.pincode) {
             $ionicPopup.alert({
                 title: 'Error!',
@@ -599,94 +602,121 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
             });
             return false;
         }
-        
-        $ionicPopup.confirm({
-            
-            title: 'Are You Sure, You Want to Save ?',
-            buttons: [{
-                text: 'YES',
-                type: 'button-block button-outline button-stable',
-                onTap: function (e) {
-                    
-                    $ionicLoading.show({
-                        template: '<ion-spinner icon="android"></ion-spinner><p>Loading...</p>'
-                    });
-                    
-                    // $scope.data.stateName = $scope.search.stateName.Value;
-                    // $scope.data.districtName = $scope.search.districtName.Value;
-                    
-                    delete $scope.data.otpModel;
-                    console.log($scope.data);
-                    
-                    // return;
-                    myRequestDBService.sfaPostServiceRequest('/Distribution_Network/saveNetwork',$scope.data)
-                    .then(function(response) {
-                        console.log(response);
-                        
-                        if(response.msg=='success')
-                        {
-                            if($scope.mediaData.length > 0)
-                            {
-                                var options = {
-                                    fileKey: "file",
-                                    fileName: "image.jpg",
-                                    chunkedMode: false,
-                                    mimeType: "image/*",
-                                };
-                                for(let i=0;i<$scope.mediaData.length;i++)
+
+        console.log('here is the console');
+        for (let i = 0; i < $scope.loginData.branch_name.length; i++) 
+        {
+            console.log('log');
+            $scope.userBranch = $scope.loginData.branch_name[i]['branch_name'];
+            console.log($scope.pincodeBranch +' / '+ $scope.userBranch);
+            if($scope.pincodeBranch == $scope.userBranch)
+            {
+                $ionicPopup.confirm({
+                
+                    title: 'Are You Sure, You Want to Save ?',
+                    buttons: [{
+                        text: 'YES',
+                        type: 'button-block button-outline button-stable',
+                        onTap: function (e) {
+                            
+                            $ionicLoading.show({
+                                template: '<ion-spinner icon="android"></ion-spinner><p>Loading...</p>'
+                            });
+                            
+                            // $scope.data.stateName = $scope.search.stateName.Value;
+                            // $scope.data.districtName = $scope.search.districtName.Value;
+                            
+                            delete $scope.data.otpModel;
+                            console.log($scope.data);
+                            
+                            // return;
+                            // saveNetwork
+                            myRequestDBService.sfaPostServiceRequest('/Distribution_Network/saveNetwork',$scope.data)
+                            .then(function(response) {
+                                console.log(response);
+                                
+                                if(response.msg=='success')
                                 {
-                                    console.log($scope.mediaData[i].src);
-                                    $cordovaFileTransfer.upload(serverURL+"/App_Customer/onUploadProfileImageData/"+response.inserted_id, $scope.mediaData[i].src, options)
-                                    .then(function(result) {
-                                        console.log(result);
-                                        
-                                        $ionicLoading.show({ template: 'Success!', noBackdrop: true, duration: 2000 });
-                                    }, function(err) {
-                                        $ionicLoading.hide();
-                                        console.log("ERROR: " + JSON.stringify(err));
-                                    }, function (progress) {
+                                    if($scope.mediaData.length > 0)
+                                    {
+                                        var options = {
+                                            fileKey: "file",
+                                            fileName: "image.jpg",
+                                            chunkedMode: false,
+                                            mimeType: "image/*",
+                                        };
+                                        for(let i=0;i<$scope.mediaData.length;i++)
+                                        {
+                                            console.log($scope.mediaData[i].src);
+                                            $cordovaFileTransfer.upload(serverURL+"/App_Customer/onUploadProfileImageData/"+response.inserted_id, $scope.mediaData[i].src, options)
+                                            .then(function(result) {
+                                                console.log(result);
+                                                
+                                                $ionicLoading.show({ template: 'Success!', noBackdrop: true, duration: 2000 });
+                                            }, function(err) {
+                                                $ionicLoading.hide();
+                                                console.log("ERROR: " + JSON.stringify(err));
+                                            }, function (progress) {
+                                            });
+                                        }
+                                    }
+                                    $scope.mediaData=[];
+                                    
+                                    myAllSharedService.drTypeFilterData.drId = response.inserted_id;
+                                    
+                                    
+                                    $state.go('tab.distribution-network');
+                                }
+                                else
+                                {
+                                    $ionicPopup.alert({
+                                        title: 'Error!',
+                                        template: response.msg
                                     });
                                 }
-                            }
-                            $scope.mediaData=[];
-                            
-                            myAllSharedService.drTypeFilterData.drId = response.inserted_id;
-                            
-                            
-                            $state.go('tab.distribution-network');
-                        }
-                        else
-                        {
-                            $ionicPopup.alert({
-                                title: 'Error!',
-                                template: response.msg
+                                
+                                $ionicLoading.hide();
+                                
+                                
+                            }, function (err) {
+                                $ionicLoading.hide();
+                                $ionicPopup.alert({
+                                    title: 'Error!',
+                                    template: 'Please Check Your Internet conection !!'
+                                });
+                                console.error(err);
                             });
                         }
+                    }, {
                         
-                        $ionicLoading.hide();
-                        
-                        
-                    }, function (err) {
-                        $ionicLoading.hide();
-                        $ionicPopup.alert({
-                            title: 'Error!',
-                            template: 'Please Check Your Internet conection !!'
-                        });
-                        console.error(err);
-                    });
-                }
-                
-            }, {
-                
-                text: 'NO',
-                type: 'button-block button-outline button-stable',
-                onTap: function (e) {
+                        text: 'NO',
+                        type: 'button-block button-outline button-stable',
+                        onTap: function (e) {
+                            
+                            console.log('You Are Not Sure');
+                        }
+                    }]
                     
-                    console.log('You Are Not Sure');
-                }
-            }]
-            
-        });
+                });
+            }
+    
+            else
+            {
+                $ionicPopup.alert({
+                    title: 'Error!',
+                    template: 'Territory Not Match'
+                    // template: response.msg
+                });
+            }
+        }
+        
+        console.log('here is the console');
+        for (let i = 0; i < $scope.loginData.zone_name.length; i++) 
+        {
+            $scope.userZone = $scope.loginData.zone_name[i]['zone_name'];
+            console.log('here ');
+            console.log($scope.pincodeZone + '/'+ $scope.userZone);
+        }
         
     }
     
@@ -1101,10 +1131,11 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
                 $scope.data.stateName = response.pincodeData.state_name;
                 $scope.data.districtName = response.pincodeData.district_name;
                 $scope.data.city = response.pincodeData.city;
-                
                 $scope.data.state_name = response.pincodeData.state_name;
                 $scope.data.district_name = response.pincodeData.district_name;
-                
+                $scope.pincodeBranch = response.validation.branch;
+                $scope.pincodeZone = response.validation.zone;
+                console.log($scope.pincodeBranch + '/' + $scope.pincodeZone);
             }
             else
             {
@@ -3532,7 +3563,7 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
     $scope.schemeCloseModel = function() {
         $scope.scheme_count.hide();
     };
-
+    
     $scope.getCampaignDetail = function(camp_id,drId)
     {
         console.log(camp_id);
