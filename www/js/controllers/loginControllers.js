@@ -17,7 +17,11 @@ app.controller('loginCtrl', function ($scope, $rootScope, searchSelect, $ionicMo
       
       $scope.selectedMonth = moment().format('YYYY-MM-DD');
       $scope.isRequestInProcess;
-      
+
+      $scope.goToBackPageHandler = function () {
+            $ionicHistory.goBack();
+      }
+  
       $scope.login = function () {
             console.log("function call");
             $ionicLoading.show({
@@ -743,6 +747,26 @@ app.controller('loginCtrl', function ($scope, $rootScope, searchSelect, $ionicMo
                   }
             }
             
+            $scope.SCHEME_LIST = [];
+            
+            $scope.GET_DISTRIBUTOR_SCHEME = function () {
+                  $ionicLoading.show({
+                        template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>'
+                  });
+                  
+                  console.log();
+                  
+                  myRequestDBService.sfaPostServiceRequest('/DMS/Get_disscheme_list').then(function (result) {
+                        $ionicLoading.hide();
+                        console.log(result);
+                        $scope.SCHEME_LIST = result.dis_scheme;
+                  },
+                  function (err) {
+                        $ionicLoading.hide();
+                        console.error(err);
+                  });
+                  
+            }
             
             $scope.updateUserDetail = function()
             {
@@ -781,8 +805,11 @@ app.controller('loginCtrl', function ($scope, $rootScope, searchSelect, $ionicMo
                   
                   $scope.onUserDetailHandler();
             }
-            
-            
+
+      if ($location.path() == '/tab/distributor_scheme') {
+            $scope.GET_DISTRIBUTOR_SCHEME()
+      }
+
       })
       
       
