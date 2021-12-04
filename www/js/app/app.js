@@ -92,6 +92,8 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
           loginData.loginName = result.loginData.name;
           loginData.loginType = result.loginData.loginType;
           loginData.loginSubType = result.loginData.sales_user_type;
+          loginData.branch_name = result.loginData.branch_name;
+          loginData.zone_name = result.loginData.zone_name;
           loginData.software_access = result.loginData.software_access;
           loginData.designation = result.loginData.designation;
           loginData.designation_id = result.loginData.designation_id;

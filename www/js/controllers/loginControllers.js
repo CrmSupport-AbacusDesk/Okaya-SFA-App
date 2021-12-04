@@ -17,10 +17,11 @@ app.controller('loginCtrl', function ($scope, $rootScope, searchSelect, $ionicMo
       
       $scope.selectedMonth = moment().format('YYYY-MM-DD');
       $scope.isRequestInProcess;
+
       $scope.goToBackPageHandler = function () {
             $ionicHistory.goBack();
       }
-
+  
       $scope.login = function () {
             console.log("function call");
             $ionicLoading.show({
@@ -41,6 +42,8 @@ app.controller('loginCtrl', function ($scope, $rootScope, searchSelect, $ionicMo
                         loginData.emp_code = result.loginData.emp_code;
                         loginData.loginType = result.loginData.loginType;
                         loginData.loginSubType = result.loginData.sales_user_type;
+                        loginData.branch_name = result.loginData.branch_name;
+                        loginData.zone_name = result.loginData.zone_name;
                         loginData.software_access = result.loginData.software_access;
                         loginData.designation = result.loginData.designation;
                         loginData.designation_id = result.loginData.designation_id;
@@ -744,8 +747,6 @@ app.controller('loginCtrl', function ($scope, $rootScope, searchSelect, $ionicMo
                   }
             }
             
-            
-            
             $scope.SCHEME_LIST = [];
             
             $scope.GET_DISTRIBUTOR_SCHEME = function () {
@@ -808,8 +809,7 @@ app.controller('loginCtrl', function ($scope, $rootScope, searchSelect, $ionicMo
       if ($location.path() == '/tab/distributor_scheme') {
             $scope.GET_DISTRIBUTOR_SCHEME()
       }
-            
-            
+
       })
       
       
