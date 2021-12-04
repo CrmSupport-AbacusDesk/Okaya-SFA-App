@@ -546,6 +546,17 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
+
+    .state('tab.distributor_scheme', {
+      url: '/distributor_scheme',
+      cache: false,
+      views: {
+        'tab-menu': {
+          templateUrl: 'templates/distributor_scheme.html',
+          controller: 'loginCtrl'
+        }
+      }
+    })
   
   .state('tab.all-order-list', {
     url: '/all-order-list',
@@ -847,6 +858,8 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
+
+
   .state('tab.expense-add', {
     url: '/expense-add',
     cache: false,
