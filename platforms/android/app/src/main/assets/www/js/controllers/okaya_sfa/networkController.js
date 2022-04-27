@@ -3,13 +3,13 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
     
     console.log("welcome in Network Controller");
     
+    $scope.dashboardFilter = false;
     $scope.loginData = myAllSharedService.loginData;
     console.log($scope.loginData);
     $scope.isSearchActive = false;
     
     $scope.data.otpVerify = false;
     $scope.data.mobileExist = false;
-    
     $scope.serverURL = serverURL;
     $scope.uploadURL = uploadURL;
     $scope.networkTabActive = myAllSharedService.drTypeFilterData.networkTabActive;
@@ -34,6 +34,7 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
     $scope.data.typeId = 'Dealer';
     
     $scope.search = {};
+    $scope.dash_filter = {};
     
     $scope.data.drFormCurrentStep = 1;
     
@@ -493,15 +494,15 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
             });
             return;
         }
-        // else if($scope.mediaData.length==0)
-        // {
-        //     $ionicPopup.alert({
-        //         title: 'Error !',
-        //         template: 'Counter Image Required,please click or select !!'
-        //     });
-        //     return;
-        
-        // }
+        else if($scope.mediaData.length==0)
+        {
+            $ionicPopup.alert({
+                title: 'Error !',
+                template: 'Counter Image Required,please click or select !!'
+            });
+            return;
+            
+        }
         
         else
         {
@@ -526,9 +527,6 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
             
             console.log($scope.data.distributor);
         }
-        
-        
-        
     }
     
     
@@ -571,7 +569,7 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
     $scope.userZone = '';
     $scope.onSaveDrHandler = function() {
         console.log($scope.pincodeBranch + '/' + $scope.pincodeZone);
-                        
+        
         if(!$scope.data.pincode) {
             $ionicPopup.alert({
                 title: 'Error!',
@@ -602,17 +600,17 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
             });
             return false;
         }
-
+        
         console.log('here is the console');
         for (let i = 0; i < $scope.loginData.branch_name.length; i++) 
         {
             console.log('log');
             $scope.userBranch = $scope.loginData.branch_name[i]['branch_name'];
             console.log($scope.pincodeBranch +' / '+ $scope.userBranch);
-            if($scope.pincodeBranch == $scope.userBranch)
+            if($scope.pincodeBranch == $scope.userBranch || $scope.loginData.loginOrganisationId == 1)
             {
                 $ionicPopup.confirm({
-                
+                    
                     title: 'Are You Sure, You Want to Save ?',
                     buttons: [{
                         text: 'YES',
@@ -631,7 +629,7 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
                             
                             // return;
                             // saveNetwork
-                            myRequestDBService.sfaPostServiceRequest('/Distribution_Network/',$scope.data)
+                            myRequestDBService.sfaPostServiceRequest('/Distribution_Network/saveNetwork',$scope.data)
                             .then(function(response) {
                                 console.log(response);
                                 
@@ -699,7 +697,7 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
                     
                 });
             }
-    
+            
             else
             {
                 $ionicPopup.alert({
@@ -2256,10 +2254,13 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
     $scope.allImages = [];
     
     $scope.showImages = function(index,image) {
-        
+        console.log('it works');
+        console.log(image);
         $scope.allImages = [];
         $scope.allImages.push({image:image})
+        console.log($scope.allImages);
         $scope.activeSlide = index;
+        console.log($scope.activeSlide);
         $scope.showModal('templates/gallery-zoomview.html');
     };
     
@@ -3816,6 +3817,195 @@ app.controller('networkController', function ($http,$scope, $rootScope, searchSe
         $scope.drId = myAllSharedService.drTypeFilterData.drId;
         $scope.camp_id = myAllSharedService.drTypeFilterData.camp_id;
         $scope.getCampaignDetail($scope.camp_id,$scope.drId);
+    }
+    
+    
+    
+    $scope.ACCOUNT_STATEMENT=[];
+    $scope.opening_balance={};
+    $scope.GET_ACCOUNT_STATEMENT = function(dash_filter,dr_code)
+    {
+        console.log($scope.dash_filter);
+        $scope.dash_filter = dash_filter;
+        console.log(dr_code);
+        $ionicLoading.show({
+            template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>',
+            duration: 3000
+        });
+        
+        if($scope.dash_filter.date_from && $scope.dash_filter.date_to)
+        {
+            $scope.dash_filter.datefrom = moment($scope.dash_filter.date_from).format("YYYY-MM-DD");
+            $scope.dash_filter.dateto = moment($scope.dash_filter.date_to).format("YYYY-MM-DD");
+        }
+        myRequestDBService.GET_ACCOUNT_STATEMENT($scope.dash_filter,dr_code)
+        .then(function (response)
+        {
+            console.log(response);
+            $scope.ACCOUNT_STATEMENT = response.data;
+            $scope.opening_balance = response.opening_balance;
+            console.log($scope.ACCOUNT_STATEMENT);
+            console.log($scope.opening_balance);
+            
+            $ionicLoading.hide();
+            
+        },
+        function (err)
+        {
+            $ionicLoading.hide();
+            $ionicPopup.alert({
+                title: 'Error!',
+                template: 'Something went wrong !!'
+            });
+            console.error(err);
+        });
+    }
+    
+    $scope.goToAccountStatement = function(drCode)
+    {
+        myAllSharedService.drTypeFilterData.drCode = drCode;
+        $state.go('tab.account_statement');
+    }
+    
+    if($location.path() == '/tab/account_statement')
+    {
+        $scope.drCode = myAllSharedService.drTypeFilterData.drCode;
+        console.log('account statement');
+        $scope.dash_filter.type = 'Transaction';
+        $scope.dash_filter.transaction = 'All';
+        $scope.GET_ACCOUNT_STATEMENT($scope.dash_filter,$scope.drCode);
+    }
+    
+    $scope.Ac_statFilter = function()
+    {
+        $scope.dashboardFilter = true;
+    }
+    
+    $scope.downloadPdf = function(pdfName,title)
+    {
+        console.log('step 1');
+        var pdf_url = "https://okayapower.abacusdesk.com/uploads/account-statement.pdf";
+        
+        $ionicLoading.show({
+            template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>'
+        });
+        console.log("In pdf");
+        DocumentViewer.previewFileFromUrlOrPath(function ()
+        {
+            console.log('success');
+            setTimeout(() => {
+                $ionicLoading.hide();
+            }, 1000);
+        },
+        function (error)
+        {
+            
+            setTimeout(() => {
+                $ionicLoading.hide();
+            }, 1000);
+            
+            // $timeout(function () {
+            // }, 1000);
+            
+            console.log("In pdf");
+            
+            if (error == 53) {
+                
+                $ionicLoading.hide();
+                
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Message!',
+                    template: 'No Document Handler Found!'
+                });
+                
+                console.log('No app that handles this file type.');
+            }
+            else if (error == 2)
+            {
+                console.log('Invalid link');
+                $ionicLoading.hide();
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Message!',
+                    template: 'PDF Not Found!'
+                });
+            }
+            
+            else
+            {
+                $ionicLoading.hide();
+            }
+        },
+        pdf_url, 'Account Statement','application/pdf');
+        
+        
+    }
+    
+    $scope.downloadAccountStatement = function() {
+        
+        $ionicLoading.show({
+            template: '<ion-spinner icon="android"></ion-spinner><p>Loading...</p>'
+        });
+        myRequestDBService.orpPostServiceRequest('/Dashboard_Controller/GENRATE_PDF',$scope.dash_filter).then(function (result)
+        {
+            console.log(result);
+            $ionicLoading.hide();
+            // if(result.msg == 'success')
+            // {
+            
+            $scope.downloadPdf();
+            // }
+        }, function (err)
+        {
+            $ionicLoading.hide();
+            $ionicPopup.alert({
+                title: 'Error!',
+                template: 'Something went wrong !!'
+            });
+            console.error(err);
+        });
+        
+    }
+    
+    
+    $scope.DR_CollectionList=[];
+    $scope.GET_DR_Collection = function(dr_code)
+    {
+        console.log(dr_code);
+        $ionicLoading.show({
+            template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>',
+            duration: 3000
+        });
+        
+        myRequestDBService.GET_DR_Collection(dr_code)
+        .then(function (response)
+        {
+            console.log(response);
+            $scope.DR_CollectionList = response.data;
+            console.log($scope.DR_CollectionList);
+            $ionicLoading.hide();
+        },
+        function (err)
+        {
+            $ionicLoading.hide();
+            $ionicPopup.alert({
+                title: 'Error!',
+                template: 'Something went wrong !!'
+            });
+            console.error(err);
+        });
+    }
+    
+    $scope.goToCollection = function(drCode)
+    {
+        myAllSharedService.drTypeFilterData.drCode = drCode;
+        $state.go('tab.sfa_dr_collection');
+    }
+    
+    if($location.path() == '/tab/sfa_dr_collection')
+    {
+        $scope.drCode = myAllSharedService.drTypeFilterData.drCode;
+        console.log('DR Collection');
+        $scope.GET_DR_Collection($scope.drCode);
     }
     
     // var location = "https://maps.googleapis.com/maps/api/geocode/json?latlng=18.4791911,73.8729479&key=AIzaSyD9OoPX-RFRqkhIuRsWOPj4xKnVelhRRK8&sensor=false"

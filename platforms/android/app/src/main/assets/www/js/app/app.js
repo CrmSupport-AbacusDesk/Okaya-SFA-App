@@ -436,7 +436,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.primary-target-list', {
     url: '/primary-target-list',
     cache: false,
@@ -447,7 +447,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.primary-target-detail', {
     url: '/primary-target-detail',
     cache: false,
@@ -458,7 +458,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.secondary-target-list', {
     url: '/secondary-target-list',
     cache: false,
@@ -469,7 +469,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.secondary-target-detail', {
     url: '/secondary-target-detail',
     cache: false,
@@ -480,7 +480,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.distributor-expansion', {
     url: '/distributor-expansion',
     cache: false,
@@ -491,7 +491,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.dealer-expansion-list', {
     url: '/dealer-expansion-list',
     cache: false,
@@ -502,7 +502,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.dealer-expansion-detail', {
     url: '/dealer-expansion-detail',
     cache: false,
@@ -544,6 +544,29 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
     views: {
       'tab-menu': {
         templateUrl: 'templates/catalogue.html',
+        controller: 'loginCtrl'
+      }
+    }
+  })
+  
+  .state('tab.distributor_scheme', {
+    url: '/distributor_scheme',
+    cache: false,
+    views: {
+      'tab-menu': {
+        templateUrl: 'templates/distributor_scheme.html',
+        controller: 'loginCtrl'
+      }
+    }
+  })
+  
+  
+  .state('tab.orp_pricelist', {
+    url: '/orp_pricelist',
+    cache: false,
+    views: {
+      'tab-menu': {
+        templateUrl: 'templates/orp_app/orp_pricelist.html',
         controller: 'loginCtrl'
       }
     }
@@ -849,6 +872,8 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
+  
+  
   .state('tab.expense-add', {
     url: '/expense-add',
     cache: false,
@@ -1045,7 +1070,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.sfa_dr_campaign', {
     url: '/sfa_dr_campaign',
     cache: false,
@@ -1057,6 +1082,27 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
     }
   })
   
+  .state('tab.account_statement', {
+    url: '/account_statement',
+    cache: false,
+    views: {
+      'tab-menu': {
+        templateUrl: 'templates/okaya_sfa/account_statement.html',
+        controller: 'networkController'
+      }
+    }
+  })
+
+  .state('tab.sfa_dr_collection', {
+    url: '/sfa_dr_collection',
+    cache: false,
+    views: {
+      'tab-menu': {
+        templateUrl: 'templates/okaya_sfa/sfa_dr_collection.html',
+        controller: 'networkController'
+      }
+    }
+  })
   
   // $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
   

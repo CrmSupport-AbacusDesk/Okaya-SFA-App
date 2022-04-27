@@ -9992,12 +9992,13 @@ h4.nrml-head
 .coman-list a.icon-content {
   display: inline-flex;
   align-items: center;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .coman-list a.icon-content i {
-  font-size: 16px;
-  margin-right: 10px;
+  font-size: 15px;
+    margin-right: 3px;
+    line-height: 10px;
 }
 
 .coman-list a.dialer i
@@ -17864,4 +17865,163 @@ span.header-text-float
 .fab-wheel .fab-action-5 {
   right: 12px;
   top: 60px;
+}
+
+.amount-cabs
+{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  
+}
+.amount-cabs .cb-left
+{
+  width: 50%;
+  padding: 5px 10px;
+}
+
+.amount-cabs .cb-left.green-bg{background: #27AB00;border-radius: 0px 0px 0px 0px;}
+.amount-cabs .cb-left.green-bg span{color: #ffffff;}
+.amount-cabs .cb-left.green-bg p{color: #ffffff;}
+.amount-cabs .cb-left.red-bg{background: #ff0000;border-radius: 0px 0px 0px 0px;}
+.amount-cabs .cb-left.red-bg span{color: #ffffff;}
+.amount-cabs .cb-left.red-bg p{color: #ffffff;}
+
+.amount-cabs .cb-left span
+{
+  font-size: 10px;
+  color: #000;
+}
+
+.amount-cabs .cb-left p
+{
+  font-weight: 500;
+  font-size: 13px;
+  color: #000;
+}
+
+.transaction-view
+{
+  
+}
+
+.transaction-view button
+{
+  display: flex;
+  align-items: center;
+  padding: 7px 10px;
+  width: 100%;
+  background: #ffffff;
+  border: 0px;
+  border-bottom: 2px solid #bdbdbd;
+}
+.transaction-view button .tr-img
+{
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  width: 45px;
+  height: 45px;
+  min-width: 45px;
+  border-radius: 50px;
+  padding: 5px;
+  overflow: hidden;
+  margin-right: 10px;
+  justify-content: center;
+  padding-left: 11px;
+  border: 1px solid #ccc;
+}
+.transaction-view button .tr-img img
+{
+  height: 25px;
+}
+.transaction-view button .tr-content
+{
+  text-align: left;
+  width: 100%;
+}
+.transaction-view button .tr-content h1
+{
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 14px;
+}
+.transaction-view button .tr-content p
+{
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 14px;
+  margin-top: 2px;
+}
+.transaction-view button .tr-content span
+{
+  font-size: 11px;
+  font-weight: 500;
+  color: #b5b5b5;
+  line-height: 14px;
+}
+
+.transaction-view button .tr-info
+{
+  
+}
+
+/* .transaction-view button .tr-info .info-up
+{
+  border-bottom: 1px solid #000;
+} */
+
+.transaction-view button .tr-info .info-up:last-child
+{
+  border-bottom: 0px;
+}
+.transaction-view button .tr-info .info-up p
+{
+  font-size: 15px;
+  font-weight: 600;
+  text-align: right;
+  line-height: 19px;
+}
+.transaction-view button .tr-info .info-up p span
+{
+  font-size: 10px;
+  font-weight: 500;
+  margin-left: 3px;
+}
+
+.transaction-view button .tr-info .info-down p
+{
+  font-size: 14px;
+  font-weight: 600;
+  text-align: right;
+  line-height: 19px;
+  color: #888888;
+}
+
+.transaction-view button .tr-info.debit_amt .info-up p,
+.transaction-view button .tr-info.debit_amt .info-up p span
+{
+  color: #ff0000;
+  
+}
+
+.transaction-view button .tr-info.credit_amt .info-up p,
+.transaction-view button .tr-info.credit_amt .info-up p span
+{
+  color: #016f21;
+}
+
+.transaction-view button .tr-info .info-down p span
+{
+  font-size: 9px;
+  font-weight: 500;
+  color: #888888;
+  margin-left: 5px;
+}
+.transaction-view button .tr-info
+{
+  
 }

@@ -15,9 +15,9 @@
     <ion-content>
         <div class="coman-list clrd-bg margin0 border-radius box-shadow-none">
             <div class="center-item">
-                <div class="cs-icon">{{billingdetail.customr_name[0] ? billingdetail.customr_name[0] : '--'}}</div>
+                <div class="cs-icon">{{billingdetail.customer_name[0] ? billingdetail.customer_name[0] : '--'}}</div>
                 <div class="cs-content">
-                    <p>{{billingdetail.customr_name ? billingdetail.customr_name : 'N/A'}}</p>
+                    <p>{{billingdetail.customer_name ? billingdetail.customer_name : 'N/A'}}</p>
                     <span>{{billingdetail.customer_code ? billingdetail.customer_code : 'N/A'}}</span>
                     
                 </div>
@@ -25,42 +25,52 @@
             <div class="pdlr">
                 <div class="cs-flex">
                     <div class="bdr-field wp100">
-                        <span>Order No</span>
-                        <p>{{billingdetail.sale_order_no}}</p>
-                    </div>
-                    
-                    <div class="bdr-field wp100">
                         <span>Bill No</span>
-                        <p>{{billingdetail.bill_doc}}</p>
+                        <p>{{billingdetail.bill_number}}</p>
                     </div>
                     
                     <div class="bdr-field wp100">
                         <span>Bill Date</span>
-                        <p>{{billingdetail.bill_date | date: 'dd MMM yyyy'}}</p>
+                        <p>{{billingdetail.billing_date | date: 'dd MMM yyyy'}}</p>
                     </div>
+                    <div class="bdr-field wp100">
+                        <span>Plant</span>
+                        <p>{{billingdetail.plant}}</p>
+                    </div>
+                    <!-- <div class="bdr-field wp100">
+                        <span> item Qty</span>
+                        <p>{{billingdetail.total_billing_item_qty}}</p>
+                    </div> -->
                 </div>
             </div>
             <div class="pdlr">
                 <div class="cs-flex">
                     <div class="bdr-field wp100">
-                        <span>Total Item</span>
-                        <p>{{billingdetail.total_item}}</p>
+                        <span>Invoice Item</span>
+                        <p>{{billingdetail.total_billing_qty}}</p>
                     </div>
                     <div class="bdr-field wp100">
-                        <span>Total item Qty</span>
-                        <p>{{billingdetail.total_qty}}</p>
+                        <span>Taxable Amount</span>
+                        <p>&#8377; {{billingdetail.billing_taxable_amount}}</p>
                     </div>
                     <div class="bdr-field wp100">
+                        <span>Basic Amount</span>
+                        <p>&#8377; {{billingdetail.billing_basic_amount}}</p>
+                    </div>
+                    <!-- <div class="bdr-field wp100">
                         <span>Total Amount</span>
-                        <p>&#8377; {{billingdetail.total_amt | number : 2 }}</p>
+                        <p>&#8377; {{billingdetail.total_billing_amount | number : 2 }}</p>
+                    </div> -->
+                    <!-- <div class="bdr-field wp100">
+                        <span>Receive Amount</span>
+                        <p>&#8377; {{billingdetail.billing_receive_amount}}</p>
                     </div>
+                    <div class="bdr-field wp100">
+                        <span>Pending Balance</span>
+                        <p>&#8377; {{billingdetail.pending_balance}}</p>
+                    </div> -->
                 </div>
             </div>
-        </div>
-        
-        <div class="pd-left-right16">
-            
-            
         </div>
         
         <div class="cs-heading1 pt0" style="margin-bottom: -10px;">
@@ -68,26 +78,36 @@
         </div>
         
         <div ng-repeat="row in billingdetail.invoice_item" class="coman-list">
-            
             <div class="center-item">
-                <div class="cs-icon">{{row.material_description[0]}}</div>
+                <div class="cs-icon">{{row.material_name[0]}}</div>
                 <div class="cs-content">
-                    <p>{{row.material}}</p>
-                    <span>{{row.material_description}}</span>
+                    <p>{{row.material_name}}</p>
+                    <span>{{row.material_code}}</span>
                 </div>
-                <!-- <a class="dialer"><i class="material-icons">keyboard_arrow_right</i></a> -->
             </div>
             
             <div class="pdlr">
                 <div class="cs-flex">
                     <div class="bdr-field wp100">
-                        <span>Sale qty</span>
-                        <p>{{row.sale_qty}} {{row.uom}}</p>
+                        <span>Material Qty</span>
+                        <p>{{row.material_qty}}</p>
                     </div>
                     
                     <div class="bdr-field wp100">
-                        <span>Total Amount</span>
-                        <p>&#8377; {{row.total_amt}}</p>
+                        <span>UOM</span>
+                        <p ng-if="row.uom != '0'">{{row.uom}}</p>
+                        <p ng-if="row.uom == '0'">-</p>
+                    </div>
+                </div>
+                <div class="cs-flex">
+                    <div class="bdr-field wp100">
+                        <span>Basic Amount</span>
+                        <p>{{row.material_basic_amount}}</p>
+                    </div>
+                    
+                    <div class="bdr-field wp100">
+                        <span>Taxable Amount</span>
+                        <p>&#8377; {{row.material_taxable_amount}}</p>
                     </div>
                 </div>
             </div>

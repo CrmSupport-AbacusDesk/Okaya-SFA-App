@@ -1,0 +1,37 @@
+<ion-view view-title="Collection">
+    
+    <ion-nav-buttons side="left">
+        <a href="#/tab/network-detail" class="cs-backbtn button button-icon icon ion-android-arrow-back font18 fff"></a>
+    </ion-nav-buttons>
+    
+    <ion-content>
+
+        <div class="pdlr muti-pdlr" ng-repeat="var in DR_CollectionList">
+            <div class="cs-flex mt10">
+                <div class="bdr-field wp100">
+                    <span>Date</span>
+                    <p>{{dateFormat(var.doc_date)}}</p>
+                </div>
+                <div class="bdr-field wp100">
+                    <span>Document No.</span>
+                    <p>{{var.document_no}}</p>
+                </div>
+                <div class="bdr-field wp100">
+                    <span>Balance</span>
+                    <p>{{var.amount | number : 2}}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="data-not-found" ng-if="DR_CollectionList.length == 0" >
+            <div class="outer">
+                <div class="innear">
+                    <img src="img/data-not-found.svg" alt="">
+                    <h2>Temporarily , No Data Available!</h2>
+                </div>
+            </div>
+        </div>
+        
+        <div class="h50"></div>
+    </ion-content>    
+</ion-view>

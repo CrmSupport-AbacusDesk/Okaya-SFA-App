@@ -13,9 +13,6 @@
     "cordova-plugin-device": {
       "PACKAGE_NAME": "com.abacus.okaya"
     },
-    "cordova-plugin-splashscreen": {
-      "PACKAGE_NAME": "com.abacus.okaya"
-    },
     "cordova-plugin-ionic-keyboard": {
       "PACKAGE_NAME": "com.abacus.okaya"
     },
@@ -23,9 +20,6 @@
       "PACKAGE_NAME": "com.abacus.okaya"
     },
     "cordova-plugin-app-version": {
-      "PACKAGE_NAME": "com.abacus.okaya"
-    },
-    "cordova-sqlite-storage": {
       "PACKAGE_NAME": "com.abacus.okaya"
     },
     "cordova-plugin-actionsheet": {
@@ -41,9 +35,6 @@
       "PACKAGE_NAME": "com.abacus.okaya"
     },
     "cordova-plugin-appversion": {
-      "PACKAGE_NAME": "com.abacus.okaya"
-    },
-    "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "com.abacus.okaya"
     },
     "cordova-android-support-gradle-release": {
@@ -69,6 +60,15 @@
     "@havesource/cordova-plugin-push": {
       "ANDROID_SUPPORT_V13_VERSION": "28.0.0",
       "FCM_VERSION": "18.+",
+      "PACKAGE_NAME": "com.abacus.okaya"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "com.abacus.okaya"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.abacus.okaya"
+    },
+    "cordova-sqlite-storage": {
       "PACKAGE_NAME": "com.abacus.okaya"
     }
   },
