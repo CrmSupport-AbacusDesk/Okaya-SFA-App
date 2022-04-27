@@ -18,6 +18,10 @@ app.controller('loginCtrl', function ($scope, $rootScope, searchSelect, $ionicMo
       $scope.selectedMonth = moment().format('YYYY-MM-DD');
       $scope.isRequestInProcess;
       
+      $scope.goToBackPageHandler = function () {
+            $ionicHistory.goBack();
+      }
+      
       $scope.login = function () {
             console.log("function call");
             $ionicLoading.show({
@@ -679,7 +683,7 @@ app.controller('loginCtrl', function ($scope, $rootScope, searchSelect, $ionicMo
             console.log(pdfName);
             console.log(title);
             
-            upload_url = "http://phpstack-83335-1343588.cloudwaysapps.com/uploads/orp/catalogue_pdf/";
+            upload_url = "https://okayapower.abacusdesk.com/uploads/orp/catalogue_pdf/";
             
             if(pdfName)
             {
@@ -743,6 +747,180 @@ app.controller('loginCtrl', function ($scope, $rootScope, searchSelect, $ionicMo
                   }
             }
             
+            $scope.SCHEME_LIST = [];
+            
+            $scope.GET_DISTRIBUTOR_SCHEME = function () {
+                  $ionicLoading.show({
+                        template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>'
+                  });
+                  
+                  console.log();
+                  
+                  myRequestDBService.sfaPostServiceRequest('/DMS/Get_disscheme_list_user').then(function (result) {
+                        $ionicLoading.hide();
+                        console.log(result);
+                        $scope.SCHEME_LIST = result.dis_scheme;
+                  },
+                  function (err) {
+                        $ionicLoading.hide();
+                        console.error(err);
+                  });
+                  
+            }
+            
+            $scope.pricelistData = [];
+            
+            $scope.GET_PRICE_LIST = function () {
+                  $ionicLoading.show({
+                        template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>'
+                  });
+                  
+                  console.log();
+                  
+                  myRequestDBService.sfaPostServiceRequest('/DMS/getpriceListUser').then(function (result) {
+                        $ionicLoading.hide();
+                        console.log(result);
+                        $scope.pricelistData = result.pricelistData;
+                  },
+                  function (err) {
+                        $ionicLoading.hide();
+                        console.error(err);
+                  });
+                  
+            }
+            
+            $scope.openCataloguePdf = function(pdfName,title)
+            {
+                  
+                  // pdfName = "invoice.pdf";
+                  console.log(pdfName);
+                  console.log(title);
+                  
+                  upload_url = "https://okayapower.abacusdesk.com/uploads/orp/catalogue_pdf/";
+                  
+                  // 'https://okayapower.abacusdesk.com/uploads/orp/42802.pdf'
+                  
+                  if(pdfName)
+                  {
+                        $ionicLoading.show({
+                              template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>'
+                        });
+                        console.log("In pdf");
+                        DocumentViewer.previewFileFromUrlOrPath(function () 
+                        {
+                              console.log('success');
+                              $timeout(function () {
+                                    $ionicLoading.hide();
+                              }, 1000);
+                        },
+                        function (error) 
+                        {
+                              
+                              $timeout(function () {
+                                    $ionicLoading.hide();
+                              }, 1000);
+                              
+                              console.log("In pdf");
+                              
+                              if (error == 53) {
+                                    
+                                    var alertPopup = $ionicPopup.alert({
+                                          title: 'Message!',
+                                          template: 'No Document Handler Found!'
+                                    });
+                                    
+                                    console.log('No app that handles this file type.');
+                              } 
+                              else if (error == 2)
+                              {
+                                    console.log('Invalid link');
+                                    
+                                    var alertPopup = $ionicPopup.alert({
+                                          title: 'Message!',
+                                          template: 'PDF Not Found!'
+                                    });
+                              }
+                        },
+                        upload_url + pdfName, title,'application/pdf');
+                        
+                        
+                  } 
+                  else 
+                  { 
+                        $ionicLoading.hide();
+                        
+                        $ionicLoading.hide();
+                        
+                        var alertPopup = $ionicPopup.alert({
+                              title: 'Message!',
+                              template: 'PDF Not Found!'
+                        });
+                  }
+            }
+            
+            $scope.OPEN_SCHEME_PDF = function (pdfFileName, title) {
+                  
+                  console.log(pdfFileName);
+                  console.log(title);
+                  
+                  upload_url = "https://okayapower.abacusdesk.com/uploads/orp/";
+                  
+                  console.log(upload_url + pdfFileName);
+                  
+                  // 'https://okayapower.abacusdesk.com/uploads/orp/42802.pdf'
+                  
+                  if (pdfFileName) {
+                        $ionicLoading.show({
+                              template: '<p>Loading...</p><ion-spinner icon="android"></ion-spinner>'
+                        });
+                        console.log("In pdf");
+                        DocumentViewer.previewFileFromUrlOrPath(function () {
+                              console.log('success');
+                              $timeout(function () {
+                                    $ionicLoading.hide();
+                              }, 1000);
+                        },
+                        function (error) {
+                              
+                              $timeout(function () {
+                                    $ionicLoading.hide();
+                              }, 1000);
+                              
+                              console.log("In pdf");
+                              
+                              if (error == 53) {
+                                    
+                                    var alertPopup = $ionicPopup.alert({
+                                          title: 'Message!',
+                                          template: 'No Document Handler Found!'
+                                    });
+                                    
+                                    console.log('No app that handles this file type.');
+                              }
+                              else if (error == 2) {
+                                    console.log('Invalid link');
+                                    
+                                    var alertPopup = $ionicPopup.alert({
+                                          title: 'Message!',
+                                          template: 'PDF Not Found!'
+                                    });
+                              }
+                        },
+                        upload_url + pdfFileName, title, 'application/pdf');
+                        
+                        
+                  }
+                  else {
+                        $ionicLoading.hide();
+                        
+                        $ionicLoading.hide();
+                        
+                        var alertPopup = $ionicPopup.alert({
+                              title: 'Message!',
+                              template: 'PDF Not Found!'
+                        });
+                  }
+            }
             
             $scope.updateUserDetail = function()
             {
@@ -782,6 +960,13 @@ app.controller('loginCtrl', function ($scope, $rootScope, searchSelect, $ionicMo
                   $scope.onUserDetailHandler();
             }
             
+            if ($location.path() == '/tab/distributor_scheme') {
+                  $scope.GET_DISTRIBUTOR_SCHEME()
+            }
+            
+            if ($location.path() == '/tab/orp_pricelist') {
+                  $scope.GET_PRICE_LIST()
+            }
             
       })
       

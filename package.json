@@ -4,12 +4,14 @@
   "description": "An Ionic project",
   "devDependencies": {
     "@ionic/v1-toolkit": "3.2.3",
-    "cordova-android": "^9.1.0",
+    "cordova-android": "9.1.0",
     "cordova-android-support-gradle-release": "^2.1.0",
     "cordova-plugin-camera": "^3.0.0",
     "cordova-plugin-document-viewer": "^0.9.13",
     "cordova-plugin-request-location-accuracy": "^2.3.0",
-    "cordova-plugin-whitelist": "^1.3.4",
+    "cordova-plugin-splashscreen": "^6.0.0",
+    "cordova-plugin-whitelist": "^1.3.5",
+    "cordova-sqlite-storage": "^6.0.0",
     "cordova.plugins.diagnostic": "^3.9.2",
     "gulp": "^4.0.2",
     "gulp-clean-css": "^3.7.0",
@@ -31,28 +33,23 @@
     "cordova-plugin-file-transfer": "^1.7.1",
     "cordova-plugin-geolocation": "4.0.2",
     "cordova-plugin-ionic-keyboard": "^2.1.3",
-    "cordova-plugin-splashscreen": "^5.0.2",
     "cordova-plugin-statusbar": "^2.4.2",
-    "cordova-plugin-x-toast": "2.7.2",
-    "cordova-sqlite-storage": "3.3.0"
+    "cordova-plugin-x-toast": "2.7.2"
   },
   "cordova": {
     "plugins": {
       "cordova-plugin-statusbar": {},
       "cordova-plugin-device": {},
-      "cordova-plugin-splashscreen": {},
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-geolocation": {
         "GPS_REQUIRED": "true"
       },
       "cordova-plugin-app-version": {},
-      "cordova-sqlite-storage": {},
       "cordova-plugin-actionsheet": {},
       "cordova-plugin-dialogs": {},
       "cordova-plugin-x-toast": {},
       "cordova-plugin-file-transfer": {},
       "cordova-plugin-appversion": {},
-      "cordova-plugin-whitelist": {},
       "cordova-android-support-gradle-release": {
         "ANDROID_SUPPORT_VERSION": "27.+"
       },
@@ -66,7 +63,10 @@
       "@havesource/cordova-plugin-push": {
         "ANDROID_SUPPORT_V13_VERSION": "28.0.0",
         "FCM_VERSION": "18.+"
-      }
+      },
+      "cordova-plugin-splashscreen": {},
+      "cordova-plugin-whitelist": {},
+      "cordova-sqlite-storage": {}
     },
     "platforms": [
       "android"
