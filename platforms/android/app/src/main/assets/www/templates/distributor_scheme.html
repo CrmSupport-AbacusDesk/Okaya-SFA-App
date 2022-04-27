@@ -1,0 +1,36 @@
+<ion-view view-title="Distributor Scheme">
+    <ion-nav-buttons side="left">
+        <a ng-click="goToBackPageHandler()"
+            class="cs-backbtn button button-icon icon ion-android-arrow-back font18 fff"></a>
+    </ion-nav-buttons>
+
+    <ion-content>
+        <div class="vd_img_listing padding16">
+            <div class="figure relative" ng-repeat="row in SCHEME_LIST" ng-click="OPEN_SCHEME_PDF(row.pdf,row.title)">
+                <div class="thumb" ng-if="row.banner!=''"><img src="{{uploadURL}}/orp/{{row.banner}}" alt=""></div>
+                <div class="thumb" ng-if="row.banner==''"><img src="img/dft_product.svg" alt=""></div>
+                <div class="naming">
+                    <h1>{{row.title}}</h1>
+                </div>
+                <span class="flag-discount" ng-class="{'deactive': row.status == 'Deactive'}">{{row.status}}</span>
+            </div>
+            <div class="data-not-found" ng-if="!sendRequest && newsEventImagesData.length == 0">
+                <div class="outer">
+                    <div class="innear">
+                        <img src="img/data-not-found.svg" alt="">
+                        <h2>Temporarily , No Data Available!</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="data-not-found sfa-billing-list" ng-if="SCHEME_LIST.length == 0">
+            <div class="outer">
+                <div class="innear">
+                    <img src="img/data-not-found.svg" alt="">
+                    <h2>Temporarily , No Data Available!</h2>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

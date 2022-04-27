@@ -523,6 +523,97 @@ angular.module('starter.services', [])
         },
         /* Update Detail function end*/
         
+        /*ACCOUNT STATEMENT function  start*/
+        GET_ACCOUNT_STATEMENT: function (dash_filter,dr_code) {
+            
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+            
+            // $http.post(serverURL+"/App_Customer/getDrDetail", {
+            $http.post(serverURL + "/App_Customer/GET_ACCOUNT_STATEMENT_SFA", {
+                
+                loginData: myAllSharedService.loginData,
+                dash_filter: dash_filter,
+                dr_code: dr_code
+                
+            }, { timeout: 30000 }).then(function (response) {
+                
+                console.log(response);
+                deferred.resolve(response.data);
+                
+            }, function (error) {
+                
+                $ionicLoading.hide();
+                
+                $ionicPopup.alert({
+                    title: 'Error!',
+                    template: 'Check Internet Connection, Try Again!'
+                });
+                
+                console.log("Server Error on 1st login: " + JSON.stringify(error));
+                deferred.reject(error);
+            });
+            
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            };
+            
+            promise.error = function (fn) {
+                
+                promise.then(null, fn);
+                return promise;
+            };
+            
+            return promise;
+        },
+        /* ACCOUNT STATEMENT function end*/
+        
+        /*DR_Collection function  start*/
+        GET_DR_Collection: function (dr_code) {
+            
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+            
+            // $http.post(serverURL+"/App_Customer/getDrDetail", {
+            $http.post(serverURL + "/okaya_sfa/Distribution_Network/disCollection", {
+                
+                loginData: myAllSharedService.loginData,
+                dr_code: dr_code
+                
+            }, { timeout: 30000 }).then(function (response) {
+                
+                console.log(response);
+                deferred.resolve(response.data);
+                
+            }, function (error) {
+                
+                $ionicLoading.hide();
+                
+                $ionicPopup.alert({
+                    title: 'Error!',
+                    template: 'Check Internet Connection, Try Again!'
+                });
+                
+                console.log("Server Error on 1st login: " + JSON.stringify(error));
+                deferred.reject(error);
+            });
+            
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            };
+            
+            promise.error = function (fn) {
+                
+                promise.then(null, fn);
+                return promise;
+            };
+            
+            return promise;
+        },
+        /* DR_Collection function end*/
+        
         /* All Dr Stautus List function  start*/
         getDrAllStatusData: function () {
             

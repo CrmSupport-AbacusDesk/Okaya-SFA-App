@@ -41,7 +41,7 @@
                     </li>
                 </ul>
             </div>
-
+            
             <div class="pdlr dflex-data mt10">
                 <div class="bdr-field wp100">
                     <span>PAN Number</span>
@@ -49,7 +49,7 @@
                 </div>
                 
                 <div class="bdr-field wp100">
-                    <span>Pollution Certificate Number</span>
+                    <span>Pollution Certificate No.</span>
                     <p>{{drDetail.drData.orp_pol_cert_no ? drDetail.drData.orp_pol_cert_no : 'N/A'}}</p>
                 </div>
             </div>
@@ -94,7 +94,8 @@
                 </div>
                 
                 <div class="bdr-field wp100">
-                    <span>{{drDetail.drData.type_name}} code</span>
+                    <!-- {{drDetail.drData.type_name}} -->
+                    <span>Code</span>
                     <p>{{drDetail.drData.dr_code ? drDetail.drData.dr_code : 'N/A'}}</p>
                 </div>
             </div>
@@ -118,6 +119,18 @@
             </div>
         </div>
         
+        <div class="pd-left-right16 mb15" ng-show="drDetail.drData.type_name =='Distributor'">
+            <div class="amount-cabs">
+                <div class="cb-left">
+                    <span>Credit Limit</span>
+                    <p>₹ {{drDetail.drData.credit_limit}}</p>
+                </div>
+                <div class="cb-left " ng-class="{'green-bg': drDetail.drData.credit_limit >= drDetail.drData.credit_exposure,'red-bg': drDetail.drData.credit_limit < drDetail.drData.credit_exposure}" ng-click='OutstandingRedirect()'>
+                    <span>Outstanding</span>
+                    <p>₹ {{drDetail.drData.credit_exposure}}</p>
+                </div>
+            </div>
+        </div>
         
         <div class="text-box" style="margin: 0px 16px;">
             <h2>Deal With</h2>
@@ -159,7 +172,7 @@
                                 <span class="flag-discount st-tube" ng-class="{'deactive': row.camp_status == 'Deactive'}">{{row.camp_status}}</span>
                             </a>
                         </div>
-
+                        
                         <div class="data-not-found center h130" ng-if="drDetail.camp_data.length == 0">
                             <div class="outer">
                                 <div class="innear">
@@ -175,13 +188,13 @@
         
         <div ng-if="drDetail && drDetail.drData" class="forword-page flat-item anchor-bdr padding16">
             
-            <!-- <a ng-if="drDetail.drData.type_name=='Dealer'" ng-click="gotoPage(drDetail.drData.id,drDetail.drData.dr_name,drDetail.drData.sfa_contact_no,'scheme_enroll')" class="no-height">
+            <a ng-if="drDetail.drData.type_name=='Dealer'" ng-click="gotoPage(drDetail.drData.id,drDetail.drData.dr_name,drDetail.drData.sfa_contact_no,'scheme_enroll')" class="no-height">
                 <p class="df jcc" ng-if="drDetail.scheme_enroll==true"><span class="df"><i class="material-icons">check_circle</i></span></p>
                 <p class="df jcc" ng-if="drDetail.scheme_enroll==false"><span class="df"><i class="material-icons red-text">cancel</i></span></p>
                 <div class="info">
                     <h2 ng-class="{'mt0': drDetail.followUpData.length==0}"> Scheme Enroll</h2>
                 </div>
-            </a> -->
+            </a>
             
             <a href="#/tab/sfa_dr_activity" class="no-height">
                 <p><span>{{drDetail.checkInData.checkInData.length}}</span></p>
@@ -214,6 +227,16 @@
                 <div class="info">Image & Document</div>
             </a>
             
+            <a ng-click="goToAccountStatement(drDetail.drData.dr_code);" ng-if="drDetail.drData.type_name == 'Distributor'">
+                <!-- <p><span>{{drDetail.priOrderData.length}}</span></p> -->
+                <div class="info">Account Statement</div>
+            </a>
+
+            <a ng-click="goToCollection(drDetail.drData.dr_code);" ng-if="drDetail.drData.type_name == 'Distributor'">
+                <!-- <p><span>{{drDetail.priOrderData.length}}</span></p> -->
+                <div class="info">Collection</div>
+            </a>
+
             <a ng-click="location()">
                 <div class="info">Point Location</div>
             </a>

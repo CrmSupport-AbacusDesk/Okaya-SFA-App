@@ -207,7 +207,7 @@
                         
                         <div ng-class="{'has-error': addressForm.pincode.$invalid && addressForm.$submitted}" class="input-field field-input">
                             <input ng-model="data.pincode" ng-if="!data.pincode" ng-change="getPincodeAddress()" name="pincode"  id="pincode" type="number" class="validate" limit-to = "6" maxlength="6" minlength = "6" string-to-number required>
-                            <input ng-model="data.pincode" ng-if="data.pincode" ng-change="getPincodeAddress()" name="pincode"  id="pincode" type="number" class="validate" limit-to = "6" maxlength="6" minlength = "6" string-to-number required readonly>
+                            <input ng-model="data.pincode" ng-if="data.pincode" ng-change="getPincodeAddress()" name="pincode"  id="pincode" type="number" class="validate" limit-to = "6" maxlength="6" minlength = "6" string-to-number required>
                             <label class="active">Pincode <sup>*</sup></label>
                             <span class="error-left relative" ng-show="addressForm.$submitted && addressForm.pincode.$invalid && !addressForm.pincode.$error.required">* Pincode Must be 6 Digit!</span>
                         </div>
@@ -229,7 +229,7 @@
                             
                             <div ng-class="{'has-error': addressForm.street.$invalid && addressForm.$submitted}" class="input-field field-input">
                                 <textarea ng-model="data.street" ng-if="!data.pincode" name="street" style="height: 80px !important; line-height: 18px !important;" required ></textarea>
-                                <textarea ng-model="data.street" ng-if="data.pincode" name="street" style="height: 80px !important; line-height: 18px !important;" required readonly></textarea>
+                                <textarea ng-model="data.street" ng-if="data.pincode" name="street" style="height: 80px !important; line-height: 18px !important;" required></textarea>
                                 <label ng-class="data.drId ? 'active' : ''" for="last_name" class="active">Address<sup>*</sup></label>
                             </div>
                         </div>
