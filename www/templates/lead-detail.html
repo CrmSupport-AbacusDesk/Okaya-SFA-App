@@ -41,7 +41,7 @@
                         <p class="ellipsis">{{leadDetailData.dr_name}}</p>
                         <span class="ellipsis">{{leadDetailData.contact_name ? leadDetailData.contact_name : 'N/A'}} - {{leadDetailData.contact_mobile_no}}</span>
                     </div>
-                    <a href="tel: {{row.contact_mobile_no}}" class="dialer"><i class="material-icons">call</i></a>
+                    <a href="tel: {{leadDetailData.contact_mobile_no}}" class="dialer"><i class="material-icons">call</i></a>
                 </div>
                 <div class="cs-secation">
                     <p><span>Assigned Date :</span> {{dateFormat(leadDetailData.feild_assign_date)}}</p>
