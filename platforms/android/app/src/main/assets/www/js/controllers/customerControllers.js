@@ -99,7 +99,7 @@ app.controller('customerCtrl', function ($scope, $rootScope, searchSelect, $ioni
                             $scope.data[key] = '';
                         }
                     }
-
+                    
                     console.log($scope.data);
                     
                     
@@ -493,7 +493,7 @@ app.controller('customerCtrl', function ($scope, $rootScope, searchSelect, $ioni
             else
             {
                 $scope.data.drFormCurrentStep = 2;
-
+                
             }
             
             
@@ -1185,7 +1185,7 @@ app.controller('customerCtrl', function ($scope, $rootScope, searchSelect, $ioni
     }
     
     $scope.onGoToDrDetail = function(drId) {
-        
+        console.log(drId);
         myAllSharedService.drTypeFilterData.drId = drId;
         $state.go('tab.lead-detail');
     }
@@ -1541,7 +1541,8 @@ app.controller('customerCtrl', function ($scope, $rootScope, searchSelect, $ioni
     
     
     if ($location.path() == '/tab/lead-detail' || $location.path() == '/tab/sfa_dr_activity' || $location.path() == '/tab/sfa_dr_followup' || $location.path() == '/tab/lead-requirement-list' || $location.path() == '/tab/lead-quotation-list' || $location.path() == '/tab/lead-order-list') {
-        
+        console.log('lead-detail');
+        console.log(myAllSharedService.drTypeFilterData.drId);
         $scope.data.drId = myAllSharedService.drTypeFilterData.drId;
         
         console.log($scope.data.drId);
@@ -1570,6 +1571,8 @@ app.controller('customerCtrl', function ($scope, $rootScope, searchSelect, $ioni
             $scope.data.remarkModel = popovers;
         });
     }
+    
+    
     
     
     $scope.onSetCurrentPageHandler = function() {

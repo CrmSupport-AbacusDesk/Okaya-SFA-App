@@ -1,70 +1,110 @@
-<ion-view view-title="Support" hide-nav-bar="true">
-
-
-    <ion-header-bar class="opr_ion_header">
-        <div class="cs-left">
-            <button class="back-button" ng-click="goToBackPageHandler()"><i class="material-icons">arrow_back</i></button>
-            <h1 class="orp_title">Support</h1>
-        </div>
-    </ion-header-bar>
-
-
-
-
-
-
-
+    <ion-view view-title="Support" name="Scan-view" hide-nav-bar="true">
+        <ion-header-bar class="opr_ion_header bg-black">
+            <div class="cs-left">
+                <button class="back-button" ng-click="goToBackPageHandler()"><i class="material-icons">arrow_back</i></button>
+                <h1 class="orp_title">Support</h1>
+            </div>
+        </ion-header-bar>
+        
+        <ion-content>
+            <div class="padding16">
+                <div class="orp-select">
+                    <label>
+                        <p>Select Category</p>
+                        <select name="category" ng-model="suportData.category" ng-change='getProductSubCategory(suportData.category)'>
+                            <option value="" disabled>Select an option</option>
+                            <option value="{{row.category}}" ng-repeat="row in productCategoryList">{{row.category}}</option>
+                        </select>
+                    </label>
+                </div>
+                
+                <div class="orp-select mt10" ng-if="enableInput == false">
+                    <label>
+                        <p>Select Sub Category</p>
+                        <select name="sub_category" ng-model="suportData.sub_category">
+                            <option value="" disabled>Select an option</option>
+                            <option value="{{row.category_subject}}" ng-repeat="row in productSubCategoryList">{{row.category_subject}}</option>
+                        </select>
+                    </label>
+                </div>
+                
+                <div class="orp-input mt10" ng-if="enableInput == true">
+                    <input type="text" name="suportData.other_desc" placeholder="Other Category Description" ng-model="suportData.suportData.other_desc">
+                </div>
+                
+                <div class="orp-input mt10" ng-if="suportData.category == 'Scan Related Issue'">
+                    <input type="text" name="serialno" placeholder="Enter Serial No." ng-model="suportData.serialno">
+                </div>
+                
+                <div class="orp-textarea mt10">
+                    <textarea placeholder="Remark" name="remark" ng-model="suportData.remark" style="padding: 10px !important;"></textarea>
+                </div>
+                
+                <div class="upload-doc">
+                    <p class="">Attach Document</p>
+                    <ul class="no-padding">
+                        <li ng-if="data.attachment_type == 'Image'" class="add-image" ng-click="camera_click(1);">
+                            <i class="material-icons">insert_photo</i>
+                        </li>
+                        
+                        <li class="add-image">
+                            <label class="cs-lbl">
+                                <input type="file" file-model="data.myFile" multiple style="display: none;">
+                                <i class="material-icons">attachment</i>
+                            </label>
+                        </li>
+                        
+                        <li class="image-upload" ng-repeat="row in $root.documentFiles">
+                            <img src="img/attachment.svg" class="w50 h50">
+                            <span class="doc-name">{{row.name}}</span>
+                            <button class="del" ng-click="delete_document($index)"><i class="material-icons">delete_sweep</i></button>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="cs_orp-bttn mt16" ng-click="saveSupportData()">
+                    <a href="" class="active">SAVE</a>
+                </div>
+            </div>
+            
+            <div class="op_heading" ng-if="supportHistoryList.length"><h1>History</h1></div>
+            
+            <div class="dealer-list">
+                <div class="figure" ng-repeat="row in supportHistoryList">
+                    <div class="dl_info">
+                        <a class="cs-left wp100" href="#/">
+                            <div class="naming wp100 df ac">
+                                <p>Date : <span>{{row.date_created | date : 'd-MMM-y'}} &nbsp;</span></p>
+                                <p class="ml15">Status : <span class="yellow-clr">{{row.status}}</span></p>
+                            </div>
+                        </a>
+                    </div>
+                    <a class="dl-add">
+                        <p><span>Category:- </span> {{row.category}}</p>
+                    </a>
+                    <a class="dl-add" ng-if="row.category=='Scan Related Issue'">
+                        <p><span>Serial No:- </span> {{row.serialno}}</p>
+                    </a>
+                    
+                    <a class="dl-add" href="#/">
+                        <p><span>Remark :- </span> {{row.remark}}</p>
+                    </a>
+                    <div class="upload-doc">
+                        
+                        <ul class="no-padding">
+                            <li class="image-upload small" ng-repeat="row in row.document">
+                                <a href="{{uploadURL}}/{{row.document_name}}" target="blank">
+                                    <img src="img/attachment.svg" class="w40 h40">
+                                </a>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                    
+                </div>
+                
+            </div>
+            
+        </ion-content>
+    </ion-view>
     
-    <ion-content>
-        <div class="padding16">
-            <div class="orp-select">
-                <label>
-                    <p>Select Category</p>
-                    <select>
-                        <option value="1">Select an option</option>
-                    </select>
-                </label>
-            </div>
-            
-            <div class="orp-textarea mt10"><textarea placeholder="Address"></textarea></div>
-            
-            <div class="cs_orp-bttn mt16">
-                <a href="" class="active">SAVE</a>
-            </div>
-        </div>
-        
-        
-        
-        
-        <div class="op_heading"><h1>History</h1></div>
-        
-        <div class="dealer-list">
-            <div class="figure">
-                <div class="dl_info">
-                    <a class="cs-left" href="#/">
-                        <div class="naming">
-                            <p><span>12 April 202 &nbsp;</span> Lorem Ipsum Is Simply Dummy Text.</p>
-                        </div>
-                    </a>
-                </div>
-                <a class="dl-add" href="#/">
-                    <p><span>Remark</span><br>It is a long established fact that a reader will be distracted by the readable</p>
-                </a>
-            </div>
-
-            <div class="figure">
-                <div class="dl_info">
-                    <a class="cs-left" href="#/">
-                        <div class="naming">
-                            <p><span>12 April 202 &nbsp;</span> Lorem Ipsum Is Simply Dummy Text.</p>
-                        </div>
-                    </a>
-                </div>
-                <a class="dl-add" href="#/">
-                    <p><span>Remark</span><br>It is a long established fact that a reader will be distracted by the readable</p>
-                </a>
-            </div>
-        </div>
-        
-    </ion-content>
-</ion-view>

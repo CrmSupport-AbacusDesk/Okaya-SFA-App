@@ -123,10 +123,10 @@
           <i class="material-icons">keyboard_arrow_right</i>
         </a>
         
-        <!-- <a href="#/tab/expense" ng-if="loginData.loginAccessLevel == '4'">
+        <a href="#/tab/expense">
           <p><img src="img/menu-icon/expenses.svg" alt="">Expenses</p>
           <i class="material-icons">keyboard_arrow_right</i>
-        </a> -->
+        </a>
         
         <a ng-if="loginData.loginAccessLevel == 4" ng-click="loginData.startAttendance ? orderRefresh('primary') : loginAlert()">
           <p><img src="img/menu-icon/pr-order.svg" alt="">Primary Orders</p>
@@ -160,6 +160,11 @@
 
         <a href="#/tab/distributor_scheme">
           <p><img src="img/menu-icon/warranty_icon.svg" alt="">Distributor Scheme</p>
+          <i class="material-icons">keyboard_arrow_right</i>
+        </a>
+
+        <a href="#/tab/orp_support">
+          <p><img src="img/menu-icon/support_icon.svg" alt="">Support</p>
           <i class="material-icons">keyboard_arrow_right</i>
         </a>
         

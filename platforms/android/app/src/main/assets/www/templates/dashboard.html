@@ -27,16 +27,17 @@
             </div>
         </div>
         
-        <h4 class="nrml-head" ng-if="dashboardData['drCountData'].length > 0 && !loginData.channelSalesLogin">My Leads</h4>
-        <div class="total-count" ng-if="dashboardData['drCountData'].length > 0 && !loginData.channelSalesLogin">
-            <a ng-click = "onGoToDrListHandler(row)" ng-repeat="row in dashboardData['drCountData']">
+        <h4 class="nrml-head" ng-if="dashboardData['drCountData'].length > 0">My Leads</h4>
+        <div class="total-count" ng-if="dashboardData['drCountData'].length > 0">
+            <!-- ng-click = "onGoToDrListHandler(row)" -->
+            <a ng-click="onGoToDrFilteredList(row)" ng-repeat="row in dashboardData['drCountData']">
                 <p>{{row.typeCount}}</p>
                 <span>{{row.typeName}}</span>
             </a>
-            <a ng-if="dashboardData['drCountData'].length > 0" class="more-count" href="#/tab/lead-counter">
+            <!-- <a ng-if="dashboardData['drCountData'].length > 0" class="more-count" href="#/tab/lead-counter">
                 <span>More</span>
                 <i class="material-icons vert">more_horiz</i>
-            </a>
+            </a> -->
         </div>
         <div class="bx-container mt20 mb0">
             <h2>Today Records</h2>
@@ -64,7 +65,7 @@
                 </a>
                 
                 <a ng-click="gotoPage(0,0,'','lead-followup-list')">
-                    <p class="icon-invert"><i class="material-icons">phone_forwarded</i></p>
+                    <p class="icon-invert"><span>{{dashboardData['leadFollowuListCount']}}</span><i class="material-icons">phone_forwarded</i></p>
                     <div class="info">Lead FollowUp</div>
                 </a>
             </div>

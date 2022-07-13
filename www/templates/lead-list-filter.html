@@ -1,0 +1,80 @@
+<ion-view view-title="lead list {{filterData.typeName}}">
+    
+    <ion-nav-buttons side="left">
+        <a ng-click="goToBackPageHandler()" class="cs-backbtn button button-icon icon ion-android-arrow-back font18 fff"></a>
+    </ion-nav-buttons>
+    
+    <ion-nav-buttons side="right" class="custom-right-btn">
+        <div   class="right-nav-btn nav-search">
+            <a menu-toggle="left" ng-click = "isSearchActive = true"><i class="material-icons">search</i></a>
+        </div>
+        <div ng-class="isSearchActive ? 'active' : ''" class="search-filter">
+            <input type="text" name="search" ng-model="filterData.search"  ng-keyup="$event.keyCode == 13 ?getleadlistFilter(filterData) : null" placeholder="Search ...">
+            <a ng-click = "isSearchActive = false" placeholder = "Search" class="close-filter">
+                <i class="material-icons">keyboard_backspace</i>
+            </a>
+        </div>
+    </ion-nav-buttons>
+    
+    <ion-content>
+        <div  ng-repeat = "row in leadListData" class="coman-list">
+            <div class="top-head">
+                <ul ng-click = "onGoToDrDetail(row.id)" >
+                    <li>
+                        <p>{{dateFormat(row.date_created)}}</p>
+                        <span>Date Created</span>
+                    </li>
+                    <li>
+                        <p>{{row.assign_to_name ? row.assign_to_name : 'N/A'}}</p>
+                        <span>Assign User</span>
+                    </li>
+                    <li>
+                        <p>{{row.type_name ? row.type_name : 'N/A'}}</p>
+                        <span>Type</span>
+                    </li>
+                    <li>
+                        <p>{{row.status}}</p>
+                        <span>Status</span>
+                    </li>
+                </ul>
+                <!-- <a class="vert-icon" ng-click="onShowPopUpHandler($event, row.id, row.dr_name, row.contact_mobile_no, row.type_name)"><i class="material-icons">more_vert</i></a> -->
+            </div>
+            
+            <div class="center-item">
+                <div class="cs-icon" ng-click = "onGoToDrDetail(row.id)" >{{row.dr_name[0] ? row.dr_name[0] : '--'}}</div>
+                <div class="cs-content" ng-click = "onGoToDrDetail(row.id)" >
+                    <p>{{row.dr_name ? row.dr_name : 'N/A'}}</p>
+                    <span>{{row.contact_name ? row.contact_name : 'N/A'}}</span>
+                </div>
+                <a href="tel: {{row.contact_mobile_no}}" class="dialer"><i class="material-icons">call</i></a>
+                
+            </div>
+            
+            <div class="pdlr" ng-click = "onGoToDrDetail(row.id)" >
+                
+                <div ng-if="row.source_name" class="bdr-field bdr-clrd horizontal-content">
+                    <span>Source :</span>
+                    <p>{{row.source_name}}</p>
+                    <p></p>
+                    <p></p>
+                    <span>Category :</span>
+                    <p>{{row.category}}</p>
+                </div>
+                
+                <div class="bdr-field">
+                    <span>Address</span>
+                    <p>{{row.street}} {{row.state_name}}{{row.district_name ? ', '+row.district_name : ''}} {{row.city ? ', '+row.city : ''}}{{row.pincode ? '- '+row.pincode : ''}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="data-not-found" ng-if="leadListData.length == 0">
+            <div class="outer">
+                <div class="innear">
+                    <img src="img/data-not-found.svg" alt="">
+                    <h2>Temporarily , No Data Available!</h2>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="h60"></div> -->
+    </ion-content>
+</ion-view>
