@@ -1078,7 +1078,8 @@ app.controller('loginCtrl', function ($scope, $rootScope, searchSelect, $ionicMo
                         {
                               console.log($scope.mediaData);
                               console.log(response);
-                              
+                              $scope.getSupportHistory();
+                              $scope.suportData ={};
                               if($rootScope.documentFiles.length)
                               {
                                     for (let i = 0; i < $rootScope.documentFiles.length; i++) {
