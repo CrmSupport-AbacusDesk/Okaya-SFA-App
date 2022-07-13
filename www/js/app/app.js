@@ -232,6 +232,17 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
     }
   })
   
+  .state('tab.lead-list-filter', {
+    url: '/lead-list-filter',
+    cache:false,
+    views: {
+      'tab_lead_list': {
+        templateUrl: 'templates/lead-list-filter.html',
+        controller: 'leadController'
+      }
+    }
+  })
+  
   .state('tab.lead-activity-list', {
     url: '/lead-activity-list',
     cache: false,
@@ -567,6 +578,17 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
     views: {
       'tab-menu': {
         templateUrl: 'templates/orp_app/orp_pricelist.html',
+        controller: 'loginCtrl'
+      }
+    }
+  })
+  
+  .state('tab.orp_support', {
+    url: '/orp_support',
+    cache: false,
+    views: {
+      'tab-menu': {
+        templateUrl: 'templates/orp_app/orp_support.html',
         controller: 'loginCtrl'
       }
     }
@@ -1092,7 +1114,7 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
       }
     }
   })
-
+  
   .state('tab.sfa_dr_collection', {
     url: '/sfa_dr_collection',
     cache: false,

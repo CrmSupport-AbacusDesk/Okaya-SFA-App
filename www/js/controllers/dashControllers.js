@@ -194,6 +194,7 @@ app.controller('dashCtrl', function ($scope, $rootScope, searchSelect, $ionicMod
             console.log($scope.dashboardData);
             $scope.dashboardData.achive_percent = (parseFloat($scope.dashboardData.collectionAchivement) * 100 / parseFloat($scope.dashboardData.collectionPlan)).toFixed(2);
             
+            $scope.dashboardData['drCountData'] = result.drCountData.data;
             // $scope.dashboardData['todayMeetingCount'] = result.todayMeetingCount;
             // $scope.dashboardData['todayFollowUpCount'] = result.todayFollowUpCount;
             // $scope.dashboardData['todayQuotationCount'] = result.todayQuotationCount;
@@ -526,6 +527,18 @@ app.controller('dashCtrl', function ($scope, $rootScope, searchSelect, $ionicMod
         myAllSharedService.drTypeFilterData.typeCount = row.typeCount;
         
         $state.go('tab.customer-list');
+    }
+
+    $scope.onGoToDrFilteredList = function(row) {
+        
+        console.log(row);
+        
+        myAllSharedService.drTypeFilterData.typeId = row.typeId;
+        myAllSharedService.drTypeFilterData.typeName = row.typeName;
+        myAllSharedService.drTypeFilterData.typeStatus = row.typeStatus;
+        myAllSharedService.drTypeFilterData.typeCount = row.typeCount;
+        
+        $state.go('tab.lead-list-filter');
     }
     
     $scope.gotoDrPage = function(type)

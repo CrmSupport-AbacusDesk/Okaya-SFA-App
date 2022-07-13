@@ -38,7 +38,7 @@ function init(logInID) {
             platformType = 'ios';
         }
         
-        $.post("" + rootURL + "/okaya_sfa/user/updateDeviceToken",
+        $.post("" + rootURL + "/index.php/okaya_sfa/user/updateDeviceToken",
         {
             regID: regID,
             login_id: logInID,

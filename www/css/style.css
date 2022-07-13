@@ -364,6 +364,18 @@ li {
   top: 100px !important
 }
 
+.yellow-clr {
+  color: #FF8431 !important;
+}
+
+.green-clr {
+  color: #00A60C !important;
+}
+
+.red-clr {
+  color: #ff0000 !important;
+}
+
 ion-header-bar {
   background: #000000 !important;
   height: 50px !important;

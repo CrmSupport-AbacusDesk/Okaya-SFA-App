@@ -429,6 +429,7 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
         $scope.dr_data.dr_id = myRequestDBService.dr_id;
         $scope.dr_data.dr_name = myRequestDBService.dr_name;
         $scope.dr_data.contact_mobile_no = myRequestDBService.contact_mobile_no;
+        $scope.dr_data.type_name = myRequestDBService.type_name;
         console.log($scope.dr_data);
         $scope.getLeadActivityList(myRequestDBService.dr_id);
     }
@@ -781,7 +782,8 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
     
     $scope.leadReasonList = [];
     $scope.getReason = function (status) {
-        var parameter = { function_name: 'getReason', 'status': status };
+        console.log($scope.drDetail);
+        var parameter = { function_name: 'getReason', 'status': status , 'drData' : $scope.drDetail};
         myRequestDBService.sfaPostServiceRequest("/Okaya_LMS/getPostData", parameter).then(function (response) {
             console.log(response);
             $scope.leadReasonList = response.data;
@@ -1314,6 +1316,7 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
         myRequestDBService.statusTabActive = $scope.lead_filter.status;
         console.log(myRequestDBService.leadTabActive);
         console.log(myRequestDBService.statusTabActive);
+        console.log(myRequestDBService);
         $state.go('tab.' + page_name);
         $scope.leadpopovers.hide();
     }
@@ -1748,6 +1751,48 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
         $scope.data.followUpId = '';
         $scope.leadpopovers.show($event);
     }
+
+    // -------Lead List filter---------- //
+    $scope.leadListData = [];
+    
+    $scope.getleadlistFilter = function () {
+        console.log($scope.filterData);
+        
+        $ionicLoading.show({
+            template: '<ion-spinner icon="android"></ion-spinner><p>Loading...</p>'
+        });
+        
+        var filter = { 'filter': $scope.filterData };
+        
+        var parameter = { function_name: 'dashboardLeadList', 'filter': filter };
+        myRequestDBService.sfaPostServiceRequest("/Okaya_LMS/getPostData", parameter).then(function (response) {
+            console.log(response);
+            $scope.leadListData = response;
+            console.log($scope.leadListData);
+            $ionicLoading.hide();            
+        });
+    }
+    
+    // -------Lead List filter---------- //
+    $scope.filterData = {};
+
+    if($location.path() == '/tab/lead-list-filter') {
+        console.log(myAllSharedService.drTypeFilterData);
+        $scope.filterData.typeId = myAllSharedService.drTypeFilterData.typeId;
+        $scope.filterData.typeName = myAllSharedService.drTypeFilterData.typeName;
+        $scope.filterData.typeCount = myAllSharedService.drTypeFilterData.typeCount;
+        console.log($scope.filterData);
+        if (myAllSharedService.drTypeFilterData.typeName) {
+            $scope.getleadlistFilter();
+            console.log('in function');
+        }
+    }
+
+    $scope.onGoToDrDetail = function(drId) {
+        console.log(drId);
+        myRequestDBService.dr_id = drId;
+        $state.go('tab.lead-detail');
+    }
     
     $ionicPopover.fromTemplateUrl('templates/popover.html',
     {
@@ -1805,9 +1850,13 @@ app.controller('leadController', function ($scope, $ionicModal, $location, $ioni
     }
     
     if ($location.path() == '/tab/add-lead-activity' || $location.path() == '/tab/lead-meeting-end') {
+        console.log(myRequestDBService);
         $scope.drDetail.dr_id = myRequestDBService.dr_id;
         $scope.drDetail.dr_name = myRequestDBService.dr_name;
         $scope.drDetail.contact_mobile_no = myRequestDBService.contact_mobile_no;
+        console.log($scope.dr_data.type_name);
+        $scope.drDetail.type_name = myRequestDBService.type_name;
+        console.log($scope.drDetail);
         if ($scope.drDetail.dr_id == 0) {
             $scope.onGetAllLeadType();
         }
