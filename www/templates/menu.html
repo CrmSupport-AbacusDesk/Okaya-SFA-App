@@ -43,6 +43,11 @@
           <i class="material-icons">keyboard_arrow_right</i>
         </a>
         
+        <a href="#/tab/orp_support_list">
+          <p><img src="img/menu-icon/support_icon.svg" alt="">Support</p>
+          <i class="material-icons">keyboard_arrow_right</i>
+        </a>
+        
         
         <!-- <a ng-click="loginData.startAttendance ? goToPage('tab.all-order-list') : loginAlert()">
           <p><img src="img/menu-icon/lead-order.svg"
@@ -123,7 +128,7 @@
           <i class="material-icons">keyboard_arrow_right</i>
         </a>
         
-        <a href="#/tab/expense">
+        <a href="#/tab/expense" ng-if="loginData.loginAccessLevel == '4'">
           <p><img src="img/menu-icon/expenses.svg" alt="">Expenses</p>
           <i class="material-icons">keyboard_arrow_right</i>
         </a>
@@ -152,21 +157,18 @@
           <p><img src="img/menu-icon/product_catalouge_icon.svg" alt="">Product Catalouge</p>
           <i class="material-icons">keyboard_arrow_right</i>
         </a>
-
+        
         <a href="#/tab/orp_pricelist">
           <p><img src="img/menu-icon/pricelist_icon.svg" alt="">Pricelist</p>
           <i class="material-icons">keyboard_arrow_right</i>
         </a>
-
+        
         <a href="#/tab/distributor_scheme">
           <p><img src="img/menu-icon/warranty_icon.svg" alt="">Distributor Scheme</p>
           <i class="material-icons">keyboard_arrow_right</i>
         </a>
-
-        <a href="#/tab/orp_support">
-          <p><img src="img/menu-icon/support_icon.svg" alt="">Support</p>
-          <i class="material-icons">keyboard_arrow_right</i>
-        </a>
+        
+        
         
         <!-- <a ng-if="loginData.loginAccessLevel == '4'" href="#/tab/SFA_LeaveApplicationlist">
           <p><img src="img/beach.svg" alt="">Leave</p>

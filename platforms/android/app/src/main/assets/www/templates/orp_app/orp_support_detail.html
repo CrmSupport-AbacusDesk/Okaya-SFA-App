@@ -1,0 +1,84 @@
+    <ion-view view-title="Support Detail" name="Scan-view" hide-nav-bar="true">
+        <ion-header-bar class="opr_ion_header bg-black">
+            <div class="cs-left">
+                <button class="back-button" ng-click="goToBackPageHandler()"><i class="material-icons">arrow_back</i></button>
+                <h1 class="orp_title">Support Detail</h1>
+            </div>
+        </ion-header-bar>
+        
+        <ion-content>
+            <div class="sticky-column bdr-botm">
+                <div class="coman-list margin0 radius0 no-shadow">
+                    <div class="top-head">
+                        <ul>
+                            <li>
+                                <p>{{dateFormat(supportDetailData.date_created)}}</p>
+                                <span>Assign Date</span>
+                            </li>
+                            <li>
+                                <p>{{supportDetailData.department ? supportDetailData.department : 'N/A'}}</p>
+                                <span>Assign to</span>
+                            </li>
+                            <li>
+                                <p>{{supportDetailData.type ? supportDetailData.type : 'N/A'}}</p>
+                                <span>Type</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="center-item padding10">
+                        <div class="cs-icon">{{supportDetailData.assign_to_name[0]}}</div>
+                        <div class="cs-content ellipsis">
+                            <p class="ellipsis">{{supportDetailData.assign_to_name}}</p>
+                            <span class="ellipsis">{{supportDetailData.assign_to_emp_code}}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="pd-left-right10 cs-flex">
+                        <div class="bdr-field wp100">
+                            <span>Escalation Discuss</span>
+                            <p>{{supportDetailData.escalation_discuss}}</p>
+                        </div>
+
+                        <div class="bdr-field wp100" ng-class="{'pending-bg':supportDetailData.promise_status=='Pending','approved-bg':supportDetailData.promise_status=='Updated'}" ng-if="supportDetailData.sub_tab == 'promise_pending'">
+                            <span>Promise Status</span>
+                            <p >{{supportDetailData.promise_status}}</p>
+                        </div>
+                        
+                        <div class="bdr-field wp100" ng-class="{'pending-bg':supportDetailData.status=='Pending','approved-bg':supportDetailData.status=='Close','reject-bg':supportDetailData.status=='Reject'}">
+                            <span>Status</span>
+                            <p >{{supportDetailData.status}}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bottom-sec" ng-if="supportDetailData.status !='Pending'">
+                        <p class="clamp2"><strong>{{supportDetailData.status_remark}} Remark</strong>: {{supportDetailData.status_remark}}</p>
+                    </div>
+
+                    <div class="bottom-sec" >
+                        <p class="clamp2"><strong>Escalation Description</strong>: {{supportDetailData.escalation_description}}</p>
+                    </div>
+                </div>            
+            </div>
+
+            <div  class="coman-list radius0 no-shadow mb0" ng-if="supportDetailData.promise_status == 'Updated'">
+                <div class="bottom-sec flat padding0">
+                    <p><strong>Promise Action</strong>: {{supportDetailData.promise_action ? supportDetailData.promise_action : 'N/A'}}</p>
+                </div>
+
+                <div class="bdr-field wp100 mt5">
+                    <span>Promise Date</span>
+                    <p>{{supportDetailData.promise_date | date: 'dd MMM yyyy'}}</p>
+                </div>
+            </div>
+            
+            <div class="cs-space" style="padding:16px 20px;" ng-if="supportDetailData.promise_status == 'Pending' && supportDetailData.support_for == 'assigned' && supportDetailData.sub_tab == 'promise_pending'">
+                <a ng-click="onGoToSupportPromiseUpdate(supportDetailData.id)" class="cs-btn">Update Promise</a>
+            </div>
+
+            <div class="cs-space" style="padding:5px 20px;" ng-if="supportDetailData.promise_status == 'Updated' && supportDetailData.support_for == 'assigned' && supportDetailData.status == 'Pending'">
+                <a ng-click="onChangeSupportStatus(supportDetailData.id)" class="cs-btn">Change Status</a>
+            </div>
+        </ion-content>
+    </ion-view>
+    

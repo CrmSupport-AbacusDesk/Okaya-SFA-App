@@ -1,0 +1,57 @@
+    <ion-view view-title="Support Add" name="Scan-view" hide-nav-bar="true">
+        <ion-header-bar class="opr_ion_header bg-black">
+            <div class="cs-left">
+                <button class="back-button" ng-click="goToBackPageHandler()"><i class="material-icons">arrow_back</i></button>
+                <h1 class="orp_title">Support Add</h1>
+            </div>
+        </ion-header-bar>
+        
+        <ion-content>
+            <div class="padding16">
+                <div class="orp-select">
+                    <label>
+                        <p>Select Department</p>
+                        <select name="department" ng-model="suportData.department" ng-change='getUserList()'>
+                            <option value="" disabled>Select an option</option>
+                            <option value="{{row.department}}" ng-repeat="row in departmentList">{{row.department}}</option>
+                        </select>
+                    </label>
+                </div>
+                
+                <div class="input-field field-input">
+                    <label class="active">Requested By</label>
+                    <input type="text" name="requested_by" ng-model="suportData.requested_by" class="validate" readonly>
+                </div>
+                
+                <div class="orp-select mt10">
+                    <label>
+                        <p>Select Requested To</p>
+                        <select name="requested_to" ng-model="suportData.requested_to" ng-change="getUserInfo(suportData.requested_to)">
+                            <option value="" disabled>Select an option</option>
+                            <option value="{{row.id}}" ng-repeat="row in userList">{{row.name}}</option>
+                        </select>
+                    </label>
+                </div>
+                
+                <div class="orp-select mt10">
+                    <label>
+                        <p>Escalation request</p>
+                        <select name="escalation_request" ng-model="suportData.escalation_request">
+                            <option value="" disabled>Select an option</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </label>
+                </div>
+                
+                <div class="orp-textarea mt10">
+                    <textarea placeholder="Escalation Description" name="escalation_description" ng-model="suportData.escalation_description" style="padding: 10px !important;"></textarea>
+                </div>
+                
+                <div class="cs_orp-bttn mt16" ng-click="saveSupportData()">
+                    <a class="active">SAVE
+                </a>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
