@@ -1,0 +1,116 @@
+    <ion-view view-title="Support List" name="Scan-view" hide-nav-bar="true">
+        <ion-header-bar class="opr_ion_header bg-black">
+            <div class="cs-left">
+                <button class="back-button" ng-click="goToBackPageHandler()"><i class="material-icons">arrow_back</i></button>
+                <h1 class="orp_title">Support List</h1>
+            </div>
+            <div class="cs-right">
+                <div class="right-nav-btn nav-search" style="top: 8px;">
+                    <a class="active" ng-click = "isSearchActive = true"><i class="material-icons">search</i></a>
+                </div>
+                <div ng-class="isSearchActive ? 'active' : ''" class="search-filter">
+                    <input type="text" name="search" ng-model="data.search"  ng-keyup="$event.keyCode == 13 ?getSupportHistory() : null" placeholder="Search ...">
+                    <a ng-click = "isSearchActive = false" placeholder = "Search" class="close-filter">
+                        <i class="material-icons">keyboard_backspace</i>
+                    </a>
+                </div>
+            </div>
+        </ion-header-bar>
+        
+        <div class="round-tab top50 wp100 position-inherit">
+            <ul class="mb10">
+                <li ng-click="onModifyTypeHandler('My',data.subTab)" ng-class="data.supportFor == 'My' ? 'active' : ''">
+                    <a>My Ticket</a>
+                </li>
+                
+                <li ng-click="onModifyTypeHandler('assigned',data.subTab)" ng-class="data.supportFor == 'assigned' ? 'active' : ''">
+                    <a>Assigned Ticket </a>
+                </li>
+            </ul>
+            
+            <ul>
+                <li ng-click="onModifyTypeHandler(data.supportFor,'promise_pending')" ng-class="data.subTab == 'promise_pending' ? 'active' : ''" ng-if="data.supportFor == 'assigned'">
+                    <a>Promise Pending</a>
+                </li>
+                
+                <li ng-click="onModifyTypeHandler(data.supportFor,'Open')" ng-class="data.subTab == 'Open' ? 'active' : ''">
+                    <a>Open</a>
+                </li>
+                
+                <li ng-click="onModifyTypeHandler(data.supportFor,'Close')" ng-class="data.subTab == 'Close' ? 'active' : ''">
+                    <a>Close</a>
+                </li>
+                
+                <li ng-click="onModifyTypeHandler(data.supportFor,'Reject')" ng-class="data.subTab == 'Reject' ? 'active' : ''">
+                    <a>Reject</a>
+                </li>
+            </ul>
+        </div>
+        
+        <ion-content class="mt98">
+            <div class="coman-list" ng-repeat="row in supportList" ng-click="onGoToSupportDetail(row.id)">
+                <div class="top-head">
+                    <ul>
+                        <li>
+                            <p>{{dateFormat(row.date_created)}}</p>
+                            <span>Assign Date</span>
+                        </li>
+                        <li>
+                            <p>{{row.department ? row.department : 'N/A'}}</p>
+                            <span>Department</span>
+                        </li>
+                        <li>
+                            <p>{{row.type ? row.type : 'N/A'}}</p>
+                            <span>Type</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="center-item padding10">
+                    <div class="cs-icon">{{row.assign_to_name[0]}}</div>
+                    <div class="cs-content ellipsis">
+                        <p class="ellipsis">{{row.assign_to_name}}</p>
+                        <span class="ellipsis">{{row.assign_to_emp_code}}</span>
+                    </div>
+                </div>
+                
+                <div class="pd-left-right10 cs-flex">
+                    <div class="bdr-field wp100">
+                        <span>Escal. Discussed</span>
+                        <p>{{row.escalation_discuss}}</p>
+                    </div>
+                    
+                    <!-- ng-if="data.supportFor == 'assigned' && data.subTab == 'promise_pending'" -->
+                    <div class="bdr-field wp100" ng-class="{'reject-bg':row.promise_date < todayDate}">
+                        <span>Promise Status</span>
+                        <p ng-class="{'approved-color':row.promise_status == 'Updated' , 'pending-color':row.promise_status == 'Pending'}">{{row.promise_status}}</p>
+                    </div>
+                    
+                    <div class="bdr-field wp100" ng-class="{'pending-bg':row.status=='Pending','approved-bg':row.status=='Close','reject-bg':row.status=='Reject'}">
+                        <span>Status</span>
+                        <p>{{row.status}}</p>
+                    </div>
+                </div>
+                
+                <div class="bottom-sec" >
+                    <p class="clamp2"><strong>Escalation Description</strong>: {{row.escalation_description}}</p>
+                </div>
+            </div>
+            
+            <div class="data-not-found" ng-if="supportList.length == 0">
+                <div class="outer">
+                    <div class="innear">
+                        <img src="img/data-not-found.svg" alt="">
+                        <h2>Temporarily , No Data Available!</h2>
+                    </div>
+                </div>
+            </div>
+        </ion-content>
+        
+        <div class="fix-add">
+            <a ng-click="onGoToSupportAdd()">
+                <i class="material-icons">add</i>
+            </a>
+        </div>
+    </ion-view>
+    

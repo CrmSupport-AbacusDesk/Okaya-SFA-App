@@ -1,0 +1,26 @@
+    <ion-view view-title="Support Add" name="Scan-view" hide-nav-bar="true">
+        <ion-header-bar class="opr_ion_header bg-black">
+            <div class="cs-left">
+                <button class="back-button" ng-click="goToBackPageHandler()"><i class="material-icons">arrow_back</i></button>
+                <h1 class="orp_title">Support Promise Update</h1>
+            </div>
+        </ion-header-bar>
+        
+        <ion-content>
+            <div class="padding16">
+                <div class="input-field field-input">
+                    <input name="promise_date" ng-model="data.promise_date" type="date" min="{{minDate}}" class="validate" required>
+                    <label class="active" for="last_name">Promise Date</label>
+                </div>
+
+                <div class="orp-textarea mt10">
+                    <textarea placeholder="Promise Action" name="promise_action" ng-model="data.promise_action" style="padding: 10px !important;" required></textarea>
+                </div>
+                
+                <div class="cs_orp-bttn mt16" ng-click="UpdatePromise()">
+                    <a href="" class="active">SAVE</a>
+                </div>
+            </div>
+        </ion-content>
+    </ion-view>
+    

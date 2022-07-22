@@ -583,17 +583,61 @@ angularApp.run(function ($ionicPlatform, myRequestDBService, myAllSharedService,
     }
   })
   
-  .state('tab.orp_support', {
-    url: '/orp_support',
+  .state('tab.orp_support_add', {
+    url: '/orp_support_add',
     cache: false,
     views: {
       'tab-menu': {
-        templateUrl: 'templates/orp_app/orp_support.html',
-        controller: 'loginCtrl'
+        templateUrl: 'templates/orp_app/orp_support_add.html',
+        controller: 'supportCtrl'
+      }
+    }
+  })
+
+  .state('tab.orp_support_list', {
+    url: '/orp_support_list',
+    cache: false,
+    views: {
+      'tab-menu': {
+        templateUrl: 'templates/orp_app/orp_support_list.html',
+        controller: 'supportCtrl'
+      }
+    }
+  })
+
+  .state('tab.orp_support_detail', {
+    url: '/orp_support_detail',
+    cache: false,
+    views: {
+      'tab-menu': {
+        templateUrl: 'templates/orp_app/orp_support_detail.html',
+        controller: 'supportCtrl'
+      }
+    }
+  })
+
+  .state('tab.orp_support_promise_update', {
+    url: '/orp_support_promise_update',
+    cache: false,
+    views: {
+      'tab-menu': {
+        templateUrl: 'templates/orp_app/orp_support_promise_update.html',
+        controller: 'supportCtrl'
       }
     }
   })
   
+
+  .state('tab.orp_support_status_change', {
+    url: '/orp_support_status_change',
+    cache: false,
+    views: {
+      'tab-menu': {
+        templateUrl: 'templates/orp_app/orp_support_status_change.html',
+        controller: 'supportCtrl'
+      }
+    }
+  })
   .state('tab.all-order-list', {
     url: '/all-order-list',
     cache: false,
